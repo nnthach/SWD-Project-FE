@@ -19,8 +19,12 @@ function Header() {
       </div>
 
       <div className={styles['header-account']}>
-        <button>Sign In</button>
-        <button>Sign Up</button>
+        <button>
+          <Link to={'/auth/login'}>Sign In</Link>
+        </button>
+        <button>
+          <Link to={'/auth/register'}>Sign Up</Link>
+        </button>
       </div>
     </div>
   );

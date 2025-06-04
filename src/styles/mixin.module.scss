@@ -13,12 +13,13 @@ $breakpoints: (
   }
 }
 
-@mixin btn($width, $height, $radius, $color) {
+@mixin btn($width, $height, $radius, $bgcolor, $color) {
   outline: none;
   border: none;
   width: $width;
   height: $height;
-  background-color: $color;
+  background-color: $bgcolor;
+  color: $color;
   border-radius: $radius;
 }
 
@@ -29,7 +30,7 @@ $breakpoints: (
   gap: $gap;
 }
 
-@mixin hoverWhiteBtn() {
-  background-color: $white-color;
-  color: $primary-color;
+@mixin hoverWhiteBtn($bgcolor, $color) {
+  background-color: $bgcolor;
+  color: $color;
 }

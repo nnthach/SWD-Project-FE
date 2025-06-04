@@ -1,0 +1,21 @@
+.home-wrap {
+  .home-new-content {
+    min-height: 1000px;
+    width: 100%;
+    background-color: red;
+    margin-top: 100px;
+
+    .home-banner {
+      width: 100%;
+      img {
+        width: 100%;
+        object-fit: contain;
+      }
+    }
+
+    .home-service {
+      background-color: blue;
+      text-align: center;
+    }
+  }
+}
