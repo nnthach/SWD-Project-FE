@@ -1,14 +1,14 @@
-import Layout from './components/Layout/Layout';
-import Header from './components/Layout/components/Header/Header';
-import Footer from './components/Layout/components/Footer/Footer';
+import { Route, Routes } from 'react-router-dom';
+import { publicRouters } from '~/routes/routes';
 
 function App() {
   return (
     <>
-      <Layout>
-        <Header />
-        <Footer />
-      </Layout>
+      <Routes>
+        {publicRouters.map((route, index) => {
+          return <Route key={index} path={route.path} element={route.component} />;
+        })}
+      </Routes>
     </>
   );
 }
