@@ -1,0 +1,8 @@
+@import '~/styles/variable.module.scss';
+@import '~/styles/mixin.module.scss';
+
+.footer-wrap {
+  background-color: $secondary-color;
+  width: 100%;
+  padding: 40px 0;
+}

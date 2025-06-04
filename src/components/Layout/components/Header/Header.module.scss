@@ -1,0 +1,12 @@
+@import '~/styles/variable.module.scss';
+@import '~/styles/mixin.module.scss';
+
+.header-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: $primary-color;
+  z-index: 10;
+}
