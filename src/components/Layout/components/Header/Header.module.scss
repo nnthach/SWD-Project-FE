@@ -6,7 +6,46 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 60px;
-  background-color: $primary-color;
+  height: 100px;
+  background-color: white;
   z-index: 10;
+  padding: 0 40px;
+  @include flexBoxStyle(center, space-between, 0);
+
+  .header-logo {
+    width: 150px;
+    background-color: blue;
+    h1 {
+      margin: 0;
+    }
+  }
+
+  .header-navbar {
+    color: black;
+    @include flexBoxStyle(center, space-between, 40px);
+
+    a {
+      text-decoration: none;
+      color: black;
+    }
+  }
+
+  .header-account {
+    width: 160px;
+    @include flexBoxStyle(center, space-between, 0);
+    button {
+      background-color: rgb(135, 215, 255);
+      font-size: 14px;
+      padding: 5px;
+      border-color: transparent;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 550;
+
+      &:first-child {
+        background-color: pink;
+      }
+    }
+  }
 }

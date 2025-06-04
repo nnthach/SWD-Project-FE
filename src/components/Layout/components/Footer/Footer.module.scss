@@ -2,7 +2,61 @@
 @import '~/styles/mixin.module.scss';
 
 .footer-wrap {
-  background-color: $secondary-color;
+  background-color: rgb(212, 212, 212);
   width: 100%;
-  padding: 40px 0;
+  padding: 40px 200px;
+
+  .footer-top {
+    @include flexBoxStyle(center, space-between, 0);
+    padding: 50px 0;
+
+    border-bottom: 1px solid white;
+  }
+
+  .footer-bottom {
+    @include flexBoxStyle(flex-start, space-between, 50px);
+    padding: 50px 0;
+    .footer-intro {
+      width: 40%;
+      h5 {
+        margin-bottom: 20px;
+        font-size: 16px;
+        color: blue;
+      }
+
+      .footer-intro-para {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        p {
+          font-size: 12px;
+          line-height: 1.4;
+        }
+      }
+    }
+
+    .footer-content-wrap {
+      flex: 1;
+      @include flexBoxStyle(flex-start, space-between, 0);
+
+      .footer-content {
+        width: 30%;
+        h5 {
+          margin-bottom: 20px;
+          font-size: 16px;
+          color: blue;
+        }
+        ul {
+          list-style: none;
+          font-size: 12px;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          li {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
 }
