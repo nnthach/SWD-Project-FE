@@ -72,6 +72,10 @@ function Auth() {
               Already have an account? <Link to={'/auth/login'}>Sign In</Link>
             </p>
           )}
+
+          <Link to={'/'} style={{ color: 'black', textDecoration: 'none', fontSize: 12 }}>
+            Continue as Guest
+          </Link>
         </div>
       </div>
     </div>

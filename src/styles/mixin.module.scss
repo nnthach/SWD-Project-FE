@@ -1,4 +1,4 @@
-@import '~/styles/variable.module.scss';
+@use '~/styles/variable.module.scss';
 
 $breakpoints: (
   phone: 576px,
