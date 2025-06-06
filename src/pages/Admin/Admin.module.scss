@@ -1,0 +1,30 @@
+@use '../../styles/mixin.module.scss' as *;
+@use '../../styles/variable.module.scss' as *;
+
+.body {
+  display: flex;
+  flex-direction: row;
+  .sidebar {
+    background-color: #c1defb;
+    width: 20%;
+    height: 100vh;
+    padding: 20px;
+    ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      li {
+        cursor: pointer;
+        padding: 8px 0;
+      }
+    }
+  }
+
+  .content {
+    flex: 1;
+    background-color: yellow;
+    padding: 20px;
+  }
+}

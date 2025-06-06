@@ -1,0 +1,7 @@
+@use '../../../../styles/mixin.module.scss' as *;
+@use '../../../../styles/variable.module.scss' as *;
+
+.wrap {
+  background-color: $primary-color;
+  height: 100px;
+}
