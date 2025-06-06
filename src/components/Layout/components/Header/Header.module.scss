@@ -34,12 +34,8 @@
     width: 160px;
     @include flexBoxStyle(center, space-between, 0);
     button {
-      background-color: rgb(135, 215, 255);
+      @include btn(76px, 35px, 10px, $primary-btn-color, white);
       font-size: 14px;
-      padding: 5px;
-      border-color: transparent;
-      border-radius: 5px;
-      cursor: pointer;
       font-weight: 550;
       a {
         color: white;

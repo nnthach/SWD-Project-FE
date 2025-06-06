@@ -1,8 +1,11 @@
+@use '~/styles/mixin.module.scss' as *;
+@use '~/styles/variable.module.scss' as *;
+
 .home-wrap {
+  background-color: $primary-bg-color;
   .home-new-content {
     min-height: 1000px;
     width: 100%;
-    background-color: red;
     margin-top: 100px;
 
     .home-banner {
@@ -14,8 +17,25 @@
     }
 
     .home-service {
-      background-color: blue;
       text-align: center;
+      margin: 50px 0;
+
+      .service-wrap {
+        width: 1000px;
+        margin: 30px auto;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+      }
+
+      .service-page-btn {
+        @include btn(200px, 40px, 20px, $primary-btn-color, white);
+        font-weight: 550;
+
+        &:hover {
+          @include hoverWhiteBtn($primary-btn-color-hover, white);
+        }
+      }
     }
   }
 }
