@@ -1,0 +1,35 @@
+@use '../../styles/mixin.module.scss' as *;
+@use '../../styles/variable.module.scss' as *;
+
+.wrap {
+  @include flexBoxStyle(none, center, 0);
+  font-size: 18px;
+  padding: 5px 0;
+  color: gray;
+
+  .content {
+    @include flexBoxStyle(center, none, 0);
+    margin: 0 auto;
+
+    .icon {
+      cursor: pointer;
+      &:hover {
+        color: black;
+      }
+    }
+
+    .number-wrap {
+      padding: 0 10px;
+
+      span {
+        padding: 0 5px;
+        cursor: pointer;
+
+        &.isActive {
+          font-weight: 450;
+          color: black;
+        }
+      }
+    }
+  }
+}

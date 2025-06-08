@@ -1,2 +1,44 @@
 @use '../../../../../styles/mixin.module.scss' as *;
 @use '../../../../../styles/variable.module.scss' as *;
+
+.wrap {
+  .header-content {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin: 40px 0;
+
+    .header-content-box {
+      background-color: white;
+      border-radius: 20px;
+      padding: 15px;
+      box-shadow: $box-shadow-default;
+      @include flexBoxStyle(center, space-between, 0);
+    }
+  }
+
+  .content-table {
+    table {
+      margin-bottom: 20px;
+      thead {
+        background-color: lightgrey;
+        tr {
+          text-align: left;
+          th {
+            padding: 15px 10px;
+          }
+        }
+      }
+
+      tbody {
+        tr {
+          border-bottom: 1px solid rgb(234, 234, 234);
+          text-align: left;
+          td {
+            padding: 15px 10px;
+          }
+        }
+      }
+    }
+  }
+}
