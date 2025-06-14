@@ -32,7 +32,6 @@ export const AuthProvider = ({ children }) => {
 
     try {
       const res = await getUserInfoAPI();
-      console.log('get user by id res', res);
       setUserInfo(res.data);
     } catch (error) {
       console.log('fetch userInfo error', error);
