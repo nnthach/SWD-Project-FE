@@ -1,7 +1,11 @@
 import { Link } from 'react-router-dom';
 import styles from './Header.module.scss';
+import { useContext } from 'react';
+import { AuthContext } from '~/context/AuthContext';
 
 function Header() {
+  const { userInfo, handleLogout } = useContext(AuthContext);
+  console.log('userinfo', userInfo);
   return (
     <div className={styles['header-wrap']}>
       {/*Logo */}
@@ -19,12 +23,27 @@ function Header() {
       </div>
 
       <div className={styles['header-account']}>
-        <button>
-          <Link to={'/auth/login'}>Sign In</Link>
-        </button>
-        <button>
-          <Link to={'/auth/register'}>Sign Up</Link>
-        </button>
+        {userInfo ? (
+          <div className={styles['user-wrap']}>
+            <p>{userInfo?.username}</p>
+
+            <div className={styles['dropdown-menu']}>
+              <p>
+                <Link to={'/account/detail'}>My Account</Link>
+              </p>
+              <p onClick={() => handleLogout()}>Sign Out</p>
+            </div>
+          </div>
+        ) : (
+          <>
+            <button>
+              <Link to={'/auth/login'}>Sign In</Link>
+            </button>
+            <button>
+              <Link to={'/auth/register'}>Sign Up</Link>
+            </button>
+          </>
+        )}
       </div>
     </div>
   );

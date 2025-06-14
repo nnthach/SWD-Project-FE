@@ -1,6 +1,10 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import styles from './Auth.module.scss';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { loginAPI, registerAPI } from '~/services/authService';
+import Cookies from 'js-cookie';
+import { AuthContext } from '~/context/AuthContext';
+import { toast } from 'react-toastify';
 
 function Auth() {
   const { type } = useParams();
@@ -8,9 +12,12 @@ function Auth() {
     username: '',
     password: '',
     email: '',
-    confirm_password: '',
+    confirmPassword: '',
   };
   const [authForm, setAuthForm] = useState(initialForm);
+  const { setUsername } = useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,11 +26,46 @@ function Auth() {
       [name]: value,
     }));
   };
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('authForm', authForm);
-    setAuthForm(initialForm);
+
+    if (type == 'register') {
+      try {
+        await registerAPI(authForm);
+        setAuthForm(initialForm);
+        toast.success('Register success');
+        navigate('/auth/login');
+      } catch (error) {
+        setAuthForm(initialForm);
+        toast.error(error.response.data);
+      }
+    }
+
+    if (type == 'login') {
+      try {
+        const res = await loginAPI(authForm);
+        console.log('login res', res);
+        const { accessToken, refreshToken, username } = res.data;
+
+        Cookies.set('accessToken', accessToken);
+        Cookies.set('refreshToken', refreshToken);
+        Cookies.set('username', username);
+
+        setUsername(username);
+
+        setAuthForm(initialForm);
+        toast.success('Login success');
+        setTimeout(() => {
+          navigate('/');
+        }, 3000);
+      } catch (error) {
+        setAuthForm(initialForm);
+        toast.error(error.response.data);
+      }
+    }
   };
+
   return (
     <div className={styles['auth-wrap']}>
       <div className={styles['form-wrap']}>
@@ -49,12 +91,7 @@ function Auth() {
           {type == 'register' && (
             <div className={styles['input-field']}>
               <label>Confirm Password</label>
-              <input
-                type="password"
-                name="confirm_password"
-                value={authForm.confirm_password}
-                onChange={handleChange}
-              />
+              <input type="password" name="confirmPassword" value={authForm.confirmPassword} onChange={handleChange} />
             </div>
           )}
 
