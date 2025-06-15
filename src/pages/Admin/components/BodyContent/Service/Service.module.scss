@@ -58,6 +58,9 @@
           text-align: left;
           td {
             padding: 15px 10px;
+            white-space: 'nowrap';
+            overflow: 'hidden';
+            text-overflow: 'ellipsis';
           }
         }
       }
@@ -114,13 +117,17 @@
       }
     }
 
-    button {
-      @include btn(none, none, 15px, $primary-color, white);
-      padding: 10px;
-      font-weight: bold;
+    .submit-btn-wrap {
+      @include flexBoxStyle(center, center, 20px);
 
-      &:hover {
-        @include hoverWhiteBtn(rgb(90, 175, 250), white);
+      button {
+        @include btn(100%, none, 15px, $primary-color, white);
+        padding: 10px;
+        font-weight: bold;
+
+        &:hover {
+          @include hoverWhiteBtn(rgb(90, 175, 250), white);
+        }
       }
     }
   }
