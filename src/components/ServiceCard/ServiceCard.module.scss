@@ -33,27 +33,31 @@
     gap: 10px;
     margin-top: 20px;
 
-    button {
+    .detailBtn {
+      display: inline-block;
+      text-align: center;
+      border-radius: 10px;
+      padding: 6px 16px;
+      border: 1px solid gray;
+      color: black;
+      text-decoration: none;
+
+      &:hover {
+        background-color: rgb(251, 251, 251);
+      }
+    }
+
+
+    .bookBtn {
       border-radius: 10px;
       @include btn(80px, 32px, 10px, white, black);
       font-weight: 500;
+      background-color: $primary-btn-color;
+      color: white;
+      border: 1px solid $primary-btn-color;
 
-      &:first-child {
-        border: 1px solid gray;
-        &:hover {
-          @include hoverWhiteBtn(rgb(251, 251, 251), white);
-          color: black;
-        }
-      }
-
-      &:last-child {
-        background-color: $primary-btn-color;
-        color: white;
-        border: 1px solid $primary-btn-color;
-
-        &:hover {
-          @include hoverWhiteBtn($primary-btn-color-hover, white);
-        }
+      &:hover {
+        @include hoverWhiteBtn($primary-btn-color-hover, white);
       }
     }
   }

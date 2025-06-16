@@ -12,12 +12,10 @@ function ServiceCard({ item }) {
       <p className={styles.content}>{item.description}</p>
 
       <div className={styles['btn-wrap']}>
-        <button>
-          <Link to={`/servicedetail/${item.id}`} style={{ color: 'black', textDecoration: 'none' }}>
-            Detail
-          </Link>
-        </button>
-        <button onClick={() => setShowPopup(true)}>Book</button>
+        <Link to={`/servicedetail/${item.id}`} className={styles.detailBtn}>
+          Detail
+        </Link>
+        <button onClick={() => setShowPopup(true)} className={styles.bookBtn}>Book</button>
         <BookingPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
       </div>
     </div>
