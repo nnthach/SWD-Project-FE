@@ -1,0 +1,145 @@
+@use '../../styles/variable.module.scss' as *;
+
+.wrap {
+  padding: 120px 40px 40px;
+  min-height: 100vh;
+  width: 80%;
+  margin: 0 auto;
+  border-radius: 10px;
+
+  .header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+
+    .info {
+      flex: 3;
+
+      .breadcrumb {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 10px;
+      }
+
+      h1 {
+        font-size: 32px;
+        margin-top: 40px;
+      }
+
+      .price {
+        font-size: 24px;
+        color: $primary-color;
+        margin: 10px 0;
+      }
+
+      .buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        margin-bottom: 15px;
+
+        button {
+          padding: 10px 20px;
+          border-radius: 8px;
+          border: 1px solid #ccc;
+          cursor: pointer;
+
+          &.book {
+            background-color: $primary-btn-color;
+            color: white;
+            border: none;
+          }
+
+          &.location {
+            background-color: white;
+            color: $primary-color;
+            border: 1px solid $primary-btn-color;
+          }
+        }
+      }
+
+      .category {
+        display: inline-block;
+        background: #f0f2f5;
+        padding: 5px 10px;
+        border-radius: 6px;
+        font-size: 12px;
+        color: $primary-btn-color;
+      }
+    }
+  }
+
+  .description {
+    margin-top: 40px;
+    background-color: $primary-bg-color;
+    padding: 30px;
+    border-radius: 12px;
+    h2 {
+      margin-bottom: 10px;
+    }
+    p {
+      text-align: justify;
+      line-height: 1.6;
+    }
+  }
+  .processBox {
+    background-color: $primary-bg-color;
+    padding: 30px;
+    border-radius: 12px;
+    margin-top: 40px;
+
+    h2 {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+
+      .stepNumber {
+        width: 28px;
+        height: 28px;
+        background-color: white;
+        color: $primary-color;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+      }
+
+      strong {
+        font-weight: 600;
+      }
+
+      p {
+        margin: 0;
+      }
+    }
+
+    .bookBtn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: $primary-btn-color;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $primary-btn-color-hover;
+      }
+    }
+  }
+}

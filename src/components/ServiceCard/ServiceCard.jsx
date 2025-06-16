@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import styles from './ServiceCard.module.scss';
 
+
 function ServiceCard({ item }) {
   return (
     <div className={styles.wrap}>
@@ -10,7 +11,7 @@ function ServiceCard({ item }) {
 
       <div className={styles['btn-wrap']}>
         <button>
-          <Link to={`/service/${item.id}`} style={{ color: 'black', textDecoration: 'none' }}>
+          <Link to={`/servicedetail/${item.id}`} style={{ color: 'black', textDecoration: 'none' }}>
             Detail
           </Link>
         </button>

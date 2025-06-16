@@ -1,0 +1,43 @@
+@use '../../styles/variable.module.scss' as *;
+
+.searchBar {
+  display: flex;
+  gap: 10px;
+
+  .inputWrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 8px 12px;
+
+    .icon {
+      color: $secondary-color;
+      margin-right: 6px;
+    }
+
+    input {
+      border: none;
+      outline: none;
+      flex: 1;
+      font-size: 14px;
+      background: transparent;
+    }
+  }
+
+  button {
+    background: $primary-color;
+    color: white;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+
+    &:hover {
+      background: $primary-btn-color-hover;
+    }
+  }
+}

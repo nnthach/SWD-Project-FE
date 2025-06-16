@@ -1,0 +1,17 @@
+.filter {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  background-color: #f7fafd;
+  border-radius: 8px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+}
+
+input[type='checkbox'] {
+  margin-right: 8px;
+}

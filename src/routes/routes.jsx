@@ -3,6 +3,7 @@ import Admin from '~/pages/Admin/Admin';
 import Auth from '~/pages/Auth/Auth';
 import Home from '~/pages/Home/Home';
 import Service from '~/pages/Service/Service';
+import ServiceDetail from '~/pages/ServiceDetail/SerivceDetail';
 
 export const publicRouters = [
   {
@@ -12,6 +13,10 @@ export const publicRouters = [
   {
     path: '/service',
     component: <Service />,
+  },
+  {
+    path: '/servicedetail/:id',
+    component: <ServiceDetail />
   },
   {
     path: '/auth/:type',
