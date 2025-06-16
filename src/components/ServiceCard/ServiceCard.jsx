@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
 import styles from './ServiceCard.module.scss';
-
+import { useState } from 'react';
+import BookingPopup from '../BookingPopup/BookingPopup';
 
 function ServiceCard({ item }) {
+  const [showPopup, setShowPopup] = useState(false);
   return (
     <div className={styles.wrap}>
       <h5>{item.name}</h5>
@@ -15,7 +17,8 @@ function ServiceCard({ item }) {
             Detail
           </Link>
         </button>
-        <button>Book</button>
+        <button onClick={() => setShowPopup(true)}>Book</button>
+        <BookingPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
       </div>
     </div>
   );

@@ -1,10 +1,14 @@
 import { useParams } from 'react-router-dom';
 import { fakeDataServiceCard } from '~/constants/fakeData';
 import styles from './ServiceDetail.module.scss';
+import { useState } from 'react';
+import BookingPopup from '~/components/BookingPopup/BookingPopup';
 
 function ServiceDetail() {
   const { id } = useParams();
   const service = fakeDataServiceCard.find(item => String(item.id) === id);
+
+  const [showPopup, setShowPopup] = useState(false);
 
   if (!service) {
     return <p>Không tìm thấy dịch vụ</p>;
@@ -20,7 +24,8 @@ function ServiceDetail() {
           <h1>{service.name}</h1>
           <p className={styles.price}>{service.price.toLocaleString()}đ</p>
           <div className={styles.buttons}>
-            <button className={styles.book}>Book</button>
+            <button onClick={() => setShowPopup(true)} className={styles.book}>Đặt lịch hẹn</button>
+
             <button className={styles.location}>Tìm địa điểm</button>
           </div>
           <span className={styles.category}>{service.category || 'Danh mục'}</span>
@@ -66,8 +71,10 @@ function ServiceDetail() {
             </div>
           </div>
         </div>
-        <button className={styles.book}>Book</button>
+        <button onClick={() => setShowPopup(true)} className={styles.bookBtn}>Đặt lịch hẹn</button>
       </div>
+      
+      <BookingPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
     </div>
   );
 }
