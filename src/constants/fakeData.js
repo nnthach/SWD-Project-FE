@@ -83,6 +83,13 @@ export const fakeDataServiceCard = [
     description:
       'Xét nghiệm Công thức máu toàn bộ (CBC) là xét nghiệm máu toàn diện nhằm đánh giá một số thành phần quan trọng của máu, bao gồm hồng cầu, bạch cầu, huyết sắc tố, hematocrit, và tiểu cầu. Xét nghiệm này cung cấp thông tin có giá trị về sức khỏe tổng thể của cơ thể và có thể giúp chẩn đoán một loạt các tình trạng, từ thiếu máu và nhiễm trùng đến một số bệnh ung thư.',
   },
+  {
+    id: Math.random(),
+    name: 'Test HIV',
+    price: 500000,
+    description:
+      'Xét nghiệm Công thức máu toàn bộ (CBC) là xét nghiệm máu toàn diện nhằm đánh giá một số thành phần quan trọng của máu, bao gồm hồng cầu, bạch cầu, huyết sắc tố, hematocrit, và tiểu cầu. Xét nghiệm này cung cấp thông tin có giá trị về sức khỏe tổng thể của cơ thể và có thể giúp chẩn đoán một loạt các tình trạng, từ thiếu máu và nhiễm trùng đến một số bệnh ung thư.',
+  },
 ];
 
 export const fakeDataUserInAdmin = [
@@ -152,4 +159,183 @@ export const fakeDataUserInAdmin = [
     username: 'nnthach',
     role: 'User',
   },
+];
+
+// Fake consultants data
+export const fakeConsultants = [
+  {
+    consultant_id: '1',
+    user_id: '101',
+    name: 'Dr. Nguyễn Văn An',
+    email: 'dr.nguyen@clinic.com',
+    phone: '+84 912 345 678',
+    specialization: 'Tâm lý học lâm sàng',
+    experience: '8 năm kinh nghiệm',
+    rating: 4.8,
+    avatar: 'https://randomuser.me/api/portraits/men/1.jpg',
+    description: 'Chuyên gia tâm lý với nhiều năm kinh nghiệm trong việc tư vấn và điều trị các vấn đề tâm lý.',
+    availableSlots: ['9:00', '10:00', '14:00', '15:00', '16:00'],
+    price: 500000,
+    isAvailable: true
+  },
+  {
+    consultant_id: '2',
+    user_id: '102',
+    name: 'Dr. Trần Thị Bích',
+    email: 'dr.tran@clinic.com',
+    phone: '+84 923 456 789',
+    specialization: 'Tư vấn gia đình',
+    experience: '5 năm kinh nghiệm',
+    rating: 4.6,
+    avatar: 'https://randomuser.me/api/portraits/women/2.jpg',
+    description: 'Chuyên gia tư vấn gia đình, hỗ trợ giải quyết các vấn đề trong mối quan hệ và gia đình.',
+    availableSlots: ['8:00', '9:00', '13:00', '14:00', '17:00'],
+    price: 450000,
+    isAvailable: true
+  },
+  {
+    consultant_id: '3',
+    user_id: '103',
+    name: 'Dr. Lê Minh Tuấn',
+    email: 'dr.le@clinic.com',
+    phone: '+84 934 567 890',
+    specialization: 'Tâm lý trẻ em',
+    experience: '6 năm kinh nghiệm',
+    rating: 4.9,
+    avatar: 'https://randomuser.me/api/portraits/men/3.jpg',
+    description: 'Chuyên gia tâm lý trẻ em, có kinh nghiệm làm việc với trẻ em và thanh thiếu niên.',
+    availableSlots: ['9:00', '10:00', '11:00', '14:00', '15:00'],
+    price: 550000,
+    isAvailable: true
+  },
+  {
+    consultant_id: '4',
+    user_id: '104',
+    name: 'Dr. Phạm Thu Hương',
+    email: 'dr.pham@clinic.com',
+    phone: '+84 945 678 901',
+    specialization: 'Tư vấn nghề nghiệp',
+    experience: '4 năm kinh nghiệm',
+    rating: 4.5,
+    avatar: 'https://randomuser.me/api/portraits/women/4.jpg',
+    description: 'Chuyên gia tư vấn nghề nghiệp, hỗ trợ định hướng và phát triển sự nghiệp.',
+    availableSlots: ['8:00', '10:00', '13:00', '15:00', '16:00'],
+    price: 400000,
+    isAvailable: true
+  },
+  {
+    consultant_id: '5',
+    user_id: '105',
+    name: 'Dr. Hoàng Đức Minh',
+    email: 'dr.hoang@clinic.com',
+    phone: '+84 956 789 012',
+    specialization: 'Tâm lý học hành vi',
+    experience: '7 năm kinh nghiệm',
+    rating: 4.7,
+    avatar: 'https://randomuser.me/api/portraits/men/5.jpg',
+    description: 'Chuyên gia tâm lý học hành vi, chuyên điều trị các rối loạn hành vi và cảm xúc.',
+    availableSlots: ['9:00', '11:00', '14:00', '16:00', '17:00'],
+    price: 480000,
+    isAvailable: false
+  },
+  {
+    consultant_id: '6',
+    user_id: '106',
+    name: 'Dr. Vũ Thị Lan',
+    email: 'dr.vu@clinic.com',
+    phone: '+84 967 890 123',
+    specialization: 'Tư vấn cặp đôi',
+    experience: '9 năm kinh nghiệm',
+    rating: 4.8,
+    avatar: 'https://randomuser.me/api/portraits/women/6.jpg',
+    description: 'Chuyên gia tư vấn cặp đôi, hỗ trợ cải thiện mối quan hệ tình cảm và hôn nhân.',
+    availableSlots: ['8:00', '9:00', '13:00', '15:00', '18:00'],
+    price: 520000,
+    isAvailable: true
+  }
+];
+
+// Fake appointments data
+export const fakeAppointments = [
+  {
+    appointment_id: '1',
+    user_id: '201',
+    consultant_id: '1',
+    appointmentDate: '2025-06-25',
+    startTime: '9:00',
+    endTime: '10:00',
+    consultantName: 'Dr. Nguyễn Văn An',
+    customerName: 'Nguyễn Thị Mai',
+    customerPhone: '+84 901 234 567',
+    customerEmail: 'mai.nguyen@email.com',
+    status: 'confirmed',
+    notes: 'Tư vấn về vấn đề stress công việc',
+    createdAt: '2025-06-23T10:00:00Z'
+  },
+  {
+    appointment_id: '2',
+    user_id: '202',
+    consultant_id: '2',
+    appointmentDate: '2025-06-26',
+    startTime: '14:00',
+    endTime: '15:00',
+    consultantName: 'Dr. Trần Thị Bích',
+    customerName: 'Lê Văn Hoàng',
+    customerPhone: '+84 912 345 678',
+    customerEmail: 'hoang.le@email.com',
+    status: 'pending',
+    notes: 'Tư vấn vấn đề gia đình',
+    createdAt: '2025-06-23T14:30:00Z'
+  },
+  {
+    appointment_id: '3',
+    user_id: '203',
+    consultant_id: '3',
+    appointmentDate: '2025-06-27',
+    startTime: '10:00',
+    endTime: '11:00',
+    consultantName: 'Dr. Lê Minh Tuấn',
+    customerName: 'Trần Văn Bình',
+    customerPhone: '+84 923 456 789',
+    customerEmail: 'binh.tran@email.com',
+    status: 'confirmed',
+    notes: 'Tư vấn cho con trai 10 tuổi',
+    createdAt: '2025-06-22T16:45:00Z'
+  },
+  {
+    appointment_id: '4',
+    user_id: '204',
+    consultant_id: '4',
+    appointmentDate: '2025-06-28',
+    startTime: '15:00',
+    endTime: '16:00',
+    consultantName: 'Dr. Phạm Thu Hương',
+    customerName: 'Võ Thị Hoa',
+    customerPhone: '+84 934 567 890',
+    customerEmail: 'hoa.vo@email.com',
+    status: 'completed',
+    notes: 'Tư vấn định hướng nghề nghiệp',
+    createdAt: '2025-06-20T09:15:00Z'
+  },
+  {
+    appointment_id: '5',
+    user_id: '205',
+    consultant_id: '6',
+    appointmentDate: '2025-06-29',
+    startTime: '13:00',
+    endTime: '14:00',
+    consultantName: 'Dr. Vũ Thị Lan',
+    customerName: 'Đỗ Minh Quân',
+    customerPhone: '+84 945 678 901',
+    customerEmail: 'quan.do@email.com',
+    status: 'cancelled',
+    notes: 'Tư vấn cặp đôi',
+    createdAt: '2025-06-21T11:20:00Z'
+  }
+];
+
+// Available time slots for booking
+export const availableTimeSlots = [
+  '8:00', '9:00', '10:00', '11:00', 
+  '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'
 ];
