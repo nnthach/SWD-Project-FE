@@ -15,3 +15,8 @@ html {
 body {
   font-family: 'Roboto Mono', monospace;
 }
+
+// Main content wrapper should not have top padding to avoid double spacing
+main {
+  padding-top: 0;
+}
