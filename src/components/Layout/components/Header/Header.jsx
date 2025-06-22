@@ -11,15 +11,13 @@ function Header() {
       {/*Logo */}
       <div className={styles['header-logo']}>
         <h1>Logo</h1>
-      </div>
-
-      <div className={styles['header-navbar']}>
+      </div>      <div className={styles['header-navbar']}>
         <Link to={'/'}>Home</Link>
         <Link to={'/service'}>Services</Link>
-        <Link>Solutions</Link>
-        <Link>Resources & Guides</Link>
-        <Link>Partners</Link>
-        <Link>Blog</Link>
+        <Link to={'/book-consultant'}>Consultant</Link>
+        <span style={{ color: '#ccc', cursor: 'not-allowed' }}>Resources & Guides</span>
+        <span style={{ color: '#ccc', cursor: 'not-allowed' }}>Partners</span>
+        <span style={{ color: '#ccc', cursor: 'not-allowed' }}>Blog</span>
       </div>
 
       <div className={styles['header-account']}>
