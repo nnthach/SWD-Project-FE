@@ -1,8 +1,58 @@
 @use '../../styles/variable.module.scss' as *;
 @use '../../styles/mixin.module.scss' as *;
 
-.container {
+.wrap {
   min-height: 1000px;
   width: 100%;
   margin-top: 100px;
+
+  .container {
+    @include flexBoxStyle(flex-start, none, 20px);
+    margin: 0 40px;
+    padding: 40px 0;
+
+    .user-aside {
+      border: 1px solid black;
+      width: 20%;
+      padding: 20px;
+
+      .user-avatar {
+        @include flexBoxStyle(center, center, 0);
+        background-color: lightgray;
+        width: 100px;
+        height: 100px;
+        margin: 0 auto;
+        border-radius: 50%;
+      }
+
+      .aside-menu {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        p {
+          cursor: pointer;
+          padding: 10px;
+          &:hover {
+            background-color: lightgray;
+          }
+        }
+
+        .active {
+          background-color: lightgray;
+        }
+      }
+    }
+
+    .main-content {
+      flex: 1;
+      border: 1px solid black;
+      padding: 20px;
+
+      h5 {
+        font-size: 30px;
+      }
+    }
+  }
 }

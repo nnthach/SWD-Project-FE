@@ -2,8 +2,9 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 const api = axios.create({
-  baseURL: 'http://localhost:5168/api',
+  baseURL: 'https://localhost:7094/api',
   timeout: 10000,
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -33,7 +34,7 @@ api.interceptors.response.use(
   async (err) => {
     const originalRequest = err.config;
 
-    if (err.response.status === 401 && !originalRequest._retry) {
+    if (err.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       const refreshToken = Cookies.get('refreshToken');
@@ -63,6 +64,7 @@ api.interceptors.response.use(
         return Promise.reject(e);
       }
     }
+    return Promise.reject(err);
   },
 );
 

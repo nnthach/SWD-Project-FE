@@ -1,6 +1,8 @@
 import AccountDetail from '~/pages/AccountDetail/AccountDetail';
 import Admin from '~/pages/Admin/Admin';
 import Auth from '~/pages/Auth/Auth';
+import ForgotPassword from '~/pages/Auth/ForgotPassword';
+import ResetPassword from '~/pages/Auth/ResetPassword';
 import BookConsultant from '~/pages/BookConsultant/BookConsultant';
 import Home from '~/pages/Home/Home';
 import Service from '~/pages/Service/Service';
@@ -17,7 +19,7 @@ export const publicRouters = [
   },
   {
     path: '/servicedetail/:id',
-    component: <ServiceDetail />
+    component: <ServiceDetail />,
   },
   {
     path: '/book-consultant',
@@ -26,6 +28,14 @@ export const publicRouters = [
   {
     path: '/auth/:type',
     component: <Auth />,
+  },
+  {
+    path: '/auth/forgot-password',
+    component: <ForgotPassword />,
+  },
+  {
+    path: '/auth/reset-password',
+    component: <ResetPassword />,
   },
   {
     path: '/admin',

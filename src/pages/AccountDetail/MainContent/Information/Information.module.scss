@@ -1,0 +1,22 @@
+@use '~/styles/variable.module.scss' as *;
+@use '~/styles/mixin.module.scss' as *;
+
+.wrap {
+  margin-top: 40px;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    .input-field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+
+      input,
+      select {
+        padding: 5px;
+      }
+    }
+  }
+}

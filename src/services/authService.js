@@ -19,3 +19,17 @@ export const getUserInfoAPI = async () => {
   const res = await api.get(`/user/profile`);
   return res;
 };
+export const updateUserInfoAPI = async (body) => {
+  const res = await api.put(`/user/profile`, body);
+  return res;
+};
+
+export const forgotPasswordAPI = async (body) => {
+  const res = await api.post(`/auth/forgotpassword`, body);
+  return res;
+};
+
+export const resetPasswordAPI = async (body) => {
+  const res = await api.post(`/auth/resetpassword`, body);
+  return res;
+};
