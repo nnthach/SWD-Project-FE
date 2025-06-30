@@ -1,6 +1,7 @@
-import Header from '~/pages/Admin/components/Header/Header';
+
 import styles from './Admin.module.scss';
 import { useState } from 'react';
+import Header from '~/components/Layout/components/Header/Header';
 import BodyContent from '~/pages/Admin/components/BodyContent/BodyContent';
 
 function Admin() {
