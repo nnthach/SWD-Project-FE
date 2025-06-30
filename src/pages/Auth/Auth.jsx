@@ -13,6 +13,7 @@ function Auth() {
     password: '',
     email: '',
     confirmPassword: '',
+    phoneNumber: '',
   };
   const [authForm, setAuthForm] = useState(initialForm);
   const { setUsername } = useContext(AuthContext);
@@ -37,6 +38,7 @@ function Auth() {
         toast.success('Register success');
         navigate('/auth/login');
       } catch (error) {
+        console.log('register err', error);
         setAuthForm(initialForm);
         toast.error(error.response.data);
       }
@@ -60,8 +62,9 @@ function Auth() {
           navigate('/');
         }, 3000);
       } catch (error) {
+        console.log('llogin err', error);
         setAuthForm(initialForm);
-        toast.error(error.response.data);
+        toast.error('Login fail');
       }
     }
   };
@@ -77,10 +80,16 @@ function Auth() {
           </div>
 
           {type == 'register' && (
-            <div className={styles['input-field']}>
-              <label>Email</label>
-              <input type="email" name="email" value={authForm.email} onChange={handleChange} />
-            </div>
+            <>
+              <div className={styles['input-field']}>
+                <label>Email</label>
+                <input type="email" name="email" value={authForm.email} onChange={handleChange} />
+              </div>
+              <div className={styles['input-field']}>
+                <label>Phone</label>
+                <input type="number" name="phoneNumber" value={authForm.phoneNumber} onChange={handleChange} />
+              </div>
+            </>
           )}
 
           <div className={styles['input-field']}>
@@ -92,6 +101,14 @@ function Auth() {
             <div className={styles['input-field']}>
               <label>Confirm Password</label>
               <input type="password" name="confirmPassword" value={authForm.confirmPassword} onChange={handleChange} />
+            </div>
+          )}
+
+          {type != 'register' && (
+            <div style={{ textAlign: 'right' }}>
+              <p style={{ fontSize: 12, cursor: 'pointer' }}>
+                <Link to={'/auth/forgot-password'}>Forgot password</Link>
+              </p>
             </div>
           )}
 

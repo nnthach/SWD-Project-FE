@@ -5,7 +5,6 @@ import { AuthContext } from '~/context/AuthContext';
 
 function Header() {
   const { userInfo, handleLogout } = useContext(AuthContext);
-  console.log('userinfo', userInfo);
   return (
     <div className={styles['header-wrap']}>
       {/*Logo */}
