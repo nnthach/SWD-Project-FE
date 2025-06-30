@@ -16,7 +16,7 @@ function Header() {
         <Link to={'/book-consultant'}>Consultant</Link>
         <span style={{ color: '#ccc', cursor: 'not-allowed' }}>Resources & Guides</span>
         <span style={{ color: '#ccc', cursor: 'not-allowed' }}>Partners</span>
-        <span style={{ color: '#ccc', cursor: 'not-allowed' }}>Blog</span>
+        <Link to={'/blog'}>Blog</Link>
       </div>
 
       <div className={styles['header-account']}>

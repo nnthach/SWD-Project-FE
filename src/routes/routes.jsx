@@ -3,6 +3,8 @@ import Admin from '~/pages/Admin/Admin';
 import Auth from '~/pages/Auth/Auth';
 import ForgotPassword from '~/pages/Auth/ForgotPassword';
 import ResetPassword from '~/pages/Auth/ResetPassword';
+import Blog from '~/pages/Blog';
+import BlogDetail from '~/pages/BlogDetail';
 import BookConsultant from '~/pages/BookConsultant/BookConsultant';
 import Home from '~/pages/Home/Home';
 import Service from '~/pages/Service/Service';
@@ -16,6 +18,14 @@ export const publicRouters = [
   {
     path: '/service',
     component: <Service />,
+  },
+  {
+    path: '/blog',
+    component: <Blog />,
+  },
+  {
+    path: '/blog/:id',
+    component: <BlogDetail />,
   },
   {
     path: '/servicedetail/:id',
