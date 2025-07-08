@@ -19,7 +19,6 @@ function StaffSchedule() {
   };
   return (
     <div>
-      <Header />
       <div className={styles.wrap}>
         <div className={styles.container}>
           <div className={styles['user-aside']}>
@@ -44,7 +43,6 @@ function StaffSchedule() {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 }

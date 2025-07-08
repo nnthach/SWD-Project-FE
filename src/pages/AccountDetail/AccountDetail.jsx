@@ -7,7 +7,6 @@ import Information from '~/pages/AccountDetail/MainContent/Information/Informati
 function AccountDetail() {
   return (
     <div>
-      <Header />
       <div className={styles.wrap}>
         <div className={styles.container}>
           <div className={styles['user-aside']}>
@@ -28,7 +27,6 @@ function AccountDetail() {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 }

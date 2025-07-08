@@ -43,18 +43,22 @@ export const publicRouters = [
   {
     path: '/auth/:type',
     component: <Auth />,
+    layout: null,
   },
   {
     path: '/auth/forgot-password',
     component: <ForgotPassword />,
+    layout: null,
   },
   {
     path: '/auth/reset-password',
     component: <ResetPassword />,
+    layout: null,
   },
   {
     path: '/admin',
     component: <Admin />,
+    layout: null,
   },
   {
     path: '/account/detail',

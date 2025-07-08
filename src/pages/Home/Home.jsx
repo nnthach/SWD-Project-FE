@@ -9,7 +9,6 @@ import { Link } from 'react-router-dom';
 function Home() {
   return (
     <div className={styles['home-wrap']}>
-      <Header />
       <div className={styles['home-new-content']}>
         {/*Banner */}
         <div className={styles['home-banner']}>
@@ -32,7 +31,6 @@ function Home() {
           </button>
         </div>
       </div>
-      <Footer />
     </div>
   );
 }
