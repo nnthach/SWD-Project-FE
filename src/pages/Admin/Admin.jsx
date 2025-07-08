@@ -1,14 +1,14 @@
-
 import styles from './Admin.module.scss';
 import { useState } from 'react';
 import Header from '~/components/Layout/components/Header/Header';
+import AdminHeader from '~/pages/Admin/components/AdminHeader/AdminHeader';
 import BodyContent from '~/pages/Admin/components/BodyContent/BodyContent';
 
 function Admin() {
   const [contentRender, setContentRender] = useState('dashboard');
   return (
     <>
-      <Header />
+      <AdminHeader />
       <div className={styles.body}>
         <div className={styles.sidebar}>
           <ul>

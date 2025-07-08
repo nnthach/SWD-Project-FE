@@ -11,6 +11,7 @@ import {
 
 function RegisterSchedule() {
   const { userInfo, userId } = useContext(AuthContext);
+  console.log('user info', userInfo);
   const [staffSchedule, setStaffSchedule] = useState([]);
 
   console.log('staff schedule', staffSchedule);
@@ -118,7 +119,7 @@ function RegisterSchedule() {
       const { startTime, endTime } = getSlotTimeRange(day.slot);
 
       const dataToSubmit = {
-        consultantId: 'A5560692-1F1F-49B3-60FF-08DDBDEDD484',
+        consultantId: userInfo.userId,
         workingDate: new Date(`${day.dateStr}T00:00:00Z`).toISOString(),
         startTime,
         endTime,

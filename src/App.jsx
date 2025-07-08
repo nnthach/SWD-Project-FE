@@ -13,7 +13,7 @@ function App() {
       <ServiceProvider>
         <ConsultantProvider>
           <ScrollToTop />
-          <Header />
+          {/* <Header /> */}
           <Routes>
             {publicRouters.map((route, index) => {
               return <Route key={index} path={route.path} element={route.component} />;
