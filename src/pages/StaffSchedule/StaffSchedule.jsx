@@ -1,10 +1,10 @@
-import Footer from '~/components/Layout/components/Footer/Footer';
 import Header from '~/components/Layout/components/Header/Header';
-import styles from './AccountDetail.module.scss';
+import styles from './StaffSchedule.module.scss';
+import Footer from '~/components/Layout/components/Footer/Footer';
+import RegisterSchedule from '~/pages/StaffSchedule/MainContent/RegisterSchedule/RegisterSchedule';
 import { FaUser } from 'react-icons/fa';
-import Information from '~/pages/AccountDetail/MainContent/Information/Information';
 
-function AccountDetail() {
+function StaffSchedule() {
   return (
     <div>
       <Header />
@@ -16,15 +16,15 @@ function AccountDetail() {
             </div>
 
             <div className={styles['aside-menu']}>
-              <p>Information</p>
-              <p>Password</p>
+              <p>Register Schedule</p>
+              <p>Schedule</p>
             </div>
           </div>
 
           <div className={styles['main-content']}>
-            <h5>Information</h5>
+            <h5>Register Schedule</h5>
 
-            <Information />
+            <RegisterSchedule />
           </div>
         </div>
       </div>
@@ -33,4 +33,4 @@ function AccountDetail() {
   );
 }
 
-export default AccountDetail;
+export default StaffSchedule;
