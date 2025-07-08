@@ -1,32 +1,55 @@
-import { useContext, useState } from 'react';
-import styles from './Service.module.scss';
+import { useEffect, useState } from 'react';
+import styles from './StaffConsultant.module.scss';
 import Pagination from '~/components/Pagination/Pagination';
-import { getServiceDetailAPI } from '~/services/serviceService';
-import { ServiceContext } from '~/context/ServiceContext';
 import { FaEye } from 'react-icons/fa';
-import ModalService from '~/pages/Admin/components/BodyContent/Service/components/ModalService/ModalService';
+import ModalStaffConsultant from '~/pages/Admin/components/BodyContent/StaffConsultant/ModalStaffConsultant/ModalStaffConsultant';
+import { toast } from 'react-toastify';
+import { getAllStaffConsultantAPI, getStaffConsultantDetailAPI } from '~/services/staffConsultantService';
 
-function Service() {
+function StaffConsultant() {
+  // eslint-disable-next-line no-unused-vars
+  const [staffConsultantListData, setStaffConsultantListData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const initialForm = {
-    serviceName: '',
-    description: '',
-    price: 0,
+    username: '',
+    fullName: '',
+    // password: '123456',
+    gender: false,
+    personalEmail: '',
+    phoneNumber: '',
+    address: '',
+    birthday: '',
     isActive: true,
+    roleId: '157f0b62-afbb-44ce-91ce-397239875df5',
   };
-  const { servicesListData } = useContext(ServiceContext);
-  const [formServiceData, setFormServiceData] = useState(initialForm);
+  const [formConsultantData, setFormConsultantData] = useState(initialForm);
   const [openPopup, setOpenPopup] = useState(false);
-  const [serviceId, setServiceId] = useState('');
+  const [consultantId, setConsultantId] = useState('');
   const [formType, setFormType] = useState('');
+  console.log('consultant id', consultantId)
 
-  const handleGetServiceDetail = async (id) => {
+  const handleFetchAllStaffConsultant = async () => {
     try {
-      const res = await getServiceDetailAPI(id);
-      console.log('res detail', res);
-      setFormServiceData(res.data);
+      const res = await getAllStaffConsultantAPI();
+      console.log('get all consultant res', res);
+      setStaffConsultantListData(res.data);
     } catch (error) {
-      console.log('service detail err', error);
+      console.log('get all consultant err', error);
+      toast.error('get all consultant err');
+    }
+  };
+
+  useEffect(() => {
+    handleFetchAllStaffConsultant();
+  }, []);
+
+  const handleGetStaffConsultantDetail = async (id) => {
+    try {
+      const res = await getStaffConsultantDetailAPI(id);
+      console.log('res detail', res);
+      setFormConsultantData(res.data);
+    } catch (error) {
+      console.log('consultant detail err', error);
     }
   };
 
@@ -34,11 +57,12 @@ function Service() {
 
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProduct = servicesListData.slice(indexOfFirstProduct, indexOfLastProduct);
+  const currentProduct = staffConsultantListData.slice(indexOfFirstProduct, indexOfLastProduct);
+
   return (
     <>
       <div className={styles.wrap}>
-        <h1>Service</h1>
+        <h1>Staff Consultant</h1>
 
         {/*Total number of user box */}
         <div className={styles['header-content']}>
@@ -67,11 +91,11 @@ function Service() {
             <button
               onClick={() => {
                 setFormType('create');
-                setFormServiceData(initialForm);
+                setFormConsultantData(initialForm);
                 setOpenPopup(true);
               }}
             >
-              Add Service
+              Add Staff Consultant
             </button>
           </div>
         </div>
@@ -82,26 +106,28 @@ function Service() {
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Service Name</th>
-                <th>Description</th>
-                <th>Price</th>
+                <th>Fullname</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Gender</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
               {currentProduct.map((item) => (
-                <tr key={item.serviceId}>
-                  <td>{item.serviceId}</td>
-                  <td style={{ fontWeight: 'bold' }}>{item.serviceName}</td>
-                  <td>{item.description}</td>
-                  <td>{item.price}</td>
+                <tr key={item.userId}>
+                  <td>{item.userId}</td>
+                  <td>{item.fullName}</td>
+                  <td style={{ fontWeight: 'bold' }}>{item.username}</td>
+                  <td>{item.email}</td>
+                  <td>{item.gender}</td>
                   <td>
                     <FaEye
                       style={{ cursor: 'pointer', color: 'blue', fontSize: 20 }}
                       onClick={() => {
-                        setServiceId(item.serviceId);
+                        setConsultantId(item.userId);
                         setFormType('update');
-                        handleGetServiceDetail(item.serviceId);
+                        handleGetStaffConsultantDetail(item.userId);
                         setOpenPopup(true);
                       }}
                     />
@@ -113,7 +139,7 @@ function Service() {
 
           <Pagination
             productsPerPage={productsPerPage}
-            totalProducts={servicesListData.length}
+            totalProducts={staffConsultantListData.length}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
           />
@@ -122,19 +148,20 @@ function Service() {
 
       {/*Popup add service */}
       {openPopup && (
-        <ModalService
-          setServiceId={setServiceId}
-          setFormServiceData={setFormServiceData}
+        <ModalStaffConsultant
+          setConsultantId={setConsultantId}
+          setFormConsultantData={setFormConsultantData}
           initialForm={initialForm}
           setFormType={setFormType}
           setOpenPopup={setOpenPopup}
-          formServiceData={formServiceData}
+          formConsultantData={formConsultantData}
           formType={formType}
-          serviceId={serviceId}
+          consultantId={consultantId}
+          handleFetchAllStaffConsultant={handleFetchAllStaffConsultant}
         />
       )}
     </>
   );
 }
 
-export default Service;
+export default StaffConsultant;

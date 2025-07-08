@@ -28,6 +28,9 @@ function Header() {
               <p>
                 <Link to={'/account/detail'}>My Account</Link>
               </p>
+              <p>
+                <Link to={'/staff-schedule'}>Staff Schedule</Link>
+              </p>
               <p onClick={() => handleLogout()}>Sign Out</p>
             </div>
           </div>

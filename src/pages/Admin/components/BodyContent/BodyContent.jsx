@@ -1,6 +1,7 @@
 import Booking from '~/pages/Admin/components/BodyContent/Booking/Booking';
 import Dashboard from '~/pages/Admin/components/BodyContent/Dashboard/Dashboard';
 import Service from '~/pages/Admin/components/BodyContent/Service/Service';
+import StaffConsultant from '~/pages/Admin/components/BodyContent/StaffConsultant/StaffConsultant';
 import StaffSchedule from '~/pages/Admin/components/BodyContent/StaffSchedule/StaffSchedule';
 import User from '~/pages/Admin/components/BodyContent/User/User';
 
@@ -17,6 +18,8 @@ function BodyContent({ contentRender }) {
         return <Booking />;
       case 'staffschedule':
         return <StaffSchedule />;
+      case 'staffconsultant':
+        return <StaffConsultant />;
     }
   };
   return <>{handleRenderContent()}</>;
