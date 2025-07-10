@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import {
   createStaffScheduleAPI,
   deleteStaffScheduleAPI,
-  getStaffScheduleDetailAPI,
+  getStaffAllScheduleAndQueryAPI,
 } from '~/services/staffScheduleService';
 
 function RegisterSchedule() {
@@ -75,7 +75,7 @@ function RegisterSchedule() {
     console.log('query get schedule', queryString);
 
     try {
-      const res = await getStaffScheduleDetailAPI(queryString);
+      const res = await getStaffAllScheduleAndQueryAPI(queryString);
       console.log('staff schedule res', res.data);
       setStaffSchedule(res.data);
     } catch (error) {

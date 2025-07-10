@@ -1,7 +1,12 @@
 import api from '~/config/axios';
 
-export const getStaffScheduleDetailAPI = async (query) => {
+export const getStaffAllScheduleAndQueryAPI = async (query) => {
   const res = await api.get(`/staffschedule?${query}`);
+  return res;
+};
+
+export const getStaffScheduleDetailAPI = async (id, staffId) => {
+  const res = await api.get(`/staffschedule/${id}/${staffId}`);
   return res;
 };
 
