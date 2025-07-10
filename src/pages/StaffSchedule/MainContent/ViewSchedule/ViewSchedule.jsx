@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import styles from './ViewSchedule.module.scss';
 import { AuthContext } from '~/context/AuthContext';
 import { toast } from 'react-toastify';
-import { createStaffScheduleAPI, getStaffScheduleDetailAPI } from '~/services/staffScheduleService';
+import { createStaffScheduleAPI, getStaffAllScheduleAndQueryAPI } from '~/services/staffScheduleService';
 
 function ViewSchedule() {
   const { userInfo, userId } = useContext(AuthContext);
@@ -57,7 +57,7 @@ function ViewSchedule() {
     const queryString = new URLSearchParams(query).toString();
 
     try {
-      const res = await getStaffScheduleDetailAPI(queryString);
+      const res = await getStaffAllScheduleAndQueryAPI(queryString);
       setStaffSchedule(res.data);
       setThreeWeekDays(days); // cập nhật danh sách 21 ngày
     } catch (error) {
