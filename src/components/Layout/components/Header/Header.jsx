@@ -27,14 +27,20 @@ function Header() {
             <p>{userInfo?.username}</p>
 
             <div className={styles['dropdown-menu']}>
-              <p>
-                <Link to={'/admin'}>Admin</Link>
-              </p>
+              {userInfo.roleId == 'c5b82656-c6a7-49bd-a3fb-3d3e07022d33' && (
+                <p>
+                  <Link to={'/admin'}>Admin</Link>
+                </p>
+              )}
+
+              {userInfo.roleId == '157f0b62-afbb-44ce-91ce-397239875df5' ||
+                (userInfo.roleId == 'd5cf10f1-1f31-4016-ac13-34667e9ca10d' && (
+                  <p>
+                    <Link to={'/staff-schedule'}>Staff Schedule</Link>
+                  </p>
+                ))}
               <p>
                 <Link to={'/account/detail'}>My Account</Link>
-              </p>
-              <p>
-                <Link to={'/staff-schedule'}>Staff Schedule</Link>
               </p>
               <p onClick={() => handleLogout()}>Sign Out</p>
             </div>

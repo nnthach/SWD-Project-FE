@@ -7,7 +7,7 @@ function ServiceCard({ item }) {
   const [showPopup, setShowPopup] = useState(false);
   return (
     <div className={styles.wrap}>
-      <h5>{item.name}</h5>
+      <h5>{item.serviceName}</h5>
       <p className={styles.price}>{item.price}VND</p>
       <p className={styles.content}>{item.description}</p>
 
