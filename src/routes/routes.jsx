@@ -10,6 +10,8 @@ import Home from '~/pages/Home/Home';
 import Service from '~/pages/Service/Service';
 import ServiceDetail from '~/pages/ServiceDetail/SerivceDetail';
 import StaffSchedule from '~/pages/StaffSchedule/StaffSchedule';
+import Cycle from '~/pages/Cycle/Cycle';
+import CycleDetail from '~/pages/CycleDetail/CycleDetail';
 
 export const publicRouters = [
   {
@@ -35,6 +37,14 @@ export const publicRouters = [
   {
     path: '/book-consultant',
     component: <BookConsultant />,
+  },
+  {
+    path: '/cycle-input',
+    component: <Cycle />,
+  },
+  {
+    path: '/cycle-detail',
+    component: <CycleDetail />,
   },
   {
     path: '/staff-schedule',

@@ -16,7 +16,8 @@ function ServiceCard({ item }) {
           Detail
         </Link>
         <button onClick={() => setShowPopup(true)} className={styles.bookBtn}>Book</button>
-        <BookingPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
+        <BookingPopup isOpen={showPopup} onClose={() => setShowPopup(false)} serviceId={item.id}/>
+
       </div>
     </div>
   );
