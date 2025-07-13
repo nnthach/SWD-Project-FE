@@ -74,7 +74,7 @@ function ServiceDetail() {
         <button onClick={() => setShowPopup(true)} className={styles.bookBtn}>Đặt lịch hẹn</button>
       </div>
       
-      <BookingPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
+      <BookingPopup isOpen={showPopup} onClose={() => setShowPopup(false)} serviceId={service.id}/>
     </div>
   );
 }

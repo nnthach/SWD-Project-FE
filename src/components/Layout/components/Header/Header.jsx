@@ -17,6 +17,7 @@ function Header() {
         <Link to={'/'}>Home</Link>
         <Link to={'/service'}>Services</Link>
         <Link to={'/book-consultant'}>Consultant</Link>
+        <Link to={'/cycle-input'}>Cycle Tracker</Link>
         <span style={{ color: '#ccc', cursor: 'not-allowed' }}>Resources & Guides</span>
         <span style={{ color: '#ccc', cursor: 'not-allowed' }}>Partners</span>
         <Link to={'/blog'}>Blog</Link>
