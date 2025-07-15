@@ -1,2 +1,8 @@
 @use '../../../../../styles/mixin.module.scss' as *;
 @use '../../../../../styles/variable.module.scss' as *;
+
+.wrap {
+  h1 {
+    color: $new-color;
+  }
+}

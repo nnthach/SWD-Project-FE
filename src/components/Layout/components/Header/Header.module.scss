@@ -14,9 +14,11 @@
 
   .header-logo {
     width: 180px;
-    background-color: blue;
-    h1 {
-      margin: 0;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
   }
 
@@ -26,7 +28,8 @@
 
     a {
       text-decoration: none;
-      color: black;
+      color: #06aed4;
+      font-weight: bold;
     }
   }
 
@@ -87,7 +90,7 @@
     }
 
     button {
-      @include btn(76px, 35px, 10px, $primary-btn-color, white);
+      @include btn(86px, 35px, 20px, black, white);
       font-size: 14px;
       font-weight: 550;
       a {
@@ -96,7 +99,7 @@
       }
 
       &:first-child {
-        background-color: pink;
+        background: linear-gradient(90.08deg, #0e82fd 0.09%, #06aed4 70.28%);
       }
     }
   }

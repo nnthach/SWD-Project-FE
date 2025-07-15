@@ -54,7 +54,7 @@ function StaffSchedule() {
         <div className={styles['header-content']}>
           <div className={styles['header-content-box']}>
             <p>Total Schedule</p>
-            <p>159</p>
+            <p>{staffScheduleListData?.length}</p>
           </div>
         </div>
 
@@ -103,6 +103,20 @@ function StaffSchedule() {
           <button className={styles['filter-btn']} onClick={handleFetchAllStaffSchedule}>
             Filter
           </button>
+          <button
+            className={styles['filter-btn-clear']}
+            onClick={() => {
+              setScheduleQuery({
+                staffId: '',
+                fromDate: '',
+                toDate: '',
+                ticks: 0,
+              });
+              handleFetchAllStaffSchedule();
+            }}
+          >
+            Clear
+          </button>
         </div>
 
         {/*Table */}
@@ -123,14 +137,14 @@ function StaffSchedule() {
               {currentProduct.map((item) => (
                 <tr key={item.staffScheduleId}>
                   <td>{item.staffScheduleId}</td>
-                  <td>{item.workingDate}</td>
+                  <td>{new Date(item.workingDate).toLocaleDateString('vi-VN')}</td>
                   <td>{item.startTime}</td>
                   <td>{item.endTime}</td>
                   <td>{item.status}</td>
                   <td style={{ fontWeight: 'bold' }}>{item.consultant.username}</td>
                   <td>
                     <FaEye
-                      style={{ cursor: 'pointer', color: 'blue', fontSize: 20 }}
+                      style={{ cursor: 'pointer', color: '#0e82fd', fontSize: 20 }}
                       onClick={() => {
                         setScheduleDetailIdData((prev) => ({
                           ...prev,

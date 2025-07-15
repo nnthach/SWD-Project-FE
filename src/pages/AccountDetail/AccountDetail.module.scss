@@ -15,6 +15,7 @@
       border: 1px solid black;
       width: 20%;
       padding: 20px;
+      border-radius: 15px;
 
       .user-avatar {
         @include flexBoxStyle(center, center, 0);
@@ -48,10 +49,12 @@
     .main-content {
       flex: 1;
       border: 1px solid black;
+      border-radius: 15px;
       padding: 20px;
 
       h5 {
         font-size: 30px;
+        color: $new-color;
       }
     }
   }

@@ -25,9 +25,9 @@ function ModalStaffConsultant({
     }));
   };
 
-  const handleDeleteConsultant = async (id) => {
+  const handleDeleteConsultant = async (id, role) => {
     try {
-      const res = await deleteStaffConsultantAPI(id);
+      const res = await deleteStaffConsultantAPI(id, role);
       console.log('res delete', res);
       setConsultantId('');
       setFormConsultantData(initialForm);
@@ -40,7 +40,7 @@ function ModalStaffConsultant({
     }
   };
 
-  const handleSubmitUpdate = async (id) => {
+  const handleSubmitUpdate = async (id, roleId) => {
     if (!formConsultantData.username || !formConsultantData.email) {
       toast.error('Please fill in required fields');
       return;
@@ -49,7 +49,7 @@ function ModalStaffConsultant({
       // eslint-disable-next-line no-unused-vars
       const { userId, role, ...newDataUpdate } = formConsultantData;
       console.log('forrm update consultant', newDataUpdate);
-      const res = await updateStaffConsultantAPI(id, newDataUpdate);
+      const res = await updateStaffConsultantAPI(id, newDataUpdate, roleId);
       console.log('Update res', res);
       handleFetchAllStaffConsultant();
       setOpenPopup(false);
@@ -100,12 +100,12 @@ function ModalStaffConsultant({
           if (formType === 'create') {
             handleSubmitCreate();
           } else {
-            handleSubmitUpdate(consultantId);
+            handleSubmitUpdate(consultantId, formConsultantData.roleId);
           }
         }}
         className={styles['form-wrap']}
       >
-        <h1>{formType == 'create' ? 'Add Service' : 'Service Detail'}</h1>
+        <h1>{formType == 'create' ? 'Create Staff' : 'Staff Detail'}</h1>
         <div className={styles['form-input']}>
           <label>Username</label>
           <input
@@ -155,13 +155,24 @@ function ModalStaffConsultant({
           </select>
         </div>
 
+        <div className={styles['form-input']}>
+          <label>Role</label>
+          <select name="roleId" value={formConsultantData.roleId} onChange={(e) => handleChange(e)}>
+            <option value={'157f0b62-afbb-44ce-91ce-397239875df5'}>Consultant</option>
+            <option value={'d5cf10f1-1f31-4016-ac13-34667e9ca10d'}>Staff</option>
+          </select>
+        </div>
+
         <div className={styles['submit-btn-wrap']}>
           <button type="submit">{formType == 'create' ? 'Create' : 'Update'}</button>
           {formType != 'create' && (
             <button
               type="button"
               style={{ backgroundColor: 'red' }}
-              onClick={() => handleDeleteConsultant(consultantId)}
+              onClick={() => {
+                console.log('role id', formConsultantData.roleId);
+                handleDeleteConsultant(consultantId, formConsultantData.roleId);
+              }}
             >
               Delete
             </button>

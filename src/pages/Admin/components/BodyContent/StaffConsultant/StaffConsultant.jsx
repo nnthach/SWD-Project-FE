@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import styles from './StaffConsultant.module.scss';
 import Pagination from '~/components/Pagination/Pagination';
@@ -13,24 +14,24 @@ function StaffConsultant() {
   const initialForm = {
     username: '',
     fullName: '',
-    // password: '123456',
     gender: false,
     personalEmail: '',
     phoneNumber: '',
     address: '',
     birthday: '',
     isActive: true,
-    roleId: '157f0b62-afbb-44ce-91ce-397239875df5',
+    roleId: '',
   };
   const [formConsultantData, setFormConsultantData] = useState(initialForm);
   const [openPopup, setOpenPopup] = useState(false);
   const [consultantId, setConsultantId] = useState('');
   const [formType, setFormType] = useState('');
-  console.log('consultant id', consultantId)
+  const [roleIdFetch, setRoleIdFetch] = useState('157f0b62-afbb-44ce-91ce-397239875df5');
+  console.log('consultant id', consultantId);
 
   const handleFetchAllStaffConsultant = async () => {
     try {
-      const res = await getAllStaffConsultantAPI();
+      const res = await getAllStaffConsultantAPI(roleIdFetch);
       console.log('get all consultant res', res);
       setStaffConsultantListData(res.data);
     } catch (error) {
@@ -41,11 +42,11 @@ function StaffConsultant() {
 
   useEffect(() => {
     handleFetchAllStaffConsultant();
-  }, []);
+  }, [roleIdFetch, openPopup]);
 
-  const handleGetStaffConsultantDetail = async (id) => {
+  const handleGetStaffConsultantDetail = async (id, role) => {
     try {
-      const res = await getStaffConsultantDetailAPI(id);
+      const res = await getStaffConsultantDetailAPI(id, role);
       console.log('res detail', res);
       setFormConsultantData(res.data);
     } catch (error) {
@@ -67,26 +68,31 @@ function StaffConsultant() {
         {/*Total number of user box */}
         <div className={styles['header-content']}>
           <div className={styles['header-content-box']}>
-            <p>Total Service</p>
-            <p>159</p>
-          </div>
-          <div className={styles['header-content-box']}>
-            <p>Admins</p>
-            <p>159</p>
-          </div>
-          <div className={styles['header-content-box']}>
-            <p>Staffs</p>
-            <p>159</p>
-          </div>
-          <div className={styles['header-content-box']}>
-            <p>Users</p>
-            <p>159</p>
+            <p>Total {roleIdFetch == '157f0b62-afbb-44ce-91ce-397239875df5' ? 'Consultants' : 'Staffs'}</p>
+            <p>{staffConsultantListData?.length}</p>
           </div>
         </div>
 
         {/*Filter/Search */}
         <div className={styles['filter-actions-wrap']}>
-          <div className={styles['filter-wrap']}></div>
+          <div className={styles['filter-wrap']}>
+            <div
+              className={`${styles['filter-box']} ${
+                roleIdFetch === '157f0b62-afbb-44ce-91ce-397239875df5' ? styles.active : ''
+              }`}
+              onClick={() => setRoleIdFetch('157f0b62-afbb-44ce-91ce-397239875df5')}
+            >
+              <p>Consultants</p>
+            </div>
+            <div
+              className={`${styles['filter-box']} ${
+                roleIdFetch === 'd5cf10f1-1f31-4016-ac13-34667e9ca10d' ? styles.active : ''
+              }`}
+              onClick={() => setRoleIdFetch('d5cf10f1-1f31-4016-ac13-34667e9ca10d')}
+            >
+              <p>Staffs</p>
+            </div>{' '}
+          </div>
           <div className={styles['action-wrap']}>
             <button
               onClick={() => {
@@ -108,9 +114,10 @@ function StaffConsultant() {
                 <th>ID</th>
                 <th>Fullname</th>
                 <th>Username</th>
-                <th>Email</th>
-                <th>Gender</th>
-                <th>Action</th>
+                <th style={{ overflow: 'hidden' }}>Email</th>
+                <th style={{ width: '10%' }}>Gender</th>
+                <th style={{ width: '10%' }}>Role</th>
+                <th style={{ width: '10%' }}>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -119,15 +126,16 @@ function StaffConsultant() {
                   <td>{item.userId}</td>
                   <td>{item.fullName}</td>
                   <td style={{ fontWeight: 'bold' }}>{item.username}</td>
-                  <td>{item.email}</td>
-                  <td>{item.gender}</td>
+                  <td style={{ overflow: 'hidden' }}>{item.email}</td>
+                  <td>{item.gender ? 'Male' : 'Female'}</td>
+                  <td>{item.roleId == '157f0b62-afbb-44ce-91ce-397239875df5' ? 'Consultant' : 'Staff'}</td>
                   <td>
                     <FaEye
-                      style={{ cursor: 'pointer', color: 'blue', fontSize: 20 }}
+                      style={{ cursor: 'pointer', color: '#0e82fd', fontSize: 20 }}
                       onClick={() => {
                         setConsultantId(item.userId);
                         setFormType('update');
-                        handleGetStaffConsultantDetail(item.userId);
+                        handleGetStaffConsultantDetail(item.userId, item.roleId);
                         setOpenPopup(true);
                       }}
                     />
