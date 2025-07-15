@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import styles from './Header.module.scss';
 import { useContext } from 'react';
 import { AuthContext } from '~/context/AuthContext';
+import logo from '~/assets/images/logo.svg';
 
 function Header() {
   const { userInfo, handleLogout } = useContext(AuthContext);
@@ -11,7 +12,7 @@ function Header() {
     <div className={styles['header-wrap']}>
       {/*Logo */}
       <div className={styles['header-logo']}>
-        <h1>Logo</h1>
+        <img src={logo} alt="logo" />
       </div>{' '}
       <div className={styles['header-navbar']}>
         <Link to={'/'}>Home</Link>

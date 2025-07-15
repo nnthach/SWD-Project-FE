@@ -5,6 +5,7 @@ import { loginAPI, registerAPI } from '~/services/authService';
 import Cookies from 'js-cookie';
 import { AuthContext } from '~/context/AuthContext';
 import { toast } from 'react-toastify';
+import loginBanner from '~/assets/images/login-banner.png';
 
 function Auth() {
   const { type } = useParams();
@@ -71,65 +72,75 @@ function Auth() {
 
   return (
     <div className={styles['auth-wrap']}>
-      <div className={styles['form-wrap']}>
-        <h1>Let's {type == 'login' ? 'Sign In' : 'Sign Up'}</h1>
-        <form onSubmit={handleSubmit}>
-          <div className={styles['input-field']}>
-            <label>Username</label>
-            <input type="text" name="username" value={authForm.username} onChange={handleChange} />
-          </div>
-
-          {type == 'register' && (
-            <>
-              <div className={styles['input-field']}>
-                <label>Email</label>
-                <input type="email" name="email" value={authForm.email} onChange={handleChange} />
-              </div>
-              <div className={styles['input-field']}>
-                <label>Phone</label>
-                <input type="number" name="phoneNumber" value={authForm.phoneNumber} onChange={handleChange} />
-              </div>
-            </>
-          )}
-
-          <div className={styles['input-field']}>
-            <label>Password</label>
-            <input type="password" name="password" value={authForm.password} onChange={handleChange} />
-          </div>
-
-          {type == 'register' && (
+      <div className={styles['auth-banner']}>
+        <img src={loginBanner} />
+      </div>
+      <div className={styles['form-container-wrap']}>
+        <div className={styles['form-wrap']}>
+          <h1>Let's {type == 'login' ? 'Sign In' : 'Sign Up'}</h1>
+          <form onSubmit={handleSubmit}>
             <div className={styles['input-field']}>
-              <label>Confirm Password</label>
-              <input type="password" name="confirmPassword" value={authForm.confirmPassword} onChange={handleChange} />
+              <label>Username</label>
+              <input type="text" name="username" value={authForm.username} onChange={handleChange} />
             </div>
-          )}
 
-          {type != 'register' && (
-            <div style={{ textAlign: 'right' }}>
-              <p style={{ fontSize: 12, cursor: 'pointer' }}>
-                <Link to={'/auth/forgot-password'}>Forgot password</Link>
+            {type == 'register' && (
+              <>
+                <div className={styles['input-field']}>
+                  <label>Email</label>
+                  <input type="email" name="email" value={authForm.email} onChange={handleChange} />
+                </div>
+                <div className={styles['input-field']}>
+                  <label>Phone</label>
+                  <input type="number" name="phoneNumber" value={authForm.phoneNumber} onChange={handleChange} />
+                </div>
+              </>
+            )}
+
+            <div className={styles['input-field']}>
+              <label>Password</label>
+              <input type="password" name="password" value={authForm.password} onChange={handleChange} />
+            </div>
+
+            {type == 'register' && (
+              <div className={styles['input-field']}>
+                <label>Confirm Password</label>
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  value={authForm.confirmPassword}
+                  onChange={handleChange}
+                />
+              </div>
+            )}
+
+            {type != 'register' && (
+              <div style={{ textAlign: 'right' }}>
+                <p style={{ fontSize: 12, cursor: 'pointer' }}>
+                  <Link to={'/auth/forgot-password'}>Forgot password</Link>
+                </p>
+              </div>
+            )}
+
+            <button type="submit" className={styles['submit-btn']}>
+              {type == 'login' ? 'Sign In' : 'Sign Up'}
+            </button>
+          </form>
+          <div className={styles['sub-option']}>
+            {type == 'login' ? (
+              <p>
+                Do not have an account? <Link to={'/auth/register'}>Sign Up</Link>
               </p>
-            </div>
-          )}
+            ) : (
+              <p>
+                Already have an account? <Link to={'/auth/login'}>Sign In</Link>
+              </p>
+            )}
 
-          <button type="submit" className={styles['submit-btn']}>
-            {type == 'login' ? 'Sign In' : 'Sign Up'}
-          </button>
-        </form>
-        <div className={styles['sub-option']}>
-          {type == 'login' ? (
-            <p>
-              Do not have an account? <Link to={'/auth/register'}>Sign Up</Link>
-            </p>
-          ) : (
-            <p>
-              Already have an account? <Link to={'/auth/login'}>Sign In</Link>
-            </p>
-          )}
-
-          <Link to={'/'} style={{ color: 'black', textDecoration: 'none', fontSize: 12 }}>
-            Continue as Guest
-          </Link>
+            <Link to={'/'} style={{ color: 'black', textDecoration: 'none', fontSize: 12 }}>
+              Continue as Guest
+            </Link>
+          </div>
         </div>
       </div>
     </div>

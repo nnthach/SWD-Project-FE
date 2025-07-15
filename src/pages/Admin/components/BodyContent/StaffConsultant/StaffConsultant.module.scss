@@ -1,10 +1,10 @@
-@use '../../../../../styles/mixin.module.scss' as *;
-@use '../../../../../styles/variable.module.scss' as *;
-
-@use '../../../../../styles/mixin.module.scss' as *;
-@use '../../../../../styles/variable.module.scss' as *;
+@use '~/styles/mixin.module.scss' as *;
+@use '~/styles/variable.module.scss' as *;
 
 .wrap {
+  h1 {
+    color: $new-color;
+  }
   .header-content {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -24,6 +24,20 @@
     @include flexBoxStyle(center, space-between, none);
     margin-bottom: 10px;
     .filter-wrap {
+      @include flexBoxStyle(center, none, 10px);
+      .filter-box {
+        background-color: rgb(225, 225, 225);
+        padding: 5px;
+        border-radius: 10px;
+        width: 100px;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      .active {
+        background-color: $new-color;
+        color: white;
+      }
     }
 
     .action-wrap {

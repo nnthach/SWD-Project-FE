@@ -16,6 +16,7 @@ function Admin() {
             <li onClick={() => setContentRender('user')}>User</li>
             <li onClick={() => setContentRender('service')}>Service</li>
             <li onClick={() => setContentRender('booking')}>Booking</li>
+            <li onClick={() => setContentRender('appointment')}>Appointment</li>
             <li onClick={() => setContentRender('staffschedule')}>Staff Schedule</li>
             <li onClick={() => setContentRender('staffconsultant')}>Staff Consultant</li>
           </ul>

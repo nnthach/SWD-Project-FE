@@ -44,19 +44,7 @@ function Service() {
         <div className={styles['header-content']}>
           <div className={styles['header-content-box']}>
             <p>Total Service</p>
-            <p>159</p>
-          </div>
-          <div className={styles['header-content-box']}>
-            <p>Admins</p>
-            <p>159</p>
-          </div>
-          <div className={styles['header-content-box']}>
-            <p>Staffs</p>
-            <p>159</p>
-          </div>
-          <div className={styles['header-content-box']}>
-            <p>Users</p>
-            <p>159</p>
+            <p>{servicesListData?.length}</p>
           </div>
         </div>
 
@@ -97,7 +85,7 @@ function Service() {
                   <td>{item.price}</td>
                   <td>
                     <FaEye
-                      style={{ cursor: 'pointer', color: 'blue', fontSize: 20 }}
+                      style={{ cursor: 'pointer', color: '#0e82fd', fontSize: 20 }}
                       onClick={() => {
                         setServiceId(item.serviceId);
                         setFormType('update');

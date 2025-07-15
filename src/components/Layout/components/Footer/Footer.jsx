@@ -1,4 +1,5 @@
 import styles from './Footer.module.scss';
+import logo from '~/assets/images/logo.svg';
 
 function Footer() {
   const footerData = [
@@ -37,8 +38,8 @@ function Footer() {
     <div className={styles['footer-wrap']}>
       {/*Footer top */}
       <div className={styles['footer-top']}>
-        <div>Logo</div>
-        <p>1900 1717</p>
+        <img src={logo} style={{ width: 300, objectFit: 'cover' }} />
+        <p style={{ color: '#0e82fd' }}>1900 1717</p>
       </div>
 
       {/*Footer bottom */}

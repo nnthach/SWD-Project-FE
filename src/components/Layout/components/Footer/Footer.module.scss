@@ -2,7 +2,7 @@
 @use '../../../../styles/mixin.module.scss' as *;
 
 .footer-wrap {
-  background-color: rgb(212, 212, 212);
+  background-color: #e2edff;
   width: 100%;
   padding: 40px 200px;
 
@@ -21,7 +21,7 @@
       h5 {
         margin-bottom: 20px;
         font-size: 16px;
-        color: blue;
+        color: #0e82fd;
       }
 
       .footer-intro-para {
@@ -44,7 +44,7 @@
         h5 {
           margin-bottom: 20px;
           font-size: 16px;
-          color: blue;
+          color: #0e82fd;
         }
         ul {
           list-style: none;

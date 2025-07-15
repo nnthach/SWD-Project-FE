@@ -1,9 +1,10 @@
 @use '~/styles/mixin.module.scss' as *;
 @use '~/styles/variable.module.scss' as *;
 
-
-
 .wrap {
+  h1 {
+    color: $new-color;
+  }
   .header-content {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -66,5 +67,3 @@
     }
   }
 }
-
-
