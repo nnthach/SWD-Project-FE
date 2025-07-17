@@ -3,8 +3,21 @@ import Header from '~/components/Layout/components/Header/Header';
 import styles from './AccountDetail.module.scss';
 import { FaUser } from 'react-icons/fa';
 import Information from '~/pages/AccountDetail/MainContent/Information/Information';
+import { useState } from 'react';
+import MyBooking from '~/pages/AccountDetail/MainContent/MyBooking/MyBooking';
 
 function AccountDetail() {
+  const [contentRender, setContentRender] = useState('Information');
+
+  const handleRenderContent = () => {
+    switch (contentRender) {
+      case 'Information':
+        return <Information />;
+      case 'My Booking':
+        return <MyBooking />;
+    }
+  };
+
   return (
     <div>
       <div className={styles.wrap}>
@@ -15,15 +28,20 @@ function AccountDetail() {
             </div>
 
             <div className={styles['aside-menu']}>
-              <p>Information</p>
-              <p>Password</p>
+              <p
+                className={contentRender == 'Information' && styles.active}
+                onClick={() => setContentRender('Information')}
+              >
+                Information
+              </p>
+              <p onClick={() => setContentRender('My Booking')}>My Booking</p>
             </div>
           </div>
 
           <div className={styles['main-content']}>
-            <h5>Information</h5>
+            <h5>{contentRender}</h5>
 
-            <Information />
+            {handleRenderContent()}
           </div>
         </div>
       </div>

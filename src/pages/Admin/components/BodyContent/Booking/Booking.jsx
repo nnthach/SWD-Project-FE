@@ -1,7 +1,156 @@
+import api from '~/config/axios';
 import styles from './Booking.module.scss';
+import { toast } from 'react-toastify';
+import { FaEye } from 'react-icons/fa';
+import { useEffect, useState } from 'react';
+import Pagination from '~/components/Pagination/Pagination';
+import ModalBooking from '~/pages/Admin/components/BodyContent/Booking/ModalBooking/ModalBooking';
 
 function Booking() {
-  return <div className={styles.wrap}>Booking</div>;
+  // eslint-disable-next-line no-unused-vars
+  const [bookingListData, setBookingListData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [openPopup, setOpenPopup] = useState(false);
+  const [status, setStatus] = useState('PENDING');
+  const [bookingDetailData, setBookingDetailData] = useState(null);
+
+  const handleOpenBookingDetail = async (id) => {
+    try {
+      const res = await api.get(`/Booking/my-bookings/${id}`);
+      console.log('get  booking detail res', res);
+      setBookingDetailData(res.data);
+      setOpenPopup(true);
+    } catch (error) {
+      console.log('get  booking detail err', error);
+      toast.error('get  booking detail err');
+    }
+  };
+
+  const handleFetchAllBooking = async () => {
+    try {
+      const res = await api.get(`/Booking/bookings-by-status?status=${status}`);
+      console.log('get all booking res', res);
+      setBookingListData(res.data);
+    } catch (error) {
+      console.log('get all booking err', error);
+      toast.error('get all booking err');
+    }
+  };
+
+  useEffect(() => {
+    if (openPopup) return;
+    handleFetchAllBooking();
+  }, [status, openPopup]);
+
+  const productsPerPage = 10;
+
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProduct = bookingListData.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  return (
+    <>
+      <div className={styles.wrap}>
+        <h1>Booking</h1>
+
+        {/*Total number of user box */}
+        <div className={styles['header-content']}>
+          <div className={styles['header-content-box']}>
+            <p>Total Bookings are {status == 'PENDING' ? 'Pending' : status == 'COMPLETE' ? 'Complete' : 'Cancel'}</p>
+            <p>{bookingListData?.length}</p>
+          </div>
+        </div>
+
+        {/*Filter/Search */}
+        <div className={styles['filter-actions-wrap']}>
+          <div className={styles['filter-wrap']}>
+            <div
+              className={`${styles['filter-box']} ${status === 'PENDING' ? styles.active : ''}`}
+              onClick={() => setStatus('PENDING')}
+            >
+              <p>Pending</p>
+            </div>
+            <div
+              className={`${styles['filter-box']} ${status === 'COMPLETE' ? styles.active : ''}`}
+              onClick={() => setStatus('COMPLETE')}
+            >
+              <p>Complete</p>
+            </div>
+            <div
+              className={`${styles['filter-box']} ${status === 'CANCEL' ? styles.active : ''}`}
+              onClick={() => setStatus('CANCEL')}
+            >
+              <p>Cancel</p>
+            </div>
+          </div>
+        </div>
+
+        {/*Table */}
+        <div className={styles['content-table']}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Booking Date</th>
+                <th>Status</th>
+                <th>Note</th>
+                <th style={{ width: '15%' }}>Service Count</th>
+                <th style={{ width: '10%' }}>Total Price</th>
+                <th style={{ width: '10%' }}>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentProduct.map((item) => (
+                <tr key={item.bookingId}>
+                  <td>{item.bookingId}</td>
+                  <td>
+                    {new Date(item.bookingDate).toLocaleString('vi-VN', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      hour12: false,
+                    })}
+                  </td>
+                  <td>
+                    <span
+                      className={`${styles.bookingStatus} ${
+                        item?.status === 'CANCEL' ? styles.cancel : item?.status === 'COMPLETE' ? styles.complete : ''
+                      }`}
+                    >
+                      {item?.status}
+                    </span>
+                  </td>
+                  <td>{item.note}</td>
+                  <td>{item.serviceCount}</td>
+                  <td>{item.totalPrice}</td>
+                  <td>
+                    <FaEye
+                      style={{ cursor: 'pointer', color: '#0e82fd', fontSize: 20 }}
+                      onClick={() => {
+                        handleOpenBookingDetail(item.bookingId);
+                      }}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <Pagination
+            productsPerPage={productsPerPage}
+            totalProducts={bookingListData.length}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        </div>
+      </div>
+
+      {/*Popup */}
+      {openPopup && <ModalBooking bookingDetailData={bookingDetailData} setOpenPopup={setOpenPopup} />}
+    </>
+  );
 }
 
 export default Booking;
