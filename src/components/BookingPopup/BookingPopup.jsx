@@ -1,29 +1,18 @@
 import styles from './BookingPopup.module.scss';
 import { useState } from 'react';
-import { fakeConsultants } from '~/constants/fakeData';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import { createBooking } from '~/services/bookingService';
 
 
-function BookingPopup({ isOpen, onClose }) {
+function BookingPopup({ isOpen, onClose, selectedServiceIds = [] }) {
   const [bookingData, setBookingData] = useState({
-    appointmentDate: '',
-    startTime: '',
-    customerName: '',
-    customerPhone: '',
-    customerEmail: '',
-    notes: '',
-    selectedDoctor: '',
+    bookingDate: '',
+    note: ''
   });
 
-  const selectedConsultant = fakeConsultants.find((c) => String(c.consultant_id) === bookingData.selectedDoctor);
-
-
-  const handleOpenBooking = (id) => {
-    const found = fakeConsultants.find(c => c.consultant_id === id);
-    setSelectedConsultant(found); 
-    setShowBookingModal(true);
-  };
-
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setBookingData({
@@ -32,23 +21,50 @@ function BookingPopup({ isOpen, onClose }) {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Booking Info:', bookingData);
-    toast.success('Đặt lịch thành công! Chúng tôi sẽ liên hệ bạn sớm.');
-    onClose();
 
-    setBookingData({
-      appointmentDate: '',
-      startTime: '',
-      customerName: '',
-      customerPhone: '',
-      customerEmail: '',
-      notes: '',
-      selectedDoctor: '',
-    });
+    const token = Cookies.get('accessToken');
+    if (!token) {
+      toast.error("Bạn cần đăng nhập để đặt lịch.");
+      return;
+    }
+
+    if (!bookingData.bookingDate) {
+      toast.error("Vui lòng chọn ngày hẹn.");
+      return;
+    }
+
+    try {
+      const bookingDate = new Date(`${bookingData.bookingDate}T00:00:00`);
+      if (isNaN(bookingDate.getTime())) {
+        throw new Error("Ngày không hợp lệ");
+      }
+
+      const requestBody = {
+        bookingDate: bookingDate.toISOString(),
+        note: bookingData.note, // Đúng là .note (không phải .notes!)
+        serviceIds: selectedServiceIds,
+      };
+
+      console.log("Gửi dữ liệu đặt lịch:", requestBody);
+
+      await createBooking(requestBody);
+      toast.success("Đặt lịch thành công!");
+      onClose();
+      resetForm();
+    } catch (error) {
+      console.error("Đặt lịch thất bại:", error);
+      toast.error("Đặt lịch thất bại. Vui lòng thử lại.");
+    }
   };
 
+  const resetForm = () => {
+    setBookingData({
+      bookingDate: '',
+      note: '',
+    });
+  };
 
   if (!isOpen) return null;
 
@@ -62,50 +78,11 @@ function BookingPopup({ isOpen, onClose }) {
 
         <form onSubmit={handleSubmit} className={styles.bookingForm}>
           <div className={styles.formGroup}>
-            <label>Họ và tên *</label>
-            <input
-              type="text"
-              name="customerName"
-              value={bookingData.customerName}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label>Số điện thoại *</label>
-            <input
-              type="tel"
-              name="customerPhone"
-              value={bookingData.customerPhone}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label>Bác sĩ tư vấn *</label>
-            <select
-              name="selectedDoctor"
-              value={bookingData.selectedDoctor}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Chọn bác sĩ</option>
-              {fakeConsultants.map(c => (
-                <option key={c.consultant_id} value={c.consultant_id}>
-                  {c.name} - {c.specialization}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className={styles.formGroup}>
             <label>Ngày hẹn *</label>
             <input
               type="date"
-              name="appointmentDate"
-              value={bookingData.appointmentDate}
+              name="bookingDate"
+              value={bookingData.bookingDate}
               onChange={handleChange}
               min={new Date().toISOString().split('T')[0]}
               required
@@ -113,33 +90,13 @@ function BookingPopup({ isOpen, onClose }) {
           </div>
 
           <div className={styles.formGroup}>
-            <label>Giờ hẹn *</label>
-            <select
-              name="startTime"
-              value={bookingData.startTime}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Chọn giờ</option>
-              {selectedConsultant?.availableSlots?.length > 0 ? (
-                selectedConsultant.availableSlots.map((slot) => (
-                  <option key={slot} value={slot}>
-                    {slot}
-                  </option>
-                ))
-              ) : (
-                <option disabled>(Không có khung giờ khả dụng)</option>
-              )}
-            </select>
-          </div>
-          
-          <div className={styles.formGroup}>
             <label>Ghi chú</label>
             <textarea
-              name="notes"
-              value={bookingData.notes}
+              name="note"
+              value={bookingData.note}
               onChange={handleChange}
               rows="3"
+              placeholder="Ghi chú thêm (nếu có)"
             />
           </div>
 

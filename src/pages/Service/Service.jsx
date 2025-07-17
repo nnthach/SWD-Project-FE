@@ -1,15 +1,20 @@
 import styles from './Service.module.scss';
 import ServiceCard from '~/components/ServiceCard/ServiceCard';
-import { fakeDataServiceCard } from '~/constants/fakeData';
 import SearchBar from '~/components/SearchBar/SearchBar';
 import ServiceFilter from '~/components/ServiceFilter/ServiceFilter';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getAllServiceAPI } from '~/services/serviceService';
 
 function Service() {
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [services, setServices] = useState([]);
+  const [filtered, setFiltered] = useState([]);
 
   const handleSearch = (query) => {
-    console.log('Tìm kiếm:', query);
+    const filteredResult = services.filter((item) =>
+      item.serviceName.toLowerCase().includes(query.toLowerCase())
+    );
+    setFiltered(filteredResult);
   };
 
   const handleCategoryChange = (category) => {
@@ -20,38 +25,47 @@ function Service() {
     );
   };
 
-  const filteredServices = selectedCategories.length
-    ? fakeDataServiceCard.filter((item) =>
-        selectedCategories.includes(item.category)
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const res = await getAllServiceAPI();
+        setServices(res.data);
+        setFiltered(res.data);
+      } catch (err) {
+        console.error('Lỗi khi lấy dữ liệu dịch vụ:', err);
+      }
+    };
+    fetchServices();
+  }, []);
+
+  const displayServices = selectedCategories.length
+    ? filtered.filter((item) =>
+        selectedCategories.includes(item.category || 'Khác')
       )
-    : fakeDataServiceCard;
+    : filtered;
 
   return (
     <div className={styles['service-wrap']}>
       <div className={styles.banner}>
         <div className={styles['banner-content']}>
           <div>
-            <p className={styles.breadcrumb}>Trang chủ / <strong>Dịch vụ</strong></p>
+            <p className={styles.breadcrumb}>
+              Trang chủ / <strong>Dịch vụ</strong>
+            </p>
             <h1>Service</h1>
           </div>
         </div>
       </div>
-      <div className={styles['service-content']}>
-        <div className={styles['service-filter']}>
-          <ServiceFilter
-            selectedCategories={selectedCategories}
-            onChange={handleCategoryChange}
-          />
-        </div>
 
+      <div className={styles['service-content']}>
         <div className={styles['service-table']}>
           <div className={styles['service-search']}>
             <SearchBar onSearch={handleSearch} />
           </div>
 
           <div className={styles['service-grid']}>
-            {filteredServices.map((item) => (
-              <ServiceCard key={item.id} item={item} />
+            {displayServices.map((item) => (
+              <ServiceCard key={item.serviceId} item={item} />
             ))}
           </div>
         </div>
