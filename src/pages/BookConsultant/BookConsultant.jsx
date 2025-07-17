@@ -2,37 +2,142 @@ import { useState, useEffect } from 'react';
 import { useConsultant } from '~/context/ConsultantContext';
 import { toast } from 'react-toastify';
 import styles from './BookConsultant.module.scss';
+import * as staffConsultantService from '~/services/staffConsultantService';
+import { getAllAppointmentAPI, createAppointmentAPI } from '~/services/appointmentService';
+
+// Define fixed time slots
+const FIXED_SLOTS = [
+  { id: 1, label: '7:00 - 9:00', value: 1 },
+  { id: 2, label: '9:00 - 11:00', value: 2 },
+  { id: 3, label: '13:00 - 15:00', value: 3 },
+  { id: 4, label: '15:00 - 17:00', value: 4 }
+];
 
 function BookConsultant() {
   const {
-    filteredConsultants,
-    specializations,
-    loading,
-    error,
     searchTerm,
     setSearchTerm,
     filters,
     setFilters,
     sortBy,
     setSortBy,
-    createAppointment,
     clearError
   } = useConsultant();
 
+  const [consultants, setConsultants] = useState([]);
+  const [filteredConsultants, setFilteredConsultants] = useState([]);
+  const [specializations, setSpecializations] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [bookedAppointments, setBookedAppointments] = useState({});
+  
   const [selectedConsultant, setSelectedConsultant] = useState(null);
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [bookingData, setBookingData] = useState({
     appointmentDate: '',
-    startTime: '',
+    slot: '',
     customerName: '',
     customerPhone: '',
     customerEmail: '',
     notes: ''
   });
-  // Clear any errors on component mount
+
+  // Fetch consultants
   useEffect(() => {
-    clearError();
-  }, [clearError]);
+    const fetchConsultants = async () => {
+      try {
+        setLoading(true);
+        const response = await staffConsultantService.getAllStaffConsultantAPI("157f0b62-afbb-44ce-91ce-397239875df5");
+        
+        if (response && response.data) {
+          const consultantData = response.data.map(consultant => ({
+            consultant_id: consultant.userId,
+            name: consultant.fullName || consultant.username,
+            email: consultant.email,
+            phone: consultant.phoneNumber,
+            specialization: "Consultant", // Default value or fetch from another API if needed
+            experience: "Experience", // Placeholder
+            rating: 5, // Placeholder
+            price: 300000, // Placeholder
+            description: "Professional consultant", // Placeholder
+            avatar: "https://via.placeholder.com/150", // Placeholder
+          }));
+          
+          setConsultants(consultantData);
+          setFilteredConsultants(consultantData);
+          
+          // Extract unique specializations
+          const specs = [...new Set(consultantData.map(c => c.specialization))];
+          setSpecializations(specs);
+          
+          // Fetch booked appointments for each consultant
+          consultantData.forEach(async (consultant) => {
+            await fetchConsultantAppointments(consultant.consultant_id);
+          });
+        }
+      } catch (err) {
+        setError(err.message || "Failed to load consultants");
+        toast.error("Failed to load consultants");
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchConsultants();
+  }, []);
+
+  // Fetch appointments for a consultant
+  const fetchConsultantAppointments = async (consultantId) => {
+    try {
+      const params = { consultantId };
+      const response = await getAllAppointmentAPI(params);
+      
+      if (response && response.data) {
+        setBookedAppointments(prev => ({
+          ...prev,
+          [consultantId]: response.data
+        }));
+      }
+    } catch (err) {
+      console.error("Failed to fetch appointments for consultant", consultantId, err);
+    }
+  };
+
+  // Filter consultants when search or filters change
+  useEffect(() => {
+    let filtered = [...consultants];
+    
+    if (searchTerm) {
+      filtered = filtered.filter(c => 
+        c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        c.specialization.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    
+    if (filters.specialization) {
+      filtered = filtered.filter(c => c.specialization === filters.specialization);
+    }
+    
+    // Sorting
+    switch (sortBy) {
+      case 'name':
+        filtered.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case 'rating':
+        filtered.sort((a, b) => b.rating - a.rating);
+        break;
+      case 'price':
+        filtered.sort((a, b) => a.price - b.price);
+        break;
+      case 'experience':
+        filtered.sort((a, b) => a.experience.localeCompare(b.experience));
+        break;
+      default:
+        break;
+    }
+    
+    setFilteredConsultants(filtered);
+  }, [consultants, searchTerm, filters, sortBy]);
 
   // Handle consultant selection
   const handleSelectConsultant = (consultant) => {
@@ -48,12 +153,37 @@ function BookConsultant() {
       [name]: value
     }));
   };
+
+  // Check if a slot is available for a specific date
+  const isSlotAvailable = (date, slotValue) => {
+    if (!selectedConsultant || !bookedAppointments[selectedConsultant.consultant_id]) {
+      return true;
+    }
+    
+    const consultantAppointments = bookedAppointments[selectedConsultant.consultant_id];
+    const selectedDate = new Date(date);
+    const selectedYear = selectedDate.getFullYear();
+    const selectedMonth = selectedDate.getMonth() + 1; // JavaScript months are 0-indexed
+    const selectedDay = selectedDate.getDate();
+    
+    return !consultantAppointments.some(appointment => {
+      // Handle appointment date in new object format
+      const appDate = appointment.appointmentDate;
+      
+      // Check if the date matches (year, month, day) and the slot is the same
+      return appDate.year === selectedYear && 
+             appDate.month === selectedMonth && 
+             appDate.day === selectedDay && 
+             appointment.slot === slotValue;
+    });
+  };
+
   // Handle booking submission
   const handleBookingSubmit = async (e) => {
     e.preventDefault();
     
     // Validation
-    if (!bookingData.appointmentDate || !bookingData.startTime || 
+    if (!bookingData.appointmentDate || !bookingData.slot || 
         !bookingData.customerName || !bookingData.customerPhone || 
         !bookingData.customerEmail) {
       toast.error('Vui lòng điền đầy đủ thông tin bắt buộc!');
@@ -61,33 +191,37 @@ function BookConsultant() {
     }
 
     // Check if selected time is available
-    if (!selectedConsultant.availableSlots.includes(bookingData.startTime)) {
+    if (!isSlotAvailable(bookingData.appointmentDate, parseInt(bookingData.slot))) {
       toast.error('Khung giờ đã chọn không có sẵn!');
       return;
     }
 
     try {
-      // Create appointment using context
+      const selectedDate = new Date(bookingData.appointmentDate);
+      
+      // Create appointment using the required format
       const appointmentData = {
-        user_id: '999', // Current user ID (should come from auth context)
-        consultant_id: selectedConsultant.consultant_id,
-        appointmentDate: bookingData.appointmentDate,
-        startTime: bookingData.startTime,
-        endTime: getEndTime(bookingData.startTime),
-        consultantName: selectedConsultant.name,
-        customerName: bookingData.customerName,
-        customerPhone: bookingData.customerPhone,
-        customerEmail: bookingData.customerEmail,
-        notes: bookingData.notes
+        userId: localStorage.getItem('userId') || "3fa85f64-5717-4562-b3fc-2c963f66afa6", // Get from auth or use placeholder
+        consultantId: selectedConsultant.consultant_id,
+        appointmentDate: {
+          year: selectedDate.getFullYear(),
+          month: selectedDate.getMonth() + 1, // JavaScript months are 0-indexed
+          day: selectedDate.getDate(),
+          dayOfWeek: selectedDate.getDay()
+        },
+        slot: parseInt(bookingData.slot)
       };
 
-      await createAppointment(appointmentData);
+      await createAppointmentAPI(appointmentData);
       toast.success('Đặt lịch tư vấn thành công! Chúng tôi sẽ liên hệ với bạn sớm.');
+      
+      // Refresh appointments for this consultant
+      await fetchConsultantAppointments(selectedConsultant.consultant_id);
       
       // Reset form and close modal
       setBookingData({
         appointmentDate: '',
-        startTime: '',
+        slot: '',
         customerName: '',
         customerPhone: '',
         customerEmail: '',
@@ -97,13 +231,8 @@ function BookConsultant() {
       setSelectedConsultant(null);
     } catch (error) {
       toast.error('Có lỗi xảy ra khi đặt lịch. Vui lòng thử lại!');
+      console.error(error);
     }
-  };
-
-  // Get end time (1 hour after start time)
-  const getEndTime = (startTime) => {
-    const hour = parseInt(startTime.split(':')[0]);
-    return `${hour + 1}:00`;
   };
 
   // Format price
@@ -113,6 +242,13 @@ function BookConsultant() {
       currency: 'VND'
     }).format(price);
   };
+  
+  // Get slot label from value
+  const getSlotLabel = (slotValue) => {
+    const slot = FIXED_SLOTS.find(s => s.value === slotValue);
+    return slot ? slot.label : '';
+  };
+
   return (
     <div className={styles.container}>
       {loading && <div className={styles.loading}>Đang tải...</div>}
@@ -186,8 +322,10 @@ function BookConsultant() {
             <div className={styles.availability}>
               <p><strong>Khung giờ có sẵn:</strong></p>
               <div className={styles.timeSlots}>
-                {consultant.availableSlots.map(slot => (
-                  <span key={slot} className={styles.timeSlot}>{slot}</span>
+                {FIXED_SLOTS.map(slot => (
+                  <span key={slot.id} className={styles.timeSlot}>
+                    {slot.label}
+                  </span>
                 ))}
               </div>
             </div>
@@ -236,16 +374,22 @@ function BookConsultant() {
               </div>
 
               <div className={styles.formGroup}>
-                <label>Giờ hẹn *</label>
+                <label>Khung giờ *</label>
                 <select
-                  name="startTime"
-                  value={bookingData.startTime}
+                  name="slot"
+                  value={bookingData.slot}
                   onChange={handleBookingChange}
                   required
                 >
-                  <option value="">Chọn giờ</option>
-                  {selectedConsultant.availableSlots.map(slot => (
-                    <option key={slot} value={slot}>{slot}</option>
+                  <option value="">Chọn khung giờ</option>
+                  {FIXED_SLOTS.map(slot => (
+                    <option 
+                      key={slot.id} 
+                      value={slot.value}
+                      disabled={bookingData.appointmentDate && !isSlotAvailable(bookingData.appointmentDate, slot.value)}
+                    >
+                      {slot.label} {bookingData.appointmentDate && !isSlotAvailable(bookingData.appointmentDate, slot.value) ? '(Đã đặt)' : ''}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -302,6 +446,9 @@ function BookConsultant() {
                 <p>Chuyên gia: {selectedConsultant.name}</p>
                 <p>Chuyên ngành: {selectedConsultant.specialization}</p>
                 <p>Chi phí: {formatPrice(selectedConsultant.price)}</p>
+                {bookingData.appointmentDate && bookingData.slot && (
+                  <p>Thời gian: {new Date(bookingData.appointmentDate).toLocaleDateString('vi-VN')} {getSlotLabel(parseInt(bookingData.slot))}</p>
+                )}
               </div>
 
               <div className={styles.formActions}>
