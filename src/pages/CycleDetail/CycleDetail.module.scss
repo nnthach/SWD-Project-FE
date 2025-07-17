@@ -1,17 +1,20 @@
 .container {
   max-width: 800px;
-  margin: 120px auto 40px;
+  margin: 100px auto 0;
+  margin-bottom: 60px;
   background: white;
   border-radius: 16px;
   padding: 24px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  position: relative;
+  z-index: 1;
 }
 
 .header {
   text-align: center;
+  margin-bottom: 32px;
   font-size: 24px;
   font-weight: 600;
-  margin-bottom: 24px;
   color: #1f2937;
 }
 
@@ -24,12 +27,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-}
-
-.month-title {
-  font-size: 20px;
-  font-weight: 600;
-  color: #ec4899;
+  padding: 0 16px;
 }
 
 .nav-btn {
@@ -37,7 +35,18 @@
   border: none;
   font-size: 20px;
   cursor: pointer;
+  padding: 8px;
   color: #6b7280;
+  
+  &:hover {
+    color: #1f2937;
+  }
+}
+
+.month-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #ec4899;
 }
 
 .calendar {
@@ -49,44 +58,77 @@
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+  grid-gap: 0;
 }
 
 .day-header {
-  text-align: center;
   background: #f9fafb;
-  padding: 12px 0;
-  font-weight: bold;
+  padding: 12px 8px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 14px;
   color: #6b7280;
   border-right: 1px solid #e5e7eb;
+  
+  &:last-child {
+    border-right: none;
+  }
 }
 
 .day-cell {
-  min-height: 80px;
-  border: 1px solid #e5e7eb;
+  min-height: 60px;
+  border-right: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
   padding: 8px;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
+  
+  &:nth-child(7n) {
+    border-right: none;
+  }
+  
+  &.other-month {
+    .day-number {
+      color: #9ca3af;
+    }
+  }
 }
 
 .day-number {
-  font-size: 14px;
   font-weight: 500;
   margin-bottom: 4px;
+  font-size: 16px;
 }
 
+/* Phase backgrounds */
 .menstruation {
-  background-color: #fce7f3;
-}
-
-.ovulation {
-  background-color: #fef3c7;
+  background: #fce7f3;
 }
 
 .fertile {
-  background-color: #dcfce7;
+  background: #fef3c7;
 }
 
+.highfertile {
+  background: #fde68a;
+}
+
+.ovulation {
+  background: #fcd34d;
+}
+
+.safe {
+  background: #dcfce7;
+}
+
+.absolutesafe {
+  background: #bbf7d0;
+}
+
+/* Icons */
 .day-icon {
   width: 24px;
   height: 24px;
@@ -94,19 +136,38 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-size: 12px;
+  margin-top: 4px;
 }
 
-.icon-period::before {
-  content: '🩸';
+.icon-period {
+  background: #dc2626;
+  color: white;
 }
 
-.icon-ovulation::before {
-  content: '♥';
+.icon-fertile {
+  background: #f59e0b;
+  color: white;
 }
 
-.icon-safe-relative::before {
-  content: '✓';
+.icon-high-fertile {
+  background: #ea580c;
+  color: white;
+}
+
+.icon-ovulation {
+  background: #c2410c;
+  color: white;
+}
+
+.icon-safe {
+  background: #10b981;
+  color: white;
+}
+
+.icon-absolute-safe {
+  background: #059669;
+  color: white;
 }
 
 /* Legend */
@@ -132,7 +193,6 @@
   justify-content: center;
   margin-right: 16px;
   flex-shrink: 0;
-  font-size: 14px;
 }
 
 .legend-title-text {
@@ -145,4 +205,29 @@
 .legend-description {
   font-size: 14px;
   color: #6b7280;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    margin: 50px 10px 0;
+    padding: 15px;
+  }
+  
+  .day-cell {
+    min-height: 50px;
+    padding: 4px;
+  }
+  
+  .day-number {
+    font-size: 14px;
+  }
+  
+  .month-title {
+    font-size: 20px;
+  }
+  
+  .legend-item {
+    padding: 8px;
+  }
 }

@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './Cycle.module.scss';
+import api from '~/config/axios';
+import { toast } from 'react-toastify';
+import Cookies from 'js-cookie';
 
 function Cycle() {
   const navigate = useNavigate();
@@ -11,29 +14,49 @@ function Cycle() {
   const [periodDays, setPeriodDays] = useState('5');
   const [cycleLength, setCycleLength] = useState('28');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Lưu vào localStorage để dùng tạm cho CycleDetail
-    const data = {
-      method,
-      startDate,
-      endDate,
-      periodDays,
-      cycleLength,
-    };
+    if (!Cookies.get('accessToken')) {
+      toast.error("Vui lòng đăng nhập để sử dụng chức năng này");
+      navigate('/login');
+      return;
+    }
 
-    localStorage.setItem('menstrualInput', JSON.stringify(data));
+    if (!startDate || !periodDays) {
+      toast.error("Vui lòng nhập đủ dữ liệu bắt buộc");
+      return;
+    }
 
-    // Điều hướng sang trang chi tiết
-    navigate('/cycle-detail');
+    try {
+      const body = {
+        cycleType: method,
+        regularCycle: method === 'regular' ? {
+          startDate: new Date(startDate),
+          endDate: new Date(endDate),
+          periodLength: parseInt(periodDays)
+        } : undefined,
+        irregularCycle: method === 'irregular' ? {
+          startDate: new Date(startDate),
+          periodLength: parseInt(periodDays),
+          shortestCycleLength: parseInt(cycleLength),
+          longestCycleLength: parseInt(cycleLength) + 3
+        } : undefined
+      };
+
+      const response = await api.post('/menstrualcycle/create', body);
+      toast.success(response.data.message || "Tạo chu kỳ thành công");
+      navigate('/cycle-detail');
+    } catch (err) {
+      console.error('Lỗi khi gửi chu kỳ:', err);
+      toast.error("Không thể tạo chu kỳ, kiểm tra dữ liệu và thử lại");
+    }
   };
 
   return (
     <div className={styles['page-wrapper']}>
       <div className={styles['form-container']}>
         <div className={styles['header']}>Theo dõi chu kỳ kinh nguyệt</div>
-
         <form onSubmit={handleSubmit}>
           <div className={styles['form-group']}>
             <label className={styles['form-label']}>
