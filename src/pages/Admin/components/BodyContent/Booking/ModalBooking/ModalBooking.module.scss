@@ -1,0 +1,93 @@
+@use '~/styles/mixin.module.scss' as *;
+@use '~/styles/variable.module.scss' as *;
+
+.popup-wrap {
+  z-index: 10;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  @include flexBoxStyle(center, center, 0);
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .close-btn {
+    position: absolute;
+    z-index: 11;
+    top: 20px;
+    right: 20px;
+    font-size: 50px;
+    color: white;
+    cursor: pointer;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    z-index: 12;
+    padding: 20px;
+    border-radius: 15px;
+    gap: 15px;
+
+    .topContent {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      h2 {
+        @include flexBoxStyle(center, none, 10px);
+        .booking-status {
+          font-size: 14px;
+          background-color: rgb(245, 245, 37);
+          color: white;
+          padding: 5px;
+          border-radius: 10px;
+        }
+        .cancel {
+          background-color: red;
+        }
+        .complete {
+          background-color: green;
+        }
+      }
+    }
+
+    .bottomContent {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+
+      .serviceBox {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+
+    .btn-wrap {
+      text-align: right;
+
+      button {
+        @include btn(85px, none, 20px, red, white);
+        padding: 5px 10px;
+
+        &:last-child {
+          background-color: green;
+          margin-left: 5px;
+        }
+
+        &:hover {
+          opacity: 0.6;
+        }
+      }
+    }
+  }
+}

@@ -43,5 +43,17 @@
       flex-direction: column;
       gap: 10px;
     }
+
+    .buttonWrap {
+      text-align: right;
+
+      button {
+        @include btn(none, none, 20px, red, white);
+        padding: 5px 10px;
+        &:hover {
+          opacity: 0.6;
+        }
+      }
+    }
   }
 }

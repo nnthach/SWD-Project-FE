@@ -1,10 +1,12 @@
 /* eslint-disable no-unused-vars */
-import { getStaffScheduleDetailAPI } from '~/services/staffScheduleService';
+import { deleteStaffScheduleAPI, getStaffScheduleDetailAPI } from '~/services/staffScheduleService';
 import styles from './ModalStaffSchedule.module.scss';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 function ModalStaffSchedule({ setOpenPopup, scheduleDetailIdData, setScheduleDetailIdData }) {
   const [scheduleDetailData, setScheduleDetailData] = useState(null);
+
   const handleGetScheduleDetail = async () => {
     try {
       const res = await getStaffScheduleDetailAPI(scheduleDetailIdData.scheduleId, scheduleDetailIdData.staffId);
@@ -12,6 +14,16 @@ function ModalStaffSchedule({ setOpenPopup, scheduleDetailIdData, setScheduleDet
       setScheduleDetailData(res.data);
     } catch (error) {
       console.log('get schedule detail err', error);
+    }
+  };
+
+  const handleDeleteStaffSchedule = async () => {
+    try {
+      const res = await deleteStaffScheduleAPI(scheduleDetailIdData.scheduleId, scheduleDetailIdData.staffId);
+      console.log('delete staff schedule res', res);
+      toast.success('Delete staff schedule successful');
+    } catch (error) {
+      console.log('delete schedule err', error);
     }
   };
 
@@ -70,6 +82,10 @@ function ModalStaffSchedule({ setOpenPopup, scheduleDetailIdData, setScheduleDet
           <p>
             <strong>Phone:</strong> {scheduleDetailData?.consultant.phoneNumber}
           </p>
+        </div>
+
+        <div className={styles.buttonWrap}>
+          <button onClick={() => handleDeleteStaffSchedule()}>Delete</button>
         </div>
       </div>
     </div>

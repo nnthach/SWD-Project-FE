@@ -12,7 +12,7 @@
     padding: 40px 0;
 
     .user-aside {
-      border: 1px solid black;
+      border: 1px solid $new-color;
       width: 20%;
       padding: 20px;
       border-radius: 15px;
@@ -35,20 +35,22 @@
         p {
           cursor: pointer;
           padding: 10px;
+          color: $new-color;
+          border-radius: 10px;
           &:hover {
-            background-color: lightgray;
+            background-color: rgb(222, 244, 251);
           }
         }
 
         .active {
-          background-color: lightgray;
+          background-color: rgb(222, 244, 251);
         }
       }
     }
 
     .main-content {
       flex: 1;
-      border: 1px solid black;
+      border: 1px solid $new-color;
       border-radius: 15px;
       padding: 20px;
 

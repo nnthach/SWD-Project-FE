@@ -1,0 +1,47 @@
+@use '~/styles/variable.module.scss' as *;
+@use '~/styles/mixin.module.scss' as *;
+
+.wrap {
+  margin-top: 40px;
+
+  .bookingListWrap {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    .bookingCard {
+      background-color: rgb(232, 252, 255);
+      padding: 15px;
+      border-radius: 15px;
+
+      .bookingStatus {
+        background-color: rgb(238, 238, 18);
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-weight: bold;
+        color: white;
+      }
+      .complete {
+        background-color: green;
+      }
+      .cancel {
+        background-color: red;
+      }
+
+      .bookingInfo {
+        margin: 15px 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .viewBtn {
+        @include btn(none, none, 10px, $new-color, white);
+        padding: 5px 10px;
+        font-size: 14px;
+        &:hover {
+          opacity: 0.6;
+        }
+      }
+    }
+  }
+}

@@ -15,7 +15,6 @@ function StaffSchedule() {
     scheduleId: '',
     staffId: '',
   });
-  const [formType, setFormType] = useState('');
   const [scheduleQuery, setScheduleQuery] = useState({
     staffId: '',
     fromDate: '',
@@ -36,8 +35,9 @@ function StaffSchedule() {
   };
 
   useEffect(() => {
+    if (openPopup) return;
     handleFetchAllStaffSchedule();
-  }, []);
+  }, [openPopup]);
 
   const productsPerPage = 10;
 
@@ -151,7 +151,6 @@ function StaffSchedule() {
                           scheduleId: item.staffScheduleId,
                           staffId: item.consultant.userId,
                         }));
-                        setFormType('update');
                         setOpenPopup(true);
                       }}
                     />
