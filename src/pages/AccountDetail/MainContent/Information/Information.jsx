@@ -57,23 +57,40 @@ function Information() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // call API update user
-    // eslint-disable-next-line no-unused-vars
-    const { username, ...newFormUpdate } = formData;
 
-    console.log('Form submitted:', newFormUpdate);
+    if (!userInfo || !userInfo.id) {
+      toast.error('User information not available');
+      return;
+    }
 
-    const [y, m, d] = formData.dateOfBirth.split('-'); // "2025-06-14"
-    newFormUpdate.dateOfBirth = `${d}-${m}-${y}`;
+    // Include only the userId in the request
+    const updateData = {
+      userId: userInfo.id,
+      // You can include other required fields that don't need user input
+      // For example, if maintaining existing values is needed:
+      fullName: formData.fullName,
+      email: formData.email,
+      phoneNumber: formData.phoneNumber,
+      address: formData.address,
+      dateOfBirth: formData.dateOfBirth ? formatDateForAPI(formData.dateOfBirth) : null,
+      gender: formData.gender,
+    };
 
     try {
-      const res = await updateUserInfoAPI(newFormUpdate);
+      const res = await updateUserInfoAPI(updateData);
       console.log('update user res', res);
       toast.success('Update success');
     } catch (error) {
       console.log('update user err', error);
-      toast.success(error.response.data);
+      toast.error(error.response?.data || 'Update failed');
     }
+  };
+
+  // Helper function to format date correctly for the API
+  const formatDateForAPI = (dateString) => {
+    if (!dateString) return null;
+    const [y, m, d] = dateString.split('-'); // "2025-06-14"
+    return `${d}-${m}-${y}`; // Format as DD-MM-YYYY for the API
   };
 
   return (
