@@ -21,7 +21,7 @@
   }
 
   .filter-actions-wrap {
-    @include flexBoxStyle(center, space-between, none);
+    @include flexBoxStyle(center, none, none);
     margin-bottom: 10px;
     .filter-wrap {
     }
@@ -42,8 +42,14 @@
   .content-table {
     table {
       margin-bottom: 20px;
+      background-color: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: $box-shadow-default;
       thead {
-        background-color: lightgrey;
+        background-color: white;
+        border-bottom: 1px solid rgb(232, 232, 232);
+
         tr {
           text-align: left;
           th {

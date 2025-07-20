@@ -38,7 +38,7 @@ function User() {
 
       {/*Table */}
       <div className={styles['content-table']}>
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse'}}>
           <thead>
             <tr>
               <th>ID</th>

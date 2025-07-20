@@ -12,7 +12,9 @@ function Header() {
     <div className={styles['header-wrap']}>
       {/*Logo */}
       <div className={styles['header-logo']}>
-        <img src={logo} alt="logo" />
+        <Link to={'/'}>
+          <img src={logo} alt="logo" />
+        </Link>
       </div>{' '}
       <div className={styles['header-navbar']}>
         <Link to={'/'}>Home</Link>

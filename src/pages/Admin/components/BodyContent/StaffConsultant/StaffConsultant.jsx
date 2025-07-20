@@ -20,7 +20,7 @@ function StaffConsultant() {
     address: '',
     birthday: '',
     isActive: true,
-    roleId: '',
+    roleId: '157f0b62-afbb-44ce-91ce-397239875df5',
   };
   const [formConsultantData, setFormConsultantData] = useState(initialForm);
   const [openPopup, setOpenPopup] = useState(false);
