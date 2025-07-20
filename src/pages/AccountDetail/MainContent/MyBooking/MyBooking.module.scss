@@ -7,6 +7,7 @@
   .bookingListWrap {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
 
     .bookingCard {
       background-color: rgb(232, 252, 255);

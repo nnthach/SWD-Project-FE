@@ -31,7 +31,7 @@
 
   .form-wrap {
     background-color: white;
-    width: 50%;
+    width: 30%;
     padding: 20px;
     border-radius: 20px;
     z-index: 20;
@@ -39,14 +39,27 @@
     flex-direction: column;
     gap: 20px;
 
+    h1 {
+      text-align: center;
+      color: $new-color;
+    }
+
     .form-input {
       display: flex;
       flex-direction: column;
       gap: 5px;
 
-      input,
       textarea {
+        height: 200px;
+      }
+
+      input,
+      textarea,
+      select {
         padding: 5px;
+        border-radius: 10px;
+        border: 1px solid lightgrey;
+        outline: none;
       }
     }
 
@@ -54,7 +67,7 @@
       @include flexBoxStyle(center, center, 20px);
 
       button {
-        @include btn(100%, none, 15px, $primary-color, white);
+        @include btn(100%, none, 15px, $new-color, white);
         padding: 10px;
         font-weight: bold;
 

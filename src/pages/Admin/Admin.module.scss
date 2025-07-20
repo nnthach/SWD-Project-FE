@@ -12,7 +12,6 @@
     width: 20%;
     min-height: 100vh;
     padding: 20px;
-    border-right: 1px solid rgb(211, 211, 211);
 
     ul {
       list-style: none;
@@ -30,5 +29,6 @@
   .content {
     flex: 1;
     padding: 20px;
+    background-color: rgb(244, 252, 255);
   }
 }

@@ -42,9 +42,12 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid lightgrey;
 
       h2 {
         @include flexBoxStyle(center, none, 10px);
+        color: $new-color;
         .booking-status {
           font-size: 14px;
           background-color: rgb(245, 245, 37);
@@ -63,7 +66,11 @@
 
     .bottomContent {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(1, 1fr);
+
+      h2 {
+        color: $new-color;
+      }
 
       .serviceBox {
         display: flex;

@@ -24,13 +24,19 @@
     @include flexBoxStyle(center, none, 5px);
     margin-bottom: 10px;
 
+    input {
+      border-radius: 15px;
+      padding: 5px 10px;
+      border: 1px solid lightgrey;
+    }
+
     .filter-btn {
       @include btn(none, none, 10px, $new-color, white);
       padding: 5px 10px;
       margin-left: 10px;
     }
     .filter-btn-clear {
-      @include btn(none, none, 10px, lightgrey, black);
+      @include btn(none, none, 10px, lightgrey, white);
       padding: 5px 10px;
       margin-left: 10px;
     }
@@ -39,8 +45,14 @@
   .content-table {
     table {
       margin-bottom: 20px;
+      background-color: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: $box-shadow-default;
       thead {
-        background-color: lightgrey;
+        background-color: white;
+        border-bottom: 1px solid rgb(232, 232, 232);
+
         tr {
           text-align: left;
           th {
