@@ -51,7 +51,7 @@ function BookConsultant() {
             rating: 5, // Placeholder
             price: 300000, // Placeholder
             description: 'Professional consultant', // Placeholder
-            avatar: 'https://via.placeholder.com/150', // Placeholder
+            avatar: 'https://www.pngall.com/wp-content/uploads/12/Avatar-PNG-Image.png', // Placeholder
           }));
 
           setConsultants(consultantData);
@@ -204,7 +204,7 @@ function BookConsultant() {
       console.log('Creating appointment with data:', appointmentData);
 
       await createAppointmentAPI(appointmentData);
-      toast.success('Đặt lịch tư vấn thành công! Chúng tôi sẽ liên hệ với bạn sớm.');
+      toast.success('Đặt lịch tư vấn thành công!');
 
       // Refresh appointments for this consultant
       await fetchConsultantAppointments(selectedConsultant.consultant_id);

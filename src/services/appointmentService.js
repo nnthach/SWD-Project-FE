@@ -10,9 +10,16 @@ export const getAppointmentDetailAPI = async (id) => {
   return res;
 };
 
-export const createAppointmentAPI = async (body) => {
-  const res = await api.post('/appointment', body);
-  return res;
+export const createAppointmentAPI = async (appointmentData) => {
+  try {
+    const res = await api.post('/appointment', appointmentData, {
+      timeout: 60000, // Override default timeout just for this request
+    });
+    return res.data;
+  } catch (error) {
+    console.error('Error creating appointment:', error);
+    throw error;
+  }
 };
 
 export const updateAppointmentAPI = async (id, body) => {
