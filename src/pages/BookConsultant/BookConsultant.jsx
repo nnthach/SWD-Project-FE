@@ -16,7 +16,7 @@ const FIXED_SLOTS = [
 
 function BookConsultant() {
   const { searchTerm, setSearchTerm, filters, setFilters, sortBy, setSortBy, clearError } = useConsultant();
-  const { userInfo } = useContext(AuthContext);
+  const { userInfo, userId } = useContext(AuthContext);
 
   const [consultants, setConsultants] = useState([]);
   const [filteredConsultants, setFilteredConsultants] = useState([]);
@@ -195,7 +195,7 @@ function BookConsultant() {
 
       // Create appointment using user info from AuthContext
       const appointmentData = {
-        userId: userInfo.id,
+        userId: userId,
         consultantId: selectedConsultant.consultant_id,
         appointmentDate: formattedDate, // Send as YYYY-MM-DD string
         slot: parseInt(bookingData.slot),

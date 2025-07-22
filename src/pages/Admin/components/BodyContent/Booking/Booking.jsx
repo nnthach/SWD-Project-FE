@@ -148,7 +148,13 @@ function Booking() {
       </div>
 
       {/*Popup */}
-      {openPopup && <ModalBooking bookingDetailData={bookingDetailData} setOpenPopup={setOpenPopup} />}
+      {openPopup && (
+        <ModalBooking
+          bookingDetailData={bookingDetailData}
+          setOpenPopup={setOpenPopup}
+          setBookingDetailData={setBookingDetailData}
+        />
+      )}
     </>
   );
 }

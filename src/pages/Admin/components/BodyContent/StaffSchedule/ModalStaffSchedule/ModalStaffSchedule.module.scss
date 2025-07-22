@@ -34,18 +34,50 @@
     padding: 20px;
     border-radius: 10px;
     z-index: 12;
-    width: 800px;
-    @include flexBoxStyle(flex-start, space-between, 0px);
+    width: 700px;
+    display: flex;
+    flex-direction: column;
 
-    .left,
-    .right {
+    h2 {
+      color: $new-color;
+    }
+
+    .schedule-info {
       display: flex;
       flex-direction: column;
       gap: 10px;
+      background-color: rgb(245, 245, 245);
+      padding: 15px;
+      border-radius: 15px;
+
+      .status {
+        font-size: 14px;
+        background-color: rgb(245, 245, 37);
+        color: white;
+        padding: 5px;
+        border-radius: 10px;
+      }
+      .cancel {
+        background-color: red;
+      }
+      .complete {
+        background-color: green;
+      }
+    }
+
+    .top-content {
+      @include flexBoxStyle(flex-start, space-between, 10px);
+      .left,
+      .right {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
     }
 
     .buttonWrap {
       text-align: right;
+      margin-top: 20px;
 
       button {
         @include btn(none, none, 20px, red, white);

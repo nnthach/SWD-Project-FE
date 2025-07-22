@@ -4,16 +4,24 @@
 .wrap {
   margin-top: 40px;
 
-  .table {
+  table {
     border-collapse: collapse;
     width: 100%;
     margin-top: 30px;
+    background-color: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: $box-shadow-default;
 
     tbody,
     thead {
+      border-bottom: 1px solid rgb(232, 232, 232);
       td {
         padding: 12px;
-        text-align: left;
+        text-align: center;
+      }
+      tr {
+        border-bottom: 1px solid rgb(232, 232, 232);
       }
 
       th {

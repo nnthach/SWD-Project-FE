@@ -23,6 +23,7 @@ function Appointment() {
 
   const handleFetchAllAppointment = async () => {
     const queryString = new URLSearchParams(appointmentQuery).toString();
+    console.log('query string get all appointment', queryString);
     try {
       const res = await getAllAppointmentAPI(queryString);
       console.log('get all appointment res', res);

@@ -48,7 +48,7 @@ function ViewSchedule() {
     const toDateISO = `${days[days.length - 1].dateStr}T23:59:59Z`;
 
     const query = {
-      staffId: 'A5560692-1F1F-49B3-60FF-08DDBDEDD484',
+      staffId: userId,
       fromDate: fromDateISO,
       toDate: toDateISO,
       ticks: 0,
@@ -71,12 +71,12 @@ function ViewSchedule() {
 
   return (
     <div className={styles.wrap}>
-      <table border="1" cellPadding="10" style={{ borderCollapse: 'collapse', width: '100%', marginTop: 30 }}>
+      <table cellPadding="10" style={{ borderCollapse: 'collapse', width: '100%', marginTop: 30 }}>
         <thead>
           <tr>
-            <th style={{ padding: 5 }}>Date</th>
-            <th style={{ padding: 5 }}>Day</th>
-            <th style={{ padding: 5 }}>Working Slot</th>
+            <th style={{ padding: 10 }}>Date</th>
+            <th style={{ padding: 10 }}>Day</th>
+            <th style={{ padding: 10 }}>Working Slot</th>
           </tr>
         </thead>
         <tbody>
@@ -85,9 +85,9 @@ function ViewSchedule() {
 
             return (
               <tr key={index}>
-                <td style={{ padding: 5 }}>{day.displayDate}</td>
-                <td style={{ padding: 5 }}>{day.weekday}</td>
-                <td style={{ padding: 5 }}>
+                <td style={{ padding: 10 }}>{day.displayDate}</td>
+                <td style={{ padding: 10 }}>{day.weekday}</td>
+                <td style={{ padding: 10 }}>
                   {schedule ? `${schedule.startTime} - ${schedule.endTime} (${schedule.status})` : 'Off'}
                 </td>
               </tr>

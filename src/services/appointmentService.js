@@ -1,7 +1,7 @@
 import api from '~/config/axios';
 
 export const getAllAppointmentAPI = async (params) => {
-  const res = await api.get('/appointment', { params });
+  const res = await api.get(`/appointment?${params}`);
   return res;
 };
 

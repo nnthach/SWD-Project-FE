@@ -25,6 +25,8 @@ function Home() {
     autoplaySpeed: 2500,
     pauseOnHover: false,
   };
+  console.log('dot env', import.meta.env.VITE_APP_ID);
+
   return (
     <div className={styles['home-wrap']}>
       <div className={styles['home-new-content']}>

@@ -48,40 +48,46 @@ function ModalStaffSchedule({ setOpenPopup, scheduleDetailIdData, setScheduleDet
       </p>
 
       <div className={styles.content}>
-        <div className={styles.left}>
-          <h2>Schedule</h2>
-          <p>
-            <strong>ID:</strong> {scheduleDetailData?.staffScheduleId}
-          </p>
-          <p>
-            <strong>Date:</strong>{' '}
-            {new Date(scheduleDetailData?.workingDate).toLocaleDateString('en-GB', {
-              day: '2-digit',
-              month: 'long',
-              year: 'numeric',
-            })}
-          </p>
-          <p>
-            <strong>Time:</strong> {scheduleDetailData?.startTime} - {scheduleDetailData?.endTime}
-          </p>
-          <p>
-            <strong>Status:</strong> {scheduleDetailData?.status}
-          </p>
-        </div>
-        <div className={styles.right}>
-          <h2>Staff</h2>
-          <p>
-            <strong>ID:</strong> {scheduleDetailData?.consultantId}
-          </p>
-          <p>
-            <strong>Email:</strong> {scheduleDetailData?.consultant.email}
-          </p>
-          <p>
-            <strong>Username:</strong> {scheduleDetailData?.consultant.username}
-          </p>
-          <p>
-            <strong>Phone:</strong> {scheduleDetailData?.consultant.phoneNumber}
-          </p>
+        <div className={styles['top-content']}>
+          <div className={styles.left}>
+            <h2>Schedule</h2>
+            <div className={styles['schedule-info']}>
+              <p>
+                <strong>ID:</strong> {scheduleDetailData?.staffScheduleId}
+              </p>
+              <p>
+                <strong>Date:</strong>{' '}
+                {new Date(scheduleDetailData?.workingDate).toLocaleDateString('en-GB', {
+                  day: '2-digit',
+                  month: 'long',
+                  year: 'numeric',
+                })}
+              </p>
+              <p>
+                <strong>Time:</strong> {scheduleDetailData?.startTime} - {scheduleDetailData?.endTime}
+              </p>
+              <p>
+                <strong>Status:</strong> <span className={styles.status}>{scheduleDetailData?.status}</span>
+              </p>
+            </div>
+          </div>
+          <div className={styles.right}>
+            <h2>Staff</h2>
+            <div className={styles['schedule-info']}>
+              <p>
+                <strong>ID:</strong> {scheduleDetailData?.consultantId}
+              </p>
+              <p>
+                <strong>Email:</strong> {scheduleDetailData?.consultant.email}
+              </p>
+              <p>
+                <strong>Username:</strong> {scheduleDetailData?.consultant.username}
+              </p>
+              <p>
+                <strong>Phone:</strong> {scheduleDetailData?.consultant.phoneNumber}
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className={styles.buttonWrap}>
