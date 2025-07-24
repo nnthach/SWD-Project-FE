@@ -5,6 +5,7 @@ import { FaUser } from 'react-icons/fa';
 import Information from '~/pages/AccountDetail/MainContent/Information/Information';
 import { useState } from 'react';
 import MyBooking from '~/pages/AccountDetail/MainContent/MyBooking/MyBooking';
+import Appointment from '~/pages/AccountDetail/MainContent/Appointment/Appointment';
 
 function AccountDetail() {
   const [contentRender, setContentRender] = useState('Information');
@@ -15,6 +16,10 @@ function AccountDetail() {
         return <Information />;
       case 'My Booking':
         return <MyBooking />;
+      case 'My Appointments':
+        return <Appointment />;
+      default:
+        return <Information />;
     }
   };
 
@@ -29,16 +34,26 @@ function AccountDetail() {
 
             <div className={styles['aside-menu']}>
               <p
-                className={contentRender == 'Information' && styles.active}
+                className={
+                  contentRender === 'Information' ? styles.active : ''
+                }
                 onClick={() => setContentRender('Information')}
               >
                 Information
               </p>
               <p
-                className={contentRender == 'My Booking' && styles.active}
+                className={contentRender === 'My Booking' ? styles.active : ''}
                 onClick={() => setContentRender('My Booking')}
               >
                 My Booking
+              </p>
+              <p
+                className={
+                  contentRender === 'My Appointments' ? styles.active : ''
+                }
+                onClick={() => setContentRender('My Appointments')}
+              >
+                My Appointments
               </p>
             </div>
           </div>

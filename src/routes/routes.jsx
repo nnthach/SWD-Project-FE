@@ -12,6 +12,7 @@ import ServiceDetail from '~/pages/ServiceDetail/SerivceDetail';
 import StaffSchedule from '~/pages/StaffSchedule/StaffSchedule';
 import Cycle from '~/pages/Cycle/Cycle';
 import CycleDetail from '~/pages/CycleDetail/CycleDetail';
+import CreateBlog from '~/pages/Blog/CreateBlog';
 
 export const publicRouters = [
   {
@@ -25,6 +26,14 @@ export const publicRouters = [
   {
     path: '/blog',
     component: <Blog />,
+  },
+  {
+    path: '/create-blog',
+    component: <CreateBlog />,
+  },
+  {
+    path: '/blog/edit/:id',
+    component: <CreateBlog />,
   },
   {
     path: '/blog/:id',
