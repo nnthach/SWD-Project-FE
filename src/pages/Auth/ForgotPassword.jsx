@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { forgotPasswordAPI } from '~/services/authService';
 import { Link } from 'react-router-dom';
 import { FaSpinner } from 'react-icons/fa';
+import loginBanner from '~/assets/images/login-banner.png';
 
 function ForgotPassword() {
   const [email, setEmail] = useState('');
@@ -25,10 +26,14 @@ function ForgotPassword() {
       }
     } catch (error) {
       console.log('Send reset email err', error);
+      toast.error(error.response.data);
     }
   };
   return (
     <div className={styles['auth-wrap']}>
+      <div className={styles['auth-banner']}>
+        <img src={loginBanner} />
+      </div>
       {loading ? (
         <div className={styles['loading-box']}>
           <FaSpinner className={styles.spinner} />
@@ -46,25 +51,27 @@ function ForgotPassword() {
           <Link to={'/auth/login'}>Cancel process</Link>
         </div>
       ) : (
-        <div className={styles['form-wrap']}>
-          <h1>Forgot Password</h1>
-          <form onSubmit={handleSubmit}>
-            <div className={styles['input-field']}>
-              <label>Email</label>
-              <input type="text" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-            </div>
+        <div className={styles['form-container-wrap']}>
+          <div className={styles['form-wrap']}>
+            <h1>Forgot Password</h1>
+            <form onSubmit={handleSubmit}>
+              <div className={styles['input-field']}>
+                <label>Email</label>
+                <input type="text" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              </div>
 
-            <button type="submit" className={styles['submit-btn']}>
-              Send
-            </button>
-          </form>
-          <div className={styles['sub-option']}>
-            <Link to={'/auth/login'} style={{ color: 'black', textDecoration: 'none', fontSize: 12 }}>
-              Back to Login
-            </Link>
-            <Link to={'/'} style={{ color: 'black', textDecoration: 'none', fontSize: 12 }}>
-              Continue as Guest
-            </Link>
+              <button type="submit" className={styles['submit-btn']}>
+                Send
+              </button>
+            </form>
+            <div className={styles['sub-option']}>
+              <Link to={'/auth/login'} style={{ color: 'black', textDecoration: 'none', fontSize: 12 }}>
+                Back to Login
+              </Link>
+              <Link to={'/'} style={{ color: 'black', textDecoration: 'none', fontSize: 12 }}>
+                Continue as Guest
+              </Link>
+            </div>
           </div>
         </div>
       )}

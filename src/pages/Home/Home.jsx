@@ -25,6 +25,8 @@ function Home() {
     autoplaySpeed: 2500,
     pauseOnHover: false,
   };
+  console.log('dot env', import.meta.env.VITE_APP_ID);
+
   return (
     <div className={styles['home-wrap']}>
       <div className={styles['home-new-content']}>
@@ -95,7 +97,7 @@ function Home() {
           <h1>Our Services</h1>
           <div className={styles['service-wrap']}>
             {servicesListData &&
-              servicesListData.slice(0, 9).map((item) => <ServiceCard item={item} key={item.serviceId} />)}
+              servicesListData?.$values?.slice(0, 9).map((item) => <ServiceCard item={item} key={item.serviceId} />)}
           </div>
 
           <button className={styles['service-page-btn']}>

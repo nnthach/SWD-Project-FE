@@ -27,7 +27,7 @@ function StaffSchedule() {
     try {
       const res = await getStaffAllScheduleAndQueryAPI(queryString);
       console.log('get all schedule res', res);
-      setStaffScheduleListData(res.data);
+      setStaffScheduleListData(res.data?.$values);
     } catch (error) {
       console.log('get all schedule err', error);
       toast.error('get all schedule err');

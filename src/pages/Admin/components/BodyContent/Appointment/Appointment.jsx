@@ -23,10 +23,11 @@ function Appointment() {
 
   const handleFetchAllAppointment = async () => {
     const queryString = new URLSearchParams(appointmentQuery).toString();
+    console.log('query string get all appointment', queryString);
     try {
       const res = await getAllAppointmentAPI(queryString);
       console.log('get all appointment res', res);
-      setAppointmentListData(res.data);
+      setAppointmentListData(res.data?.$values);
     } catch (error) {
       console.log('get all appointment err', error);
       toast.error('get all appointment err');

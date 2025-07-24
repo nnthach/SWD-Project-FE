@@ -37,6 +37,9 @@
     padding: 20px;
     border-radius: 15px;
     gap: 15px;
+    h2 {
+      color: $new-color;
+    }
 
     .topContent {
       display: flex;
@@ -72,6 +75,22 @@
       }
     }
 
+    .result-content {
+      button {
+        @include btn(none, none, 15px, $new-color, white);
+        padding: 5px 10px;
+        margin-top: 10px;
+      }
+
+      .test-result-img-wrap {
+        img {
+          width: 100px;
+          height: auto;
+          object-fit: cover;
+        }
+      }
+    }
+
     .btn-wrap {
       text-align: right;
 
@@ -79,10 +98,10 @@
         @include btn(85px, none, 20px, red, white);
         padding: 5px 10px;
 
-        &:last-child {
-          background-color: green;
-          margin-left: 5px;
-        }
+        // &:last-child {
+        //   background-color: green;
+        //   margin-left: 5px;
+        // }
 
         &:hover {
           opacity: 0.6;

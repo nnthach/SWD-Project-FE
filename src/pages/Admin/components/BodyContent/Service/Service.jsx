@@ -34,7 +34,7 @@ function Service() {
 
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProduct = servicesListData.slice(indexOfFirstProduct, indexOfLastProduct);
+  const currentProduct = servicesListData?.$values.slice(indexOfFirstProduct, indexOfLastProduct);
   return (
     <>
       <div className={styles.wrap}>
@@ -44,7 +44,7 @@ function Service() {
         <div className={styles['header-content']}>
           <div className={styles['header-content-box']}>
             <p>Total Service</p>
-            <p>{servicesListData?.length}</p>
+            <p>{servicesListData?.$values.length}</p>
           </div>
         </div>
 

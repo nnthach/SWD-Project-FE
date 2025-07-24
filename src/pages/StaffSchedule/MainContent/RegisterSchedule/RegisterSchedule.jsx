@@ -11,9 +11,8 @@ import {
 
 function RegisterSchedule() {
   const { userInfo, userId } = useContext(AuthContext);
-  console.log('user info', userInfo);
   const [staffSchedule, setStaffSchedule] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(false);
   console.log('staff schedule', staffSchedule);
 
   const normalizeDate = (isoString) => isoString.split('T')[0]; //chuyen timestamp về dạng "yyyy-mm-dd"
@@ -50,6 +49,7 @@ function RegisterSchedule() {
   const [weekForms, setWeekForms] = useState(getNextWeekDays());
 
   const getStaffSchedule = async () => {
+    setIsLoading(true);
     const today = new Date();
     const dayOfWeek = today.getDay(); // 0 (Sun) → 6 (Sat)
 
@@ -65,27 +65,30 @@ function RegisterSchedule() {
     const toDateISO = new Date(`${sundayNextWeek.toISOString().split('T')[0]}T23:59:59Z`).toISOString();
 
     const query = {
-      staffId: 'A5560692-1F1F-49B3-60FF-08DDBDEDD484',
+      staffId: userId,
+      // staffId: '38F77E7B-7119-4312-57CD-08DDC8B7AF28',
       fromDate: fromDateISO,
       toDate: toDateISO,
       ticks: 0,
     };
     const queryString = new URLSearchParams(query).toString();
 
-    console.log('query get schedule', queryString);
-
     try {
       const res = await getStaffAllScheduleAndQueryAPI(queryString);
       console.log('staff schedule res', res.data);
-      setStaffSchedule(res.data);
+      setStaffSchedule(res.data?.$values);
+      setIsLoading(false);
     } catch (error) {
       console.log('get staff schedule err', error);
+      setIsLoading(false);
     }
   };
 
-  useEffect(() => {
+ useEffect(() => {
+  if (userId) {
     getStaffSchedule();
-  }, []);
+  }
+}, [userId]);
 
   const handleSlotChange = (index, value) => {
     const updated = [...weekForms];
@@ -119,13 +122,14 @@ function RegisterSchedule() {
       const { startTime, endTime } = getSlotTimeRange(day.slot);
 
       const dataToSubmit = {
-        consultantId: userInfo.userId,
+        consultantId: userId,
+        // consultantId: '38F77E7B-7119-4312-57CD-08DDC8B7AF28',
         workingDate: new Date(`${day.dateStr}T00:00:00Z`).toISOString(),
         startTime,
         endTime,
       };
 
-      console.log('📦 Gửi lịch ngày:', dataToSubmit);
+      console.log('Gửi lịch ngày:', dataToSubmit);
 
       const res = await createStaffScheduleAPI(dataToSubmit);
       console.log('create schedule res', res);
@@ -137,6 +141,8 @@ function RegisterSchedule() {
   };
 
   const handleDeleteScheduleRegistered = async (staffId, scheduleId) => {
+    console.log('staffid delete', staffId);
+    console.log('scheduleId delete', scheduleId);
     try {
       const res = await deleteStaffScheduleAPI(scheduleId, staffId);
       console.log('delete registered schedule res', res);
@@ -146,15 +152,19 @@ function RegisterSchedule() {
     }
   };
 
+  if (isLoading) {
+    return <div>loading</div>;
+  }
+
   return (
     <div className={styles.wrap}>
-      <table border="1" cellPadding="8" style={{ borderCollapse: 'collapse', width: '100%' }}>
+      <table cellPadding="8" style={{ borderCollapse: 'collapse', width: '100%' }}>
         <thead>
           <tr>
-            <th style={{ padding: 5 }}>Date</th>
-            <th style={{ padding: 5 }}>Day</th>
-            <th style={{ padding: 5 }}>Working Slot</th>
-            <th style={{ padding: 5 }}>Action</th>
+            <th style={{ padding: 10 }}>Date</th>
+            <th style={{ padding: 10 }}>Day</th>
+            <th style={{ padding: 10 }}>Working Slot</th>
+            <th style={{ padding: 10 }}>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -164,9 +174,9 @@ function RegisterSchedule() {
 
             return (
               <tr key={index}>
-                <td style={{ padding: 5 }}>{day.displayDate}</td>
-                <td style={{ padding: 5 }}>{day.weekday}</td>
-                <td style={{ padding: 5 }}>
+                <td style={{ padding: 10 }}>{day.displayDate}</td>
+                <td style={{ padding: 10 }}>{day.weekday}</td>
+                <td style={{ padding: 10 }}>
                   {existingSchedule ? (
                     <span>
                       {existingSchedule.startTime} - {existingSchedule.endTime}
@@ -180,9 +190,10 @@ function RegisterSchedule() {
                     </select>
                   )}
                 </td>
-                <td style={{ padding: 5 }}>
+                <td style={{ padding: 10 }}>
                   {existingSchedule ? (
                     <button
+                      className={styles['delete-btn']}
                       onClick={() =>
                         handleDeleteScheduleRegistered(existingSchedule.consultantId, existingSchedule.staffScheduleId)
                       }
@@ -190,7 +201,9 @@ function RegisterSchedule() {
                       Delete
                     </button>
                   ) : (
-                    <button onClick={() => handleSubmitDay(index)}>Register</button>
+                    <button className={styles['register-btn']} onClick={() => handleSubmitDay(index)}>
+                      Register
+                    </button>
                   )}
                 </td>
               </tr>

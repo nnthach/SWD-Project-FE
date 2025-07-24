@@ -34,17 +34,53 @@
     padding: 20px;
     border-radius: 10px;
     z-index: 12;
-    width: 1000px;
+    width: 800px;
+
+    h2 {
+      color: $new-color;
+    }
 
     .topContent {
       display: flex;
       flex-direction: column;
       gap: 10px;
       margin-bottom: 20px;
+
+      .appointment-info {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background-color: rgb(245, 245, 245);
+        padding: 15px;
+        border-radius: 15px;
+
+        .status {
+          font-size: 14px;
+          background-color: rgb(245, 245, 37);
+          color: white;
+          padding: 5px;
+          border-radius: 10px;
+        }
+        .cancel {
+          background-color: red;
+        }
+        .complete {
+          background-color: green;
+        }
+      }
     }
 
     .bottomContent {
       @include flexBoxStyle(flex-start, space-between, 0px);
+
+      .appointment-info {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background-color: rgb(245, 245, 245);
+        padding: 15px;
+        border-radius: 15px;
+      }
 
       .bottomLeft,
       .bottomRight {

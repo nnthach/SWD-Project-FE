@@ -12,7 +12,7 @@ function MyBooking() {
     try {
       const res = await api.get(`/Booking/my-bookings`);
       console.log('get  booking detail res', res);
-      setBookingListData(res.data);
+      setBookingListData(res.data.$values);
     } catch (error) {
       console.log('get  booking detail err', error);
     }
@@ -32,6 +32,10 @@ function MyBooking() {
   useEffect(() => {
     handleFetchMyBooking();
   }, []);
+
+  useEffect(() => {
+    handleFetchMyBooking();
+  }, [openPopup]);
   return (
     <>
       <div className={styles.wrap}>
@@ -40,7 +44,7 @@ function MyBooking() {
             <div key={booking.bookingId} className={styles.bookingCard}>
               <span
                 className={`${styles.bookingStatus} ${
-                  booking.status === 'CANCEL' ? styles.cancel : booking.status === 'COMPLETE' ? styles.complete : ''
+                  booking.status === 'DELETED' ? styles.cancel : booking.status === 'COMPLETE' ? styles.complete : ''
                 }`}
               >
                 {booking.status.charAt(0).toUpperCase() + booking.status.slice(1).toLowerCase()}
