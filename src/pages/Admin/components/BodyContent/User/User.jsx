@@ -3,6 +3,7 @@ import { fakeDataUserInAdmin } from '~/constants/fakeData';
 import styles from './User.module.scss';
 import Pagination from '~/components/Pagination/Pagination';
 import { useState } from 'react';
+import { FaEye } from 'react-icons/fa';
 
 function User() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -20,25 +21,25 @@ function User() {
       <div className={styles['header-content']}>
         <div className={styles['header-content-box']}>
           <p>Total User</p>
-          <p>159</p>
+          <p>11</p>
         </div>
         <div className={styles['header-content-box']}>
           <p>Admins</p>
-          <p>159</p>
+          <p>1</p>
         </div>
         <div className={styles['header-content-box']}>
           <p>Staffs</p>
-          <p>159</p>
+          <p>3</p>
         </div>
         <div className={styles['header-content-box']}>
-          <p>Users</p>
-          <p>159</p>
+          <p>Consultants</p>
+          <p>2</p>
         </div>
       </div>
 
       {/*Table */}
       <div className={styles['content-table']}>
-        <table style={{ width: '100%', borderCollapse: 'collapse'}}>
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr>
               <th>ID</th>
@@ -51,11 +52,13 @@ function User() {
           <tbody>
             {currentProduct.map((item) => (
               <tr key={item.id}>
-                <td>123456</td>
-                <td>Nguyễn Ngọc Thạch</td>
-                <td>nnthach</td>
-                <td>User</td>
-                <td>Action</td>
+                <td>{item.id}</td>
+                <td>{item.name}</td>
+                <td>{item.username}</td>
+                <td>{item.role}</td>
+                <td>
+                  <FaEye style={{ cursor: 'pointer', color: '#0e82fd', fontSize: 20 }} />
+                </td>
               </tr>
             ))}
           </tbody>

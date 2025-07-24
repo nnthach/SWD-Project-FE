@@ -81,8 +81,8 @@ function Service() {
                 <tr key={item.serviceId}>
                   <td>{item.serviceId}</td>
                   <td style={{ fontWeight: 'bold' }}>{item.serviceName}</td>
-                  <td>{item.description}</td>
-                  <td>{item.price}</td>
+                  <td className={styles.description}>{item.description}</td>
+                  <td>{item.price.toLocaleString()}</td>
                   <td>
                     <FaEye
                       style={{ cursor: 'pointer', color: '#0e82fd', fontSize: 20 }}
@@ -101,7 +101,7 @@ function Service() {
 
           <Pagination
             productsPerPage={productsPerPage}
-            totalProducts={servicesListData.length}
+            totalProducts={servicesListData?.$values.length}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
           />

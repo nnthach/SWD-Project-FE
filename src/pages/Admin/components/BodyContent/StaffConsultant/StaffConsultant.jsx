@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import styles from './StaffConsultant.module.scss';
 import Pagination from '~/components/Pagination/Pagination';
-import { FaEye } from 'react-icons/fa';
+import { FaEye, FaMale, FaFemale } from 'react-icons/fa';
 import ModalStaffConsultant from '~/pages/Admin/components/BodyContent/StaffConsultant/ModalStaffConsultant/ModalStaffConsultant';
 import { toast } from 'react-toastify';
 import { getAllStaffConsultantAPI, getStaffConsultantDetailAPI } from '~/services/staffConsultantService';
@@ -27,7 +27,7 @@ function StaffConsultant() {
   const [consultantId, setConsultantId] = useState('');
   const [formType, setFormType] = useState('');
   const [roleIdFetch, setRoleIdFetch] = useState('157f0b62-afbb-44ce-91ce-397239875df5');
-  console.log('consultant id', consultantId);
+  console.log('role id', roleIdFetch);
 
   const handleFetchAllStaffConsultant = async () => {
     try {
@@ -127,7 +127,7 @@ function StaffConsultant() {
                   <td>{item.fullName}</td>
                   <td style={{ fontWeight: 'bold' }}>{item.username}</td>
                   <td style={{ overflow: 'hidden' }}>{item.email}</td>
-                  <td>{item.gender ? 'Male' : 'Female'}</td>
+                  <td>{item.gender ? <FaMale color="blue" /> : <FaFemale color="pink" />}</td>
                   <td>{item.roleId == '157f0b62-afbb-44ce-91ce-397239875df5' ? 'Consultant' : 'Staff'}</td>
                   <td>
                     <FaEye

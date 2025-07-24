@@ -70,6 +70,20 @@
             overflow: 'hidden';
             text-overflow: 'ellipsis';
           }
+
+          .status {
+            font-size: 14px;
+            background-color: rgb(245, 245, 37);
+            color: white;
+            padding: 5px;
+            border-radius: 10px;
+          }
+          .cancel {
+            background-color: red;
+          }
+          .complete {
+            background-color: green;
+          }
         }
       }
     }

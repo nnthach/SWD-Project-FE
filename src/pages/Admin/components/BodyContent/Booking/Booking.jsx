@@ -13,22 +13,26 @@ function Booking() {
   const [openPopup, setOpenPopup] = useState(false);
   const [status, setStatus] = useState('PENDING');
   const [bookingDetailData, setBookingDetailData] = useState(null);
+  const [isDetailLoading, setIsDetailLoading] = useState(false);
 
   const handleOpenBookingDetail = async (id) => {
+    setIsDetailLoading(true);
     try {
       const res = await api.get(`/Booking/my-bookings/${id}`);
-      console.log('get  booking detail res', res.data);
+      console.log('get booking detail res', res.data);
       setBookingDetailData(res.data);
+      setIsDetailLoading(false);
       setOpenPopup(true);
     } catch (error) {
       console.log('get  booking detail err', error);
-      toast.error('get  booking detail err');
+      toast.error(error.response.data);
+      setIsDetailLoading(false);
     }
   };
 
   const handleFetchAllBooking = async () => {
     try {
-      const res = await api.get(`/Booking/bookings-by-status?status=${status}`);
+      const res = await api.get(`/Booking/admin-by-status?status=${status}`);
       console.log('get all booking res', res);
       setBookingListData(res.data.$values);
     } catch (error) {
@@ -56,7 +60,7 @@ function Booking() {
         {/*Total number of user box */}
         <div className={styles['header-content']}>
           <div className={styles['header-content-box']}>
-            <p>Total Bookings are {status == 'PENDING' ? 'Pending' : status == 'COMPLETE' ? 'Complete' : 'Cancel'}</p>
+            <p>Total Bookings are {status == 'PENDING' ? 'Pending' : status == 'COMPLETE' ? 'Complete' : 'Deleted'}</p>
             <p>{bookingListData?.length}</p>
           </div>
         </div>
@@ -77,10 +81,10 @@ function Booking() {
               <p>Complete</p>
             </div>
             <div
-              className={`${styles['filter-box']} ${status === 'CANCEL' ? styles.active : ''}`}
-              onClick={() => setStatus('CANCEL')}
+              className={`${styles['filter-box']} ${status === 'DELETED' ? styles.active : ''}`}
+              onClick={() => setStatus('DELETED')}
             >
-              <p>Cancel</p>
+              <p>Delete</p>
             </div>
           </div>
         </div>
@@ -99,43 +103,56 @@ function Booking() {
                 <th style={{ width: '10%' }}>Action</th>
               </tr>
             </thead>
+
             <tbody>
-              {currentProduct.map((item) => (
-                <tr key={item.bookingId}>
-                  <td>{item.bookingId}</td>
-                  <td>
-                    {new Date(item.bookingDate).toLocaleString('vi-VN', {
-                      day: '2-digit',
-                      month: '2-digit',
-                      year: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                      hour12: false,
-                    })}
-                  </td>
-                  <td>
-                    <span
-                      className={`${styles.bookingStatus} ${
-                        item?.status === 'CANCEL' ? styles.cancel : item?.status === 'COMPLETE' ? styles.complete : ''
-                      }`}
-                    >
-                      {item?.status}
-                    </span>
-                  </td>
-                  <td>{item.note}</td>
-                  <td>{item.serviceCount}</td>
-                  <td>{item.totalPrice}</td>
-                  <td>
-                    <FaEye
-                      style={{ cursor: 'pointer', color: '#0e82fd', fontSize: 20 }}
-                      onClick={() => {
-                        console.log('item detail', item);
-                        handleOpenBookingDetail(item.bookingId);
-                      }}
-                    />
+              {currentProduct.length == 0 ? (
+                <tr>
+                  <td colSpan={7} style={{ textAlign: 'center', padding: '12px' }}>
+                    No booking
                   </td>
                 </tr>
-              ))}
+              ) : (
+                currentProduct.map((item) => (
+                  <tr key={item.bookingId}>
+                    <td>{item.bookingId}</td>
+                    <td>
+                      {new Date(item.bookingDate).toLocaleString('vi-VN', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false,
+                      })}
+                    </td>
+                    <td>
+                      <span
+                        className={`${styles.bookingStatus} ${
+                          item?.status === 'DELETED'
+                            ? styles.cancel
+                            : item?.status === 'COMPLETE'
+                            ? styles.complete
+                            : ''
+                        }`}
+                      >
+                        {item?.status}
+                      </span>
+                    </td>
+                    <td>{item.note}</td>
+                    <td>{item.serviceCount}</td>
+                    <td>{item.totalPrice}</td>
+                    <td>
+                      <FaEye
+                        style={{ cursor: 'pointer', color: '#0e82fd', fontSize: 20 }}
+                        onClick={() => {
+                          console.log('item detail', item);
+                          handleOpenBookingDetail(item.bookingId);
+                        }}
+                      />
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
 
@@ -151,6 +168,7 @@ function Booking() {
       {/*Popup */}
       {openPopup && (
         <ModalBooking
+          isDetailLoading={isDetailLoading}
           bookingDetailData={bookingDetailData}
           setOpenPopup={setOpenPopup}
           setBookingDetailData={setBookingDetailData}

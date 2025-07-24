@@ -157,7 +157,9 @@ function Appointment() {
                   </td>
                   <td>{item?.consultant.username}</td>
                   <td>{item?.user.username}</td>
-                  <td>{item?.status}</td>
+                  <td>
+                    <span className={styles.status}>{item?.status}</span>
+                  </td>
                   <td>
                     <FaEye
                       style={{ cursor: 'pointer', color: '#0e82fd', fontSize: 20 }}
