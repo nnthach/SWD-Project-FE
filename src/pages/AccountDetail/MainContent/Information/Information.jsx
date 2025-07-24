@@ -5,8 +5,7 @@ import { updateUserInfoAPI } from '~/services/authService';
 import { toast } from 'react-toastify';
 
 function Information() {
-  const { userInfo } = useContext(AuthContext);
-  console.log('userinfo', userInfo);
+  const { userInfo, userId, fetchUserInfo } = useContext(AuthContext);
 
   const [formData, setFormData] = useState({
     username: '',
@@ -58,16 +57,13 @@ function Information() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!userInfo || !userInfo.id) {
+    if (!userInfo || !userId) {
       toast.error('User information not available');
       return;
     }
 
-    // Include only the userId in the request
     const updateData = {
-      userId: userInfo.id,
-      // You can include other required fields that don't need user input
-      // For example, if maintaining existing values is needed:
+      userId: userId,
       fullName: formData.fullName,
       email: formData.email,
       phoneNumber: formData.phoneNumber,
@@ -79,6 +75,7 @@ function Information() {
     try {
       const res = await updateUserInfoAPI(updateData);
       console.log('update user res', res);
+      fetchUserInfo();
       toast.success('Update success');
     } catch (error) {
       console.log('update user err', error);
@@ -106,7 +103,7 @@ function Information() {
         </div>
         <div className={styles['input-field']}>
           <label>Email</label>
-          <input type="email" name="email" value={formData.email} onChange={handleChange} />
+          <input type="email" name="email" value={formData.email} onChange={handleChange} readOnly />
         </div>
         <div className={styles['input-field']}>
           <label>Phone Number</label>

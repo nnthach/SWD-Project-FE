@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import styles from "./CycleDetail.module.scss";
 import axios from "../../config/axios";

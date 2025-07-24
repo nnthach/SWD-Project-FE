@@ -69,6 +69,14 @@
       text-align: center;
       padding: 50px 0;
 
+      .home-blog-wrap {
+        width: 1000px;
+        margin: 30px auto;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+      }
+
       .service-wrap {
         width: 1000px;
         margin: 30px auto;

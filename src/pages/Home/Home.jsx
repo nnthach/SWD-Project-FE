@@ -6,14 +6,18 @@ import homeBanner3 from '~/assets/images/home_banner3.jpg';
 import hospitalImg from '~/assets/images/hospital.jpg';
 import ServiceCard from '~/components/ServiceCard/ServiceCard';
 import { Link } from 'react-router-dom';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ServiceContext } from '~/context/ServiceContext';
 import BlogCard from '~/pages/Home/BlogCard/BlogCard';
 import Slider from 'react-slick';
 import { motion } from 'framer-motion';
+import { blogFakeData } from '~/constants/fakeData';
+import { getAllBlogsAPI } from '~/services/blogService';
 
 function Home() {
   const { servicesListData, fetchAllServices } = useContext(ServiceContext);
+  const [blogListData, setBlogListData] = useState([]);
+
   console.log('servicelistdat home', servicesListData);
 
   const settings = {
@@ -25,7 +29,20 @@ function Home() {
     autoplaySpeed: 2500,
     pauseOnHover: false,
   };
-  console.log('dot env', import.meta.env.VITE_APP_ID);
+
+  const fetchAllBlog = async () => {
+    try {
+      const res = await getAllBlogsAPI();
+      console.log('get all blog res', res);
+      setBlogListData(res.data?.$values);
+    } catch (error) {
+      console.log('err get blog');
+    }
+  };
+
+  useEffect(() => {
+    fetchAllBlog();
+  }, []);
 
   return (
     <div className={styles['home-wrap']}>
@@ -114,7 +131,9 @@ function Home() {
         <div className={styles['home-service']}>
           <h1>Blogs</h1>
           <div className={styles['service-wrap']}>
-            <BlogCard />
+            {blogListData.slice(0, 3).map((blog) => (
+              <BlogCard key={blog.blogId} data={blog} />
+            ))}
           </div>
 
           <button className={styles['service-page-btn']}>

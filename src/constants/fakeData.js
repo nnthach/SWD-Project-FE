@@ -347,3 +347,46 @@ export const availableTimeSlots = [
   '17:00',
   '18:00',
 ];
+
+export const blogFakeData = [
+  {
+    id: 1,
+    image:
+      'https://flo.health/uploads/media/sulu-1200x630/08/7328-sexually-transmitted-infections-types-01_1006x755.jpg?v=1-0&inline=1',
+    category: 'HIV',
+    title: 'Signs of Sexually Transmitted Infections You Should Know',
+    description: 'Learn about common symptoms of sexually transmitted infections and how to prevent them.',
+    author: {
+      name: 'Dr. Lan',
+      avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfxK2SwzDMCoKloNQZ6v2WLDN0bSNSuVRwYQ&s',
+    },
+    date: 'November 5, 2023',
+    readingTime: '5 min read',
+  },
+  {
+    id: 2,
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3ij9lF7HCq4VUCY2BopEBvGun_ogada-bWg&s',
+    category: 'Reproductive Health',
+    title: 'How to Prevent Unintended Pregnancy',
+    description: 'A guide to safe and effective birth control methods.',
+    author: {
+      name: 'Dr. Minh',
+      avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfxK2SwzDMCoKloNQZ6v2WLDN0bSNSuVRwYQ&s',
+    },
+    date: 'March 10, 2024',
+    readingTime: '7 min read',
+  },
+  {
+    id: 3,
+    image: 'https://www.lboro.ac.uk/media/wwwlboroacuk/external/content/mediacentre/pressreleases/2020/02/lgbt-pointing.jpg',
+    category: 'Gender',
+    title: 'Understanding Homosexuality and Social Stereotypes',
+    description: 'This article helps you gain a clearer and more open perspective on homosexuality.',
+    author: {
+      name: 'Dr. Huy',
+      avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfxK2SwzDMCoKloNQZ6v2WLDN0bSNSuVRwYQ&s',
+    },
+    date: 'June 22, 2024',
+    readingTime: '6 min read',
+  },
+];

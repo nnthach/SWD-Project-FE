@@ -14,7 +14,7 @@
       gap: 5px;
 
       label {
-        color: $new-color;
+        font-weight: bold;
       }
 
       input,
@@ -24,6 +24,7 @@
         border: none;
         color: black;
         border-radius: 5px;
+        outline: none;
       }
     }
 

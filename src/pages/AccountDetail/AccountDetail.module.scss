@@ -5,6 +5,7 @@
   min-height: 1000px;
   width: 100%;
   margin-top: 100px;
+  background-color: rgb(244, 252, 255);
 
   .container {
     @include flexBoxStyle(flex-start, none, 20px);
@@ -12,10 +13,11 @@
     padding: 40px 0;
 
     .user-aside {
-      border: 1px solid $new-color;
+      background-color: white;
+      box-shadow: $box-shadow-default;
+      border-radius: 20px;
       width: 20%;
       padding: 20px;
-      border-radius: 15px;
 
       .user-avatar {
         @include flexBoxStyle(center, center, 0);
@@ -35,23 +37,24 @@
         p {
           cursor: pointer;
           padding: 10px;
-          color: $new-color;
-          border-radius: 10px;
           &:hover {
-            background-color: rgb(222, 244, 251);
+            background-color: rgb(245, 245, 245);
+            border-radius: 15px;
           }
         }
 
         .active {
-          background-color: rgb(222, 244, 251);
+          background-color: rgb(245, 245, 245);
+          border-radius: 15px;
         }
       }
     }
 
     .main-content {
       flex: 1;
-      border: 1px solid $new-color;
-      border-radius: 15px;
+      background-color: white;
+      box-shadow: $box-shadow-default;
+      border-radius: 20px;
       padding: 20px;
 
       h5 {
