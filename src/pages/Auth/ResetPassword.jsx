@@ -3,6 +3,7 @@ import styles from './Auth.module.scss';
 import { toast } from 'react-toastify';
 import { resetPasswordAPI } from '~/services/authService';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import loginBanner from '~/assets/images/login-banner.png';
 
 function ResetPassword() {
   const navigate = useNavigate();
@@ -57,31 +58,36 @@ function ResetPassword() {
   return (
     
       <div className={styles['auth-wrap']}>
-        <div className={styles['form-wrap']}>
-          <h1>Reset Password</h1>
-          <form onSubmit={handleSubmit}>
-            <div className={styles['input-field']}>
-              <label>New Password</label>
-              <input type="password" name="newPassword" value={form.newPassword} onChange={handleChange} />
+        <div className={styles['auth-banner']}>
+                <img src={loginBanner} />
+              </div>
+        <div className={styles['form-container-wrap']}>
+          <div className={styles['form-wrap']}>
+            <h1>Reset Password</h1>
+            <form onSubmit={handleSubmit}>
+              <div className={styles['input-field']}>
+                <label>New Password</label>
+                <input type="password" name="newPassword" value={form.newPassword} onChange={handleChange} />
+              </div>
+              <div className={styles['input-field']}>
+                <label>Confirm New Password</label>
+                <input
+                  type="password"
+                  name="confirmNewPassword"
+                  value={form.confirmNewPassword}
+                  onChange={handleChange}
+                />
+              </div>
+  
+              <button type="submit" className={styles['submit-btn']}>
+                Confirm
+              </button>
+            </form>
+            <div className={styles['sub-option']}>
+              <Link to={'/'} style={{ color: 'black', textDecoration: 'none', fontSize: 12 }}>
+                Continue as Guest
+              </Link>
             </div>
-            <div className={styles['input-field']}>
-              <label>Confirm New Password</label>
-              <input
-                type="password"
-                name="confirmNewPassword"
-                value={form.confirmNewPassword}
-                onChange={handleChange}
-              />
-            </div>
-
-            <button type="submit" className={styles['submit-btn']}>
-              Confirm
-            </button>
-          </form>
-          <div className={styles['sub-option']}>
-            <Link to={'/'} style={{ color: 'black', textDecoration: 'none', fontSize: 12 }}>
-              Continue as Guest
-            </Link>
           </div>
         </div>
       </div>

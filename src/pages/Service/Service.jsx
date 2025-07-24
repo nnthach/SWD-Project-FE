@@ -11,17 +11,13 @@ function Service() {
   const [filtered, setFiltered] = useState([]);
 
   const handleSearch = (query) => {
-    const filteredResult = services.filter((item) =>
-      item.serviceName.toLowerCase().includes(query.toLowerCase())
-    );
+    const filteredResult = services.filter((item) => item.serviceName.toLowerCase().includes(query.toLowerCase()));
     setFiltered(filteredResult);
   };
 
   const handleCategoryChange = (category) => {
     setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category]
+      prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category],
     );
   };
 
@@ -39,9 +35,7 @@ function Service() {
   }, []);
 
   const displayServices = selectedCategories.length
-    ? filtered.filter((item) =>
-        selectedCategories.includes(item.category || 'Khác')
-      )
+    ? filtered.filter((item) => selectedCategories.includes(item.category || 'Khác'))
     : filtered;
 
   return (
@@ -64,7 +58,7 @@ function Service() {
           </div>
 
           <div className={styles['service-grid']}>
-            {displayServices.map((item) => (
+            {displayServices?.$values?.map((item) => (
               <ServiceCard key={item.serviceId} item={item} />
             ))}
           </div>

@@ -33,7 +33,7 @@ function StaffConsultant() {
     try {
       const res = await getAllStaffConsultantAPI(roleIdFetch);
       console.log('get all consultant res', res);
-      setStaffConsultantListData(res.data);
+      setStaffConsultantListData(res.data?.$values);
     } catch (error) {
       console.log('get all consultant err', error);
       toast.error('get all consultant err');

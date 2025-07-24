@@ -13,6 +13,7 @@ function RegisterSchedule() {
   const { userInfo, userId } = useContext(AuthContext);
   const [staffSchedule, setStaffSchedule] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  console.log('staff schedule', staffSchedule);
 
   const normalizeDate = (isoString) => isoString.split('T')[0]; //chuyen timestamp về dạng "yyyy-mm-dd"
 
@@ -72,12 +73,10 @@ function RegisterSchedule() {
     };
     const queryString = new URLSearchParams(query).toString();
 
-    console.log('query get schedule', queryString);
-
     try {
       const res = await getStaffAllScheduleAndQueryAPI(queryString);
       console.log('staff schedule res', res.data);
-      setStaffSchedule(res.data);
+      setStaffSchedule(res.data?.$values);
       setIsLoading(false);
     } catch (error) {
       console.log('get staff schedule err', error);
@@ -85,9 +84,11 @@ function RegisterSchedule() {
     }
   };
 
-  useEffect(() => {
+ useEffect(() => {
+  if (userId) {
     getStaffSchedule();
-  }, []);
+  }
+}, [userId]);
 
   const handleSlotChange = (index, value) => {
     const updated = [...weekForms];

@@ -17,7 +17,7 @@ function Booking() {
   const handleOpenBookingDetail = async (id) => {
     try {
       const res = await api.get(`/Booking/my-bookings/${id}`);
-      console.log('get  booking detail res', res);
+      console.log('get  booking detail res', res.data);
       setBookingDetailData(res.data);
       setOpenPopup(true);
     } catch (error) {
@@ -30,7 +30,7 @@ function Booking() {
     try {
       const res = await api.get(`/Booking/bookings-by-status?status=${status}`);
       console.log('get all booking res', res);
-      setBookingListData(res.data);
+      setBookingListData(res.data.$values);
     } catch (error) {
       console.log('get all booking err', error);
       toast.error('get all booking err');
@@ -129,6 +129,7 @@ function Booking() {
                     <FaEye
                       style={{ cursor: 'pointer', color: '#0e82fd', fontSize: 20 }}
                       onClick={() => {
+                        console.log('item detail', item);
                         handleOpenBookingDetail(item.bookingId);
                       }}
                     />

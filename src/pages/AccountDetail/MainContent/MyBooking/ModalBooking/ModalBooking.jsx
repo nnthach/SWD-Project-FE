@@ -30,10 +30,10 @@ function ModalBooking({ bookingDetailData, setOpenPopup }) {
         {/*Top */}
         <div className={styles.topContent}>
           <h2>
-            Booking Detail{' '}
+            Booking Detail
             <span
               className={`${styles['booking-status']} ${
-                bookingDetailData.status === 'CANCEL'
+                bookingDetailData.status === 'DELETED'
                   ? styles.cancel
                   : bookingDetailData.status === 'COMPLETE'
                   ? styles.complete
@@ -67,8 +67,8 @@ function ModalBooking({ bookingDetailData, setOpenPopup }) {
         </div>
         {/*Bottom */}
         <div className={styles.bottomContent}>
-          {bookingDetailData.services.map((service) => (
-            <div className={styles.serviceBox}>
+          {bookingDetailData.services?.$values.map((service, index) => (
+            <div key={index} className={styles.serviceBox}>
               <h2>Service</h2>
               <p>
                 <strong>ID:</strong> {service.serviceId}
@@ -86,10 +86,27 @@ function ModalBooking({ bookingDetailData, setOpenPopup }) {
           ))}
         </div>
 
+        {/*Test result */}
+        {bookingDetailData.status != 'PENDING' && (
+          <div className={styles['result-content']}>
+            <h2>Test Result</h2>
+
+            {bookingDetailData?.testBookingServices?.$values[0]?.testResults?.$values[0]?.resultDetail ? (
+              <div className={styles['test-result-img-wrap']}>
+                <img src={bookingDetailData.testBookingServices.$values[0].testResults.$values[0].resultDetail} />
+              </div>
+            ) : (
+              <div>
+                <p>No result updated</p>
+              </div>
+            )}
+          </div>
+        )}
+
         {bookingDetailData.status == 'PENDING' && (
           <div className={styles['btn-wrap']}>
             <button onClick={() => handleUpdateBooking('cancel')}>Cancel</button>
-            <button onClick={() => handleUpdateBooking('complete')}>Complete</button>
+            {/* <button onClick={() => handleUpdateBooking('complete')}>Complete</button> */}
           </div>
         )}
       </div>

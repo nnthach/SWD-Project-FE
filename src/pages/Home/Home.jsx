@@ -97,7 +97,7 @@ function Home() {
           <h1>Our Services</h1>
           <div className={styles['service-wrap']}>
             {servicesListData &&
-              servicesListData.slice(0, 9).map((item) => <ServiceCard item={item} key={item.serviceId} />)}
+              servicesListData?.$values?.slice(0, 9).map((item) => <ServiceCard item={item} key={item.serviceId} />)}
           </div>
 
           <button className={styles['service-page-btn']}>

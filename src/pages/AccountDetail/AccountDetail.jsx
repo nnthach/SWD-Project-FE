@@ -34,7 +34,12 @@ function AccountDetail() {
               >
                 Information
               </p>
-              <p onClick={() => setContentRender('My Booking')}>My Booking</p>
+              <p
+                className={contentRender == 'My Booking' && styles.active}
+                onClick={() => setContentRender('My Booking')}
+              >
+                My Booking
+              </p>
             </div>
           </div>
 

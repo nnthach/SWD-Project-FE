@@ -58,7 +58,7 @@ function ViewSchedule() {
 
     try {
       const res = await getStaffAllScheduleAndQueryAPI(queryString);
-      setStaffSchedule(res.data);
+      setStaffSchedule(res.data?.$values);
       setThreeWeekDays(days); // cập nhật danh sách 21 ngày
     } catch (error) {
       console.log('get staff schedule err', error);

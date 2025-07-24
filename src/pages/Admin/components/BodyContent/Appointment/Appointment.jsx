@@ -27,7 +27,7 @@ function Appointment() {
     try {
       const res = await getAllAppointmentAPI(queryString);
       console.log('get all appointment res', res);
-      setAppointmentListData(res.data);
+      setAppointmentListData(res.data?.$values);
     } catch (error) {
       console.log('get all appointment err', error);
       toast.error('get all appointment err');

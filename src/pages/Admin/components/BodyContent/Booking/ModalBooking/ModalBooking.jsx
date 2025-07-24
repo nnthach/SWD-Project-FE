@@ -10,8 +10,8 @@ import { createTestResultAPI } from '~/services/testResultService';
 
 function ModalBooking({ bookingDetailData, setOpenPopup, setBookingDetailData }) {
   const [updateTestResultForm, setUpdateTestResultForm] = useState({
-    testBookingServiceId: bookingDetailData?.testBookingServices[0].id,
-    testName: bookingDetailData?.services[0].serviceName,
+    testBookingServiceId: bookingDetailData?.testBookingServices?.$values[0]?.id,
+    testName: bookingDetailData?.services?.$values[0].serviceName,
     resultDetail: '',
   });
 
@@ -156,7 +156,7 @@ function ModalBooking({ bookingDetailData, setOpenPopup, setBookingDetailData })
           </div>
           {/*Bottom */}
           <div className={styles.bottomContent}>
-            {bookingDetailData.services.map((service) => (
+            {bookingDetailData.services?.$values.map((service) => (
               <div key={service.serviceId} className={styles.serviceBox}>
                 <h2>Service</h2>
                 <div className={styles['booking-info']}>
@@ -178,23 +178,32 @@ function ModalBooking({ bookingDetailData, setOpenPopup, setBookingDetailData })
           </div>
 
           {/*Test result */}
-          <div className={styles['result-content']}>
-            <h2>Test Result</h2>
+          {bookingDetailData.status != 'PENDING' && (
+            <div className={styles['result-content']}>
+              <h2>Test Result</h2>
 
-            <div className={styles['upload-field']}>
-              <Upload
-                action=""
-                listType="picture-card"
-                fileList={fileList}
-                onPreview={handlePreview}
-                onChange={handleChangeImage}
-              >
-                {fileList.length >= 1 ? null : uploadButton}
-              </Upload>
+              {bookingDetailData?.testBookingServices?.$values[0]?.testResults?.$values[0]?.resultDetail ? (
+                <div className={styles['test-result-img-wrap']}>
+                  <img src={bookingDetailData.testBookingServices.$values[0].testResults.$values[0].resultDetail} />
+                </div>
+              ) : (
+                <>
+                  <div className={styles['upload-field']}>
+                    <Upload
+                      action=""
+                      listType="picture-card"
+                      fileList={fileList}
+                      onPreview={handlePreview}
+                      onChange={handleChangeImage}
+                    >
+                      {fileList.length >= 1 ? null : uploadButton}
+                    </Upload>
+                  </div>
+                  <button onClick={handleSubmitForm}>Update result</button>
+                </>
+              )}
             </div>
-
-            <button onClick={handleSubmitForm}>Update result</button>
-          </div>
+          )}
 
           {bookingDetailData.status == 'PENDING' && (
             <div className={styles['btn-wrap']}>
