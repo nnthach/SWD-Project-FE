@@ -1,227 +1,198 @@
-import { useEffect, useState } from 'react';
-import styles from './CycleDetail.module.scss';
-import api from '~/config/axios';
+import React, { useEffect, useState } from "react";
+import styles from "./CycleDetail.module.scss";
+import axios from "../../config/axios";
+import {
+  addMonths,
+  subMonths,
+  format,
+  startOfMonth,
+  endOfMonth,
+  startOfWeek,
+  endOfWeek,
+  addDays,
+  isSameMonth,
+  differenceInDays,
+  parseISO,
+  parse,
+} from "date-fns";
 
-function CycleDetail() {
-  const [phases, setPhases] = useState([]);
-  const [startDate, setStartDate] = useState('');
+const dayTypeMap = {
+  menstruation: { icon: "🩸", class: "icon-period" },
+  fertile: { icon: "♥", class: "icon-fertile" },
+  highfertility: { icon: "♥", class: "icon-high-fertile" },
+  ovulation: { icon: "♥", class: "icon-ovulation" },
+  relativesafe: { icon: "✓", class: "icon-safe" },
+  absolutesafe: { icon: "✓", class: "icon-absolute-safe" },
+  takepill: { icon: "💊", class: "icon-takepill" },
+};
+
+const CycleDetail = () => {
+  const [calendarData, setCalendarData] = useState([]);
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [isChecked, setIsChecked] = useState(false);
 
-  // Hàm tiện ích xử lý ngày tháng
-  const addMonths = (date, months) => {
-    const newDate = new Date(date);
-    newDate.setMonth(newDate.getMonth() + months);
-    return newDate;
-  };
+  const processCycle = (data) => {
+    const result = [];
 
-  const subMonths = (date, months) => {
-    return addMonths(date, -months);
-  };
+    const start = parseISO(data.startDate); // yyyy-MM-dd
+    const end = parse(data.endDate, "dd-MM-yyyy", new Date());
+    const ovulation = parse(data.ovulationDate, "dd-MM-yyyy", new Date());
+    const pill = parse(data.pillReminder, "dd-MM-yyyy", new Date());
+    const fertileStart = parse(data.fertilityWindowStart, "dd-MM-yyyy", new Date());
+    const fertileEnd = parse(data.fertilityWindowEnd, "dd-MM-yyyy", new Date());
 
-  const startOfMonth = (date) => {
-    return new Date(date.getFullYear(), date.getMonth(), 1);
-  };
-
-  const endOfMonth = (date) => {
-    return new Date(date.getFullYear(), date.getMonth() + 1, 0);
-  };
-
-  const eachDayOfInterval = ({ start, end }) => {
-    const days = [];
     let current = new Date(start);
-    
+
     while (current <= end) {
-      days.push(new Date(current));
-      current.setDate(current.getDate() + 1);
+      let dayType = null;
+
+      if (current >= start && current < addDays(start, data.periodLength)) {
+        dayType = "menstruation";
+      } else if (current.toDateString() === ovulation.toDateString()) {
+        dayType = "ovulation";
+      } else if (current >= fertileStart && current <= fertileEnd) {
+        const diff = differenceInDays(ovulation, current);
+        if (diff === 2 || diff === 1) {
+          dayType = "highfertility";
+        } else {
+          dayType = "fertile";
+        }
+      } else if (current.toDateString() === pill.toDateString()) {
+        dayType = "takepill";
+      } else {
+        dayType = "relativesafe";
+      }
+
+      result.push({
+        date: current.toISOString(),
+        dayType,
+      });
+
+      current = addDays(current, 1);
     }
-    
-    return days;
-  };
 
-  const isSameMonth = (date1, date2) => {
-    return date1.getFullYear() === date2.getFullYear() && 
-           date1.getMonth() === date2.getMonth();
-  };
-
-  const formatDate = (date) => {
-    return date.toISOString().split('T')[0];
-  };
-
-  const formatMonthYear = (date) => {
-    const months = [
-      'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
-      'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
-    ];
-    return `${months[date.getMonth()]} - ${date.getFullYear()}`;
+    return result;
   };
 
   useEffect(() => {
-    const fetchCycleData = async () => {
+    const fetchCycle = async () => {
       try {
-        const response = await api.get('/menstrualcycle/latest'); 
-        console.log("Cycle data response:", response.data); 
-
-        setPhases(response.data.phases || []); 
-        if (response.data.startDate) {
-          const start = new Date(response.data.startDate);
-          setStartDate(response.data.startDate);
-          setCurrentMonth(start);
-        }
-      } catch (err) {
-        console.error('Failed to fetch cycle data', err);
+        const res = await axios.get("/menstrualcycle/latest");
+        console.log("✅ Cycle data:", res.data);
+        const days = processCycle(res.data);
+        setCalendarData(days);
+      } catch (error) {
+        console.error("❌ Error fetching cycle data:", error);
       }
     };
 
-    fetchCycleData();
+    fetchCycle();
   }, []);
 
-  const getPhaseType = (date) => {
-    if (!Array.isArray(phases)) return '';
-    const dateStr = formatDate(date);
-    const phase = phases.find((p) => p.date === dateStr);
-    return phase?.type || '';
+  const getDayType = (date) => {
+    return calendarData.find(
+      (item) => new Date(item.date).toDateString() === date.toDateString()
+    )?.dayType || null;
   };
 
-  const renderIcon = (type) => {
-    switch (type) {
-      case 'Menstruation':
-        return <div className={`${styles['day-icon']} ${styles['icon-period']}`}>🩸</div>;
-      case 'Fertile':
-        return <div className={`${styles['day-icon']} ${styles['icon-fertile']}`}>♥</div>;
-      case 'HighFertile':
-        return <div className={`${styles['day-icon']} ${styles['icon-high-fertile']}`}>♥</div>;
-      case 'Ovulation':
-        return <div className={`${styles['day-icon']} ${styles['icon-ovulation']}`}>♥</div>;
-      case 'Safe':
-        return <div className={`${styles['day-icon']} ${styles['icon-safe']}`}>✓</div>;
-      case 'AbsoluteSafe':
-        return <div className={`${styles['day-icon']} ${styles['icon-absolute-safe']}`}>✓</div>;
-      default:
-        return null;
-    }
-  };
+  const formatMonthYear = (date) => format(date, "MMMM yyyy");
+
+  const previousMonth = () => setCurrentMonth(subMonths(currentMonth, 1));
+  const nextMonth = () => setCurrentMonth(addMonths(currentMonth, 1));
 
   const generateCalendar = () => {
     const monthStart = startOfMonth(currentMonth);
-    const monthEnd = endOfMonth(currentMonth);
-    const startDate = new Date(monthStart);
-    startDate.setDate(startDate.getDate() - startDate.getDay()); // Start from Sunday
-    
-    const endDate = new Date(monthEnd);
-    endDate.setDate(endDate.getDate() + (6 - endDate.getDay())); // End on Saturday
-    
-    const days = eachDayOfInterval({ start: startDate, end: endDate });
-    
-    return days.map((day, i) => {
-      const type = getPhaseType(day);
-      const isCurrentMonth = isSameMonth(day, currentMonth);
-      const dayNumber = day.getDate();
-      
-      // Xử lý ngày đầu tháng
-      const isFirstDayOfMonth = dayNumber === 1;
-      
-      return (
-        <div 
-          key={i} 
-          className={`${styles['day-cell']} 
-            ${!isCurrentMonth ? styles['other-month'] : ''} 
-            ${styles[type.toLowerCase()] || ''}`}
+    const monthEnd = endOfMonth(monthStart);
+    const startDate = startOfWeek(monthStart, { weekStartsOn: 0 });
+    const endDate = endOfWeek(monthEnd, { weekStartsOn: 0 });
+
+    const days = [];
+    let day = startDate;
+
+    while (day <= endDate) {
+      const isCurrentMonth = isSameMonth(day, monthStart);
+      const type = getDayType(day);
+      const typeInfo = type ? dayTypeMap[type] : null;
+
+      days.push(
+        <div
+          key={day}
+          className={`${styles["day-cell"]} 
+                      ${!isCurrentMonth ? styles["other-month"] : ""} 
+                      ${type ? styles[type] : ""}`}
         >
-          <div className={styles['day-number']}>
-            {isFirstDayOfMonth ? `1/${day.getMonth() + 1}` : dayNumber}
-          </div>
-          {isCurrentMonth && renderIcon(type)}
+          <div className={styles["day-number"]}>{format(day, "d")}</div>
+          {typeInfo && (
+            <span className={`${styles["day-icon"]} ${styles[typeInfo.class]}`}>
+              {typeInfo.icon}
+            </span>
+          )}
         </div>
       );
-    });
-  };
 
-  const nextMonth = () => {
-    setCurrentMonth(addMonths(currentMonth, 1));
-  };
+      day = addDays(day, 1);
+    }
 
-  const previousMonth = () => {
-    setCurrentMonth(subMonths(currentMonth, 1));
+    return days;
   };
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>Kết quả của bạn</div>
-
-      <div className={styles['calendar-container']}>
-        <div className={styles['calendar-header']}>
-          <button className={styles['nav-btn']} onClick={previousMonth}>‹</button>
-          <div className={styles['month-title']}>
-            {formatMonthYear(currentMonth)}
-          </div>
-          <button className={styles['nav-btn']} onClick={nextMonth}>›</button>
+      <div className={styles.header}>Your Cycle Overview</div>
+      <div className={styles["calendar-container"]}>
+        <div className={styles["calendar-header"]}>
+          <button className={styles["nav-btn"]} onClick={previousMonth}>‹</button>
+          <div className={styles["month-title"]}>{formatMonthYear(currentMonth)}</div>
+          <button className={styles["nav-btn"]} onClick={nextMonth}>›</button>
         </div>
 
         <div className={styles.calendar}>
-          <div className={styles['calendar-grid']}>
-            <div className={styles['day-header']}>CN</div>
-            <div className={styles['day-header']}>T2</div>
-            <div className={styles['day-header']}>T3</div>
-            <div className={styles['day-header']}>T4</div>
-            <div className={styles['day-header']}>T5</div>
-            <div className={styles['day-header']}>T6</div>
-            <div className={styles['day-header']}>T7</div>
+          <div className={styles["calendar-grid"]}>
+            <div className={styles["day-header"]}>Sun</div>
+            <div className={styles["day-header"]}>Mon</div>
+            <div className={styles["day-header"]}>Tue</div>
+            <div className={styles["day-header"]}>Wed</div>
+            <div className={styles["day-header"]}>Thu</div>
+            <div className={styles["day-header"]}>Fri</div>
+            <div className={styles["day-header"]}>Sat</div>
             {generateCalendar()}
           </div>
         </div>
       </div>
 
       <div className={styles.legend}>
-        <div className={styles['legend-item']}>
-          <div className={`${styles['legend-icon']} ${styles['icon-period']}`}>🩸</div>
-          <div>
-            <div className={styles['legend-title-text']}>Ngày có kinh nguyệt</div>
-            <div className={styles['legend-description']}>Đây là ngày bạn đang hành kinh</div>
+        {Object.entries(dayTypeMap).map(([key, { icon, class: className }]) => (
+          <div key={key} className={styles["legend-item"]}>
+            <div className={`${styles["legend-icon"]} ${styles[className]}`}>{icon}</div>
+            <div>
+              <div className={styles["legend-title-text"]}>
+                {{
+                  menstruation: "Menstruation",
+                  fertile: "Fertile Day",
+                  highfertility: "High Fertility",
+                  ovulation: "Ovulation",
+                  relativesafe: "Relatively Safe",
+                  absolutesafe: "Absolutely Safe",
+                  takepill: "Take Pill",
+                }[key]}
+              </div>
+              <div className={styles["legend-description"]}>
+                {{
+                  menstruation: "You are on your period.",
+                  fertile: "You are within the fertile window.",
+                  highfertility: "2 days before ovulation – high fertility.",
+                  ovulation: "Peak fertility day.",
+                  relativesafe: "Lower chance of conception.",
+                  absolutesafe: "Very low chance of conception.",
+                  takepill: "Don't forget to take your birth control pill.",
+                }[key]}
+              </div>
+            </div>
           </div>
-        </div>
-
-        <div className={styles['legend-item']}>
-          <div className={`${styles['legend-icon']} ${styles['icon-fertile']}`}>♥</div>
-          <div>
-            <div className={styles['legend-title-text']}>Ngày có khả năng thụ thai</div>
-            <div className={styles['legend-description']}>Ngày thứ hai trong giai đoạn có khả năng thụ thai</div>
-          </div>
-        </div>
-
-        <div className={styles['legend-item']}>
-          <div className={`${styles['legend-icon']} ${styles['icon-high-fertile']}`}>♥</div>
-          <div>
-            <div className={styles['legend-title-text']}>Ngày có khả năng thụ thai cao</div>
-            <div className={styles['legend-description']}>Hai ngày trước khi trứng rụng</div>
-          </div>
-        </div>
-
-        <div className={styles['legend-item']}>
-          <div className={`${styles['legend-icon']} ${styles['icon-ovulation']}`}>♥</div>
-          <div>
-            <div className={styles['legend-title-text']}>Ngày trứng rụng</div>
-            <div className={styles['legend-description']}>Khả năng thụ thai cao nhất</div>
-          </div>
-        </div>
-
-        <div className={styles['legend-item']}>
-          <div className={`${styles['legend-icon']} ${styles['icon-safe']}`}>✓</div>
-          <div>
-            <div className={styles['legend-title-text']}>Ngày an toàn tương đối</div>
-            <div className={styles['legend-description']}>Khả năng thụ thai thấp</div>
-          </div>
-        </div>
-
-        <div className={styles['legend-item']}>
-          <div className={`${styles['legend-icon']} ${styles['icon-absolute-safe']}`}>✓</div>
-          <div>
-            <div className={styles['legend-title-text']}>Ngày an toàn tuyệt đối</div>
-            <div className={styles['legend-description']}>Khả năng thụ thai cực thấp</div>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );
-}
+};
 
 export default CycleDetail;

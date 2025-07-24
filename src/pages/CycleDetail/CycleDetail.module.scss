@@ -1,3 +1,4 @@
+// CycleDetail.module.scss
 .container {
   max-width: 800px;
   margin: 100px auto 0;
@@ -12,10 +13,40 @@
 
 .header {
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 16px; // Giảm margin để phù hợp với thiết kế mới
   font-size: 24px;
   font-weight: 600;
   color: #1f2937;
+}
+
+.notification {
+  margin-bottom: 24px;
+  padding: 0 8px;
+  
+  &-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  
+  &-checkbox {
+    margin-right: 12px;
+    width: 18px;
+    height: 18px;
+    accent-color: #ec4899;
+    cursor: pointer;
+    
+    &:checked {
+      background-color: #ec4899;
+    }
+  }
+  
+  &-label {
+    font-size: 16px;
+    color: #1f2937;
+    cursor: pointer;
+    user-select: none;
+  }
 }
 
 .calendar-container {
@@ -26,8 +57,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  padding: 0 16px;
+  margin-bottom: 16px; // Giảm margin
+  padding: 0 8px;
 }
 
 .nav-btn {
@@ -37,22 +68,26 @@
   cursor: pointer;
   padding: 8px;
   color: #6b7280;
-  
+  transition: all 0.2s;
+
   &:hover {
     color: #1f2937;
+    transform: scale(1.1);
   }
 }
 
 .month-title {
-  font-size: 24px;
+  font-size: 20px; // Giảm kích thước
   font-weight: 600;
   color: #ec4899;
+  text-transform: uppercase;
 }
 
 .calendar {
   border: 1px solid #e5e7eb;
-  border-radius: 12px;
+  border-radius: 8px; // Bo góc nhỏ hơn
   overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .calendar-grid {
@@ -63,13 +98,14 @@
 
 .day-header {
   background: #f9fafb;
-  padding: 12px 8px;
+  padding: 12px 4px; // Giảm padding
   text-align: center;
   font-weight: 600;
   font-size: 14px;
   color: #6b7280;
   border-right: 1px solid #e5e7eb;
-  
+  text-transform: uppercase;
+
   &:last-child {
     border-right: none;
   }
@@ -79,20 +115,22 @@
   min-height: 60px;
   border-right: 1px solid #e5e7eb;
   border-bottom: 1px solid #e5e7eb;
-  padding: 8px;
-  position: relative;
+  padding: 4px; // Giảm padding
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  
+  position: relative;
+
   &:nth-child(7n) {
     border-right: none;
   }
-  
+
   &.other-month {
+    background-color: #f9fafb;
+    
     .day-number {
-      color: #9ca3af;
+      color: #d1d5db;
     }
   }
 }
@@ -100,79 +138,52 @@
 .day-number {
   font-weight: 500;
   margin-bottom: 4px;
-  font-size: 16px;
+  font-size: 14px; // Giảm kích thước
+  align-self: flex-start;
 }
 
-/* Phase backgrounds */
-.menstruation {
-  background: #fce7f3;
+// ===== DAYTYPE BACKGROUND CLASSES =====
+.day-cell {
+  position: relative; // Thêm vào
+  background: white ; // Màu nền mặc định
+  
+  // Các loại ngày đặc biệt - CHỈ áp dụng cho nền ô
+  &.menstruation { background-color: #fee2e2 !important; }
+  &.ovulation { background-color: #fce7f3 !important; }
+  &.fertile { background-color: #fef3c7 !important; }
+  &.highfertility { background-color: #fde68a !important; }
+  &.takepill { background-color: #e0e7ff !important; }
+  &.relativesafe, &.absolutesafe { background-color: #dcfce7 !important; }
 }
 
-.fertile {
-  background: #fef3c7;
-}
-
-.highfertile {
-  background: #fde68a;
-}
-
-.ovulation {
-  background: #fcd34d;
-}
-
-.safe {
-  background: #dcfce7;
-}
-
-.absolutesafe {
-  background: #bbf7d0;
-}
-
-/* Icons */
+// Đảm bảo icon luôn hiển thị đúng
 .day-icon {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  display: flex;
+  display: inline-flex !important; // Sửa từ flex sang inline-flex
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 14px;
   margin-top: 4px;
+  color: white !important;
+  font-weight: bold;
 }
 
-.icon-period {
-  background: #dc2626;
-  color: white;
-}
+// Đảm bảo các class icon có màu nền riêng
+.icon-period { background: #ef4444 ; }
+.icon-fertile { background: #f59e0b ; }
+.icon-high-fertile { background: #fbbf24 ; }
+.icon-ovulation { background: #ec4899 ; }
+.icon-safe { background: #10b981 ; }
+.icon-absolute-safe { background: #059669 ; }
+.icon-takepill { background: #6366f1 ; }
 
-.icon-fertile {
-  background: #f59e0b;
-  color: white;
-}
-
-.icon-high-fertile {
-  background: #ea580c;
-  color: white;
-}
-
-.icon-ovulation {
-  background: #c2410c;
-  color: white;
-}
-
-.icon-safe {
-  background: #10b981;
-  color: white;
-}
-
-.icon-absolute-safe {
-  background: #059669;
-  color: white;
-}
-
-/* Legend */
+// ===== LEGEND =====
 .legend {
-  margin-top: 40px;
+  margin-top: 32px;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 24px;
 }
 
 .legend-item {
@@ -182,6 +193,12 @@
   padding: 12px;
   background: #f9fafb;
   border-radius: 8px;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
 }
 
 .legend-icon {
@@ -193,41 +210,74 @@
   justify-content: center;
   margin-right: 16px;
   flex-shrink: 0;
+  color: white;
+  font-weight: bold;
 }
 
 .legend-title-text {
   font-weight: 600;
-  font-size: 16px;
+  font-size: 15px;
   margin-bottom: 4px;
   color: #1f2937;
 }
 
 .legend-description {
-  font-size: 14px;
+  font-size: 13px;
   color: #6b7280;
+  line-height: 1.4;
 }
 
-/* Responsive */
+// ===== Responsive =====
 @media (max-width: 768px) {
   .container {
     margin: 50px 10px 0;
-    padding: 15px;
+    padding: 16px;
   }
-  
-  .day-cell {
-    min-height: 50px;
-    padding: 4px;
+
+  .header {
+    font-size: 20px;
+    margin-bottom: 12px;
   }
-  
-  .day-number {
+
+  .notification-label {
     font-size: 14px;
   }
-  
+
   .month-title {
-    font-size: 20px;
+    font-size: 16px;
   }
-  
+
+  .day-cell {
+    min-height: 50px;
+    padding: 2px;
+  }
+
+  .day-number {
+    font-size: 12px;
+  }
+
+  .day-icon {
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+  }
+
   .legend-item {
     padding: 8px;
+  }
+
+  .legend-icon {
+    width: 28px;
+    height: 28px;
+    margin-right: 12px;
+    font-size: 14px;
+  }
+
+  .legend-title-text {
+    font-size: 14px;
+  }
+
+  .legend-description {
+    font-size: 12px;
   }
 }
