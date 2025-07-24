@@ -60,10 +60,10 @@ function BlogDetail() {
             content: blogData.content,
             date: blogData.publistDate,
             author: blogData.author ? blogData.author.username : "Unknown Author", // Add null check
-            authorImg: 'https://via.placeholder.com/50',
+            authorImg: 'https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png',
             category: category,
             categoryName: getCategoryName(category),
-            img: 'https://via.placeholder.com/800x400',
+            img: 'https://www.eprescribingtoolkit.com/wp-content/plugins/pt-content-views-pro/public/assets/images/default_image.png',
             readingTime: calculateReadingTime(blogData.content),
           };
           
@@ -71,31 +71,41 @@ function BlogDetail() {
           
           // Fetch all blogs to find related ones
           const allBlogsResponse = await getAllBlogsAPI();
+          let allBlogs = [];
+
           if (allBlogsResponse && allBlogsResponse.data) {
-            const allBlogs = allBlogsResponse.data;
-            
-            // Find related blogs (same category, exclude current)
-            const relatedBlogsData = allBlogs
-              .filter(b => {
-                const blogCategory = getCategoryFromTitle(b.tittle);
-                return blogCategory === category && b.blogId !== id;
-              })
-              .slice(0, 3)
-              .map(blog => ({
-                id: blog.blogId,
-                title: blog.tittle,
-                excerpt: blog.content.substring(0, 120) + '...',
-                date: blog.publistDate,
-                author: blog.author ? blog.author.username : "Unknown Author", // Add null check
-                authorImg: 'https://via.placeholder.com/50',
-                category: getCategoryFromTitle(blog.tittle),
-                categoryName: getCategoryName(getCategoryFromTitle(blog.tittle)),
-                img: 'https://via.placeholder.com/400x300',
-                readingTime: calculateReadingTime(blog.content),
-              }));
-            
-            setRelatedBlogs(relatedBlogsData);
+            // Check for the nested $values array structure
+            if (allBlogsResponse.data.$values && Array.isArray(allBlogsResponse.data.$values)) {
+              allBlogs = allBlogsResponse.data.$values;
+            } else if (Array.isArray(allBlogsResponse.data)) {
+              allBlogs = allBlogsResponse.data;
+            } else if (typeof allBlogsResponse.data === 'object') {
+              // If single blog object is returned
+              allBlogs = [allBlogsResponse.data];
+            }
           }
+
+          // Now that we've ensured allBlogs is an array, we can use filter
+          const relatedBlogsData = allBlogs
+            .filter(b => {
+              const blogCategory = getCategoryFromTitle(b.tittle || '');
+              return blogCategory === category && b.blogId !== id;
+            })
+            .slice(0, 3)
+            .map(blog => ({
+              id: blog.blogId,
+              title: blog.tittle || 'Untitled',
+              excerpt: blog.content ? blog.content.substring(0, 120) + '...' : 'No content available',
+              date: blog.publistDate,
+              author: blog.author ? blog.author.username : "Unknown Author",
+              authorImg: 'https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png',
+              category: getCategoryFromTitle(blog.tittle || ''),
+              categoryName: getCategoryName(getCategoryFromTitle(blog.tittle || '')),
+              img: 'https://www.eprescribingtoolkit.com/wp-content/plugins/pt-content-views-pro/public/assets/images/default_image.png',
+              readingTime: calculateReadingTime(blog.content || ''),
+            }));
+          
+          setRelatedBlogs(relatedBlogsData);
         }
       } catch (err) {
         console.error('Error fetching blog details:', err);

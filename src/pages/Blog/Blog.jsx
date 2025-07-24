@@ -14,11 +14,11 @@ function Blog() {
 
   // Get unique categories
   const categories = [
-    { id: 'all', name: 'Tất Cả' },
-    { id: 'reproductive', name: 'Sức Khỏe Sinh Sản' },
-    { id: 'sexual', name: 'Sức Khỏe Tình Dục' },
-    { id: 'education', name: 'Giáo Dục Giới Tính' },
-    { id: 'mental', name: 'Sức Khỏe Tâm Thần' }
+    { id: 'all', name: 'All' },
+    { id: 'reproductive', name: 'Reproductive Health' },
+    { id: 'sexual', name: 'Sexual Health' },
+    { id: 'education', name: 'Sex Education' },
+    { id: 'mental', name: 'Mental Health' }
   ];
 
   // Fetch blogs from API
@@ -28,28 +28,56 @@ function Blog() {
         setLoading(true);
         const response = await getAllBlogsAPI();
         
+        // Debug response
+        console.log('Blog API response:', response);
+        
+        // Handle the specific nested response structure
+        let blogData = [];
+        
         if (response && response.data) {
+          // Check for the nested $values array structure
+          if (response.data.$values && Array.isArray(response.data.$values)) {
+            blogData = response.data.$values;
+            console.log('Found blog data in $values array:', blogData);
+          } else if (Array.isArray(response.data)) {
+            blogData = response.data;
+          } else if (typeof response.data === 'object') {
+            // If single blog object is returned
+            blogData = [response.data];
+          }
+        }
+        
+        if (blogData.length > 0) {
           // Transform the API response to match the expected format
-          const transformedBlogs = response.data.map(blog => ({
+          const transformedBlogs = blogData.map(blog => ({
             id: blog.blogId,
-            title: blog.tittle, // Note: API has a typo in "tittle"
-            excerpt: blog.content,
-            date: blog.publistDate,
-            author: blog.author.username,
-            authorImg: 'https://via.placeholder.com/50', // Default author image
-            category: getCategoryFromTitle(blog.tittle), // Determine category from title
-            categoryName: getCategoryNameFromTitle(blog.tittle),
-            img: 'https://via.placeholder.com/600x400', // Default blog image
-            readingTime: calculateReadingTime(blog.content),
+            title: blog.tittle || 'Untitled', // Note: API has a typo in "tittle"
+            excerpt: blog.content && blog.content.length > 150 
+              ? blog.content.substring(0, 150) + '...' 
+              : blog.content || 'No content available',
+            content: blog.content || 'No content available',
+            date: blog.publistDate || new Date().toISOString(),
+            author: blog.author?.username || 'Unknown Author',
+            authorImg: 'https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png',
+            category: getCategoryFromTitle(blog.tittle || ''),
+            categoryName: getCategoryNameFromTitle(blog.tittle || ''),
+            img: 'https://www.eprescribingtoolkit.com/wp-content/plugins/pt-content-views-pro/public/assets/images/default_image.png',
+            readingTime: calculateReadingTime(blog.content || ''),
           }));
           
+          console.log('Transformed blogs:', transformedBlogs);
           setBlogs(transformedBlogs);
           setFilteredBlogs(transformedBlogs);
+        } else {
+          setBlogs([]);
+          setFilteredBlogs([]);
         }
       } catch (err) {
         console.error('Error fetching blogs:', err);
         setError('Failed to load blogs. Please try again later.');
-        toast.error('Có lỗi xảy ra khi tải bài viết.');
+        toast.error('An error occurred while loading blog posts.');
+        setBlogs([]);
+        setFilteredBlogs([]);
       } finally {
         setLoading(false);
       }
@@ -72,7 +100,7 @@ function Blog() {
   const getCategoryNameFromTitle = (title) => {
     const categoryId = getCategoryFromTitle(title);
     const category = categories.find(cat => cat.id === categoryId);
-    return category ? category.name : 'Tất Cả';
+    return category ? category.name : 'All';
   };
   
   // Calculate reading time based on content length (rough estimate)
@@ -100,26 +128,41 @@ function Blog() {
     setFilteredBlogs(filtered);
   }, [activeCategory, searchQuery, blogs]);
 
-  // Format date
+  // Format date with error handling
   const formatDate = (dateStr) => {
-    const date = new Date(dateStr);
-    return new Intl.DateTimeFormat('vi-VN', { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    }).format(date);
+    if (!dateStr) {
+      return 'No date'; // Handle null or undefined dates
+    }
+    
+    try {
+      const date = new Date(dateStr);
+      
+      // Check if date is valid
+      if (isNaN(date.getTime())) {
+        return 'Invalid date';
+      }
+      
+      return new Intl.DateTimeFormat('en-US', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      }).format(date);
+    } catch (error) {
+      console.error('Date formatting error:', error, 'for date:', dateStr);
+      return 'Invalid date';
+    }
   };
 
   return (
     <div className={styles.blogContainer}>
       <div className={styles.blogHeader}>
-        <h1>Bài Viết Về Sức Khỏe</h1>
-        <p>Khám phá thông tin và kiến thức về sức khỏe sinh sản, tình dục và tâm thần</p>
+        <h1>Health Articles</h1>
+        <p>Explore information and knowledge about reproductive health, sexual health, and mental health</p>
         
         <div className={styles.searchBox}>
           <input 
             type="text" 
-            placeholder="Tìm kiếm bài viết..." 
+            placeholder="Search articles..." 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -140,7 +183,7 @@ function Blog() {
 
       {loading ? (
         <div className={styles.loading}>
-          <p>Đang tải bài viết...</p>
+          <p>Loading articles...</p>
         </div>
       ) : error ? (
         <div className={styles.error}>
@@ -167,11 +210,11 @@ function Blog() {
                       <span>{formatDate(filteredBlogs[0].date)}</span>
                     </div>
                     <div className={styles.readingTime}>
-                      <span>{filteredBlogs[0].readingTime} phút đọc</span>
+                      <span>{filteredBlogs[0].readingTime} min read</span>
                     </div>
                   </div>
                   <Link to={`/blog/${filteredBlogs[0].id}`} className={styles.readMore}>
-                    Đọc Tiếp
+                    Read More
                   </Link>
                 </div>
               </div>
@@ -198,9 +241,9 @@ function Blog() {
                     </div>
                   </div>
                   <div className={styles.blogFooter}>
-                    <span className={styles.readingTime}>{blog.readingTime} phút đọc</span>
+                    <span className={styles.readingTime}>{blog.readingTime} min read</span>
                     <Link to={`/blog/${blog.id}`} className={styles.readMore}>
-                      Đọc Tiếp
+                      Read More
                     </Link>
                   </div>
                 </div>
@@ -210,8 +253,8 @@ function Blog() {
           
           {filteredBlogs.length === 0 && (
             <div className={styles.noResults}>
-              <h3>Không tìm thấy bài viết nào phù hợp.</h3>
-              <p>Vui lòng thử với từ khóa khác hoặc chọn danh mục khác.</p>
+              <h3>No matching articles found.</h3>
+              <p>Please try a different keyword or select another category.</p>
             </div>
           )}
         </>

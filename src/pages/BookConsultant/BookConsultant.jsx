@@ -39,9 +39,28 @@ function BookConsultant() {
       try {
         setLoading(true);
         const response = await staffConsultantService.getAllStaffConsultantAPI('157f0b62-afbb-44ce-91ce-397239875df5');
-
+        console.log('Consultant API response:', response);
+        
+        // Handle different response structures
+        let consultantArray = [];
+        
         if (response && response.data) {
-          const consultantData = response.data.map((consultant) => ({
+          // Check if response.data is an array
+          if (Array.isArray(response.data)) {
+            consultantArray = response.data;
+          } 
+          // Check if response.data has $values array (common in .NET responses)
+          else if (response.data.$values && Array.isArray(response.data.$values)) {
+            consultantArray = response.data.$values;
+          }
+          // Check if response.data is a single object
+          else if (typeof response.data === 'object' && response.data.userId) {
+            consultantArray = [response.data];
+          }
+          // Log what we found
+          console.log('Extracted consultant array:', consultantArray);
+          
+          const consultantData = consultantArray.map((consultant) => ({
             consultant_id: consultant.userId,
             name: consultant.fullName || consultant.username,
             email: consultant.email,
@@ -82,11 +101,28 @@ function BookConsultant() {
     try {
       const params = { consultantId };
       const response = await getAllAppointmentAPI(params);
+      console.log(`Appointments response for consultant ${consultantId}:`, response);
+
+      let appointmentArray = [];
 
       if (response && response.data) {
+        // Check if response.data is an array
+        if (Array.isArray(response.data)) {
+          appointmentArray = response.data;
+        } 
+        // Check if response.data has $values array (common in .NET responses)
+        else if (response.data.$values && Array.isArray(response.data.$values)) {
+          appointmentArray = response.data.$values;
+        }
+        // Check if response.data is a single object
+        else if (typeof response.data === 'object' && response.data.id) {
+          appointmentArray = [response.data];
+        }
+        
+        console.log(`Extracted appointments for consultant ${consultantId}:`, appointmentArray);
         setBookedAppointments((prev) => ({
           ...prev,
-          [consultantId]: response.data,
+          [consultantId]: appointmentArray,
         }));
       }
     } catch (err) {
@@ -172,19 +208,19 @@ function BookConsultant() {
     e.preventDefault();
 
     if (!userInfo) {
-      toast.error('Vui lòng đăng nhập để đặt lịch tư vấn!');
+      toast.error('Please login to book a consultation!');
       return;
     }
 
     // Validation
     if (!bookingData.appointmentDate || !bookingData.slot) {
-      toast.error('Vui lòng chọn ngày và khung giờ tư vấn!');
+      toast.error('Please select a date and time slot for consultation!');
       return;
     }
 
     // Check if selected time is available
     if (!isSlotAvailable(bookingData.appointmentDate, parseInt(bookingData.slot))) {
-      toast.error('Khung giờ đã chọn không có sẵn!');
+      toast.error('The selected time slot is not available!');
       return;
     }
 
@@ -204,7 +240,7 @@ function BookConsultant() {
       console.log('Creating appointment with data:', appointmentData);
 
       await createAppointmentAPI(appointmentData);
-      toast.success('Đặt lịch tư vấn thành công!');
+      toast.success('Consultation booked successfully!');
 
       // Refresh appointments for this consultant
       await fetchConsultantAppointments(selectedConsultant.consultant_id);
@@ -218,14 +254,14 @@ function BookConsultant() {
       setShowBookingModal(false);
       setSelectedConsultant(null);
     } catch (error) {
-      toast.error('Có lỗi xảy ra khi đặt lịch. Vui lòng thử lại!');
+      toast.error('An error occurred while booking. Please try again!');
       console.error(error);
     }
   };
 
   // Format price
   const formatPrice = (price) => {
-    return new Intl.NumberFormat('vi-VN', {
+    return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'VND',
     }).format(price);
@@ -239,12 +275,12 @@ function BookConsultant() {
 
   return (
     <div className={styles.container}>
-      {loading && <div className={styles.loading}>Đang tải...</div>}
-      {error && <div className={styles.error}>Lỗi: {error}</div>}
+      {loading && <div className={styles.loading}>Loading...</div>}
+      {error && <div className={styles.error}>Error: {error}</div>}
 
       <div className={styles.header}>
-        <h1>Đặt Lịch Tư Vấn</h1>
-        <p>Chọn chuyên gia phù hợp với nhu cầu của bạn</p>
+        <h1>Book a Consultation</h1>
+        <p>Choose an expert that suits your needs</p>
       </div>
 
       {/* Search and Filter Section */}
@@ -252,7 +288,7 @@ function BookConsultant() {
         <div className={styles.searchBar}>
           <input
             type="text"
-            placeholder="Tìm kiếm chuyên gia..."
+            placeholder="Search for experts..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className={styles.searchInput}
@@ -265,7 +301,7 @@ function BookConsultant() {
             onChange={(e) => setFilters({ specialization: e.target.value })}
             className={styles.filterSelect}
           >
-            <option value="">Tất cả chuyên ngành</option>
+            <option value="">All specializations</option>
             {specializations.map((spec) => (
               <option key={spec} value={spec}>
                 {spec}
@@ -274,10 +310,10 @@ function BookConsultant() {
           </select>
 
           <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className={styles.sortSelect}>
-            <option value="name">Sắp xếp theo tên</option>
-            <option value="rating">Sắp xếp theo đánh giá</option>
-            <option value="price">Sắp xếp theo giá</option>
-            <option value="experience">Sắp xếp theo kinh nghiệm</option>
+            <option value="name">Sort by name</option>
+            <option value="rating">Sort by rating</option>
+            <option value="price">Sort by price</option>
+            <option value="experience">Sort by experience</option>
           </select>
         </div>
       </div>
@@ -298,12 +334,12 @@ function BookConsultant() {
               <p className={styles.specialization}>{consultant.specialization}</p>
               <p className={styles.experience}>{consultant.experience}</p>
               <p className={styles.description}>{consultant.description}</p>
-              <div className={styles.price}>{formatPrice(consultant.price)}/buổi</div>
+              <div className={styles.price}>{formatPrice(consultant.price)}/session</div>
             </div>
 
             <div className={styles.availability}>
               <p>
-                <strong>Khung giờ có sẵn:</strong>
+                <strong>Available time slots:</strong>
               </p>
               <div className={styles.timeSlots}>
                 {FIXED_SLOTS.map((slot) => (
@@ -315,7 +351,7 @@ function BookConsultant() {
             </div>
 
             <button className={styles.bookButton} onClick={() => handleSelectConsultant(consultant)}>
-              Đặt Lịch
+              Book Appointment
             </button>
           </div>
         ))}
@@ -323,7 +359,7 @@ function BookConsultant() {
 
       {filteredConsultants.length === 0 && (
         <div className={styles.noResults}>
-          <p>Không tìm thấy chuyên gia phù hợp</p>
+          <p>No matching experts found</p>
         </div>
       )}
 
@@ -332,7 +368,7 @@ function BookConsultant() {
         <div className={styles.modalOverlay}>
           <div className={styles.modal}>
             <div className={styles.modalHeader}>
-              <h2>Đặt lịch với {selectedConsultant.name}</h2>
+              <h2>Book with {selectedConsultant.name}</h2>
               <button className={styles.closeButton} onClick={() => setShowBookingModal(false)}>
                 ×
               </button>
@@ -341,25 +377,25 @@ function BookConsultant() {
             <form onSubmit={handleBookingSubmit} className={styles.bookingForm}>
               {!userInfo ? (
                 <div className={styles.authWarning}>
-                  <p>Vui lòng đăng nhập để đặt lịch tư vấn.</p>
+                  <p>Please login to book a consultation.</p>
                 </div>
               ) : (
                 <>
                   <div className={styles.userInfo}>
-                    <h3>Thông tin người đặt lịch:</h3>
+                    <h3>Booking Information:</h3>
                     <p>
-                      <strong>Họ tên:</strong> {userInfo.fullName || userInfo.username}
+                      <strong>Name:</strong> {userInfo.fullName || userInfo.username}
                     </p>
                     <p>
                       <strong>Email:</strong> {userInfo.email}
                     </p>
                     <p>
-                      <strong>Số điện thoại:</strong> {userInfo.phoneNumber || 'Chưa cập nhật'}
+                      <strong>Phone:</strong> {userInfo.phoneNumber || 'Not provided'}
                     </p>
                   </div>
 
                   <div className={styles.formGroup}>
-                    <label>Ngày hẹn *</label>
+                    <label>Appointment Date *</label>
                     <input
                       type="date"
                       name="appointmentDate"
@@ -371,9 +407,9 @@ function BookConsultant() {
                   </div>
 
                   <div className={styles.formGroup}>
-                    <label>Khung giờ *</label>
+                    <label>Time Slot *</label>
                     <select name="slot" value={bookingData.slot} onChange={handleBookingChange} required>
-                      <option value="">Chọn khung giờ</option>
+                      <option value="">Select a time slot</option>
                       {bookingData.appointmentDate
                         ? // Filter slots to only show available ones
                           FIXED_SLOTS.filter((slot) => isSlotAvailable(bookingData.appointmentDate, slot.value)).map(
@@ -392,19 +428,19 @@ function BookConsultant() {
                     </select>
                     {bookingData.appointmentDate &&
                       FIXED_SLOTS.filter((slot) => isSlotAvailable(bookingData.appointmentDate, slot.value)).length ===
-                        0 && <p className={styles.noSlots}>Không có khung giờ trống cho ngày này</p>}
+                        0 && <p className={styles.noSlots}>No available slots for this day</p>}
                   </div>
 
                   <div className={styles.bookingSummary}>
                     <p>
-                      <strong>Tóm tắt đặt lịch:</strong>
+                      <strong>Booking Summary:</strong>
                     </p>
-                    <p>Chuyên gia: {selectedConsultant.name}</p>
-                    <p>Chuyên ngành: {selectedConsultant.specialization}</p>
-                    <p>Chi phí: {formatPrice(selectedConsultant.price)}</p>
+                    <p>Expert: {selectedConsultant.name}</p>
+                    <p>Specialization: {selectedConsultant.specialization}</p>
+                    <p>Fee: {formatPrice(selectedConsultant.price)}</p>
                     {bookingData.appointmentDate && bookingData.slot && (
                       <p>
-                        Thời gian: {new Date(bookingData.appointmentDate).toLocaleDateString('vi-VN')}{' '}
+                        Time: {new Date(bookingData.appointmentDate).toLocaleDateString('en-US')}{' '}
                         {getSlotLabel(parseInt(bookingData.slot))}
                       </p>
                     )}
@@ -414,10 +450,10 @@ function BookConsultant() {
 
               <div className={styles.formActions}>
                 <button type="button" className={styles.cancelButton} onClick={() => setShowBookingModal(false)}>
-                  Hủy
+                  Cancel
                 </button>
                 <button type="submit" className={styles.submitButton} disabled={!userInfo}>
-                  Xác Nhận Đặt Lịch
+                  Confirm Booking
                 </button>
               </div>
             </form>
