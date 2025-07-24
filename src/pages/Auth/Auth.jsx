@@ -92,7 +92,7 @@ function Auth() {
                 </div>
                 <div className={styles['input-field']}>
                   <label>Phone</label>
-                  <input type="number" name="phoneNumber" value={authForm.phoneNumber} onChange={handleChange} />
+                  <input type="text" name="phoneNumber" value={authForm.phoneNumber} onChange={handleChange} />
                 </div>
               </>
             )}

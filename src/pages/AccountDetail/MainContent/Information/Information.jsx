@@ -107,7 +107,7 @@ function Information() {
         </div>
         <div className={styles['input-field']}>
           <label>Phone Number</label>
-          <input type="number" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
+          <input type="text" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
         </div>
         <div className={styles['input-field']}>
           <label>Address</label>
