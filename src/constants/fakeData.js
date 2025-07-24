@@ -94,68 +94,68 @@ export const fakeDataServiceCard = [
 
 export const fakeDataUserInAdmin = [
   {
-    id: 123456,
-    name: 'Nguyễn Ngọc Thạch',
-    username: 'nnthach',
+    id: 100001,
+    name: 'Nguyễn Văn An',
+    username: 'an.nguyen',
+    role: 'Staff',
+  },
+  {
+    id: 100002,
+    name: 'Trần Thị Bích',
+    username: 'bich.tran',
     role: 'User',
   },
   {
-    id: 123457,
-    name: 'Nguyễn Ngọc Thạch',
-    username: 'nnthach',
+    id: 100003,
+    name: 'Lê Hoàng Long',
+    username: 'long.le',
+    role: 'Consultant',
+  },
+  {
+    id: 100004,
+    name: 'Phạm Thị Hà',
+    username: 'ha.pham',
     role: 'User',
   },
   {
-    id: 123458,
-    name: 'Nguyễn Ngọc Thạch',
-    username: 'nnthach',
+    id: 100005,
+    name: 'Vũ Quốc Tuấn',
+    username: 'tuan.vu',
+    role: 'Staff',
+  },
+  {
+    id: 100006,
+    name: 'Đỗ Thanh Mai',
+    username: 'mai.do',
     role: 'User',
   },
   {
-    id: 123459,
-    name: 'Nguyễn Ngọc Thạch',
-    username: 'nnthach',
+    id: 100007,
+    name: 'Lý Minh Trí',
+    username: 'tri.ly',
     role: 'User',
   },
   {
-    id: 123410,
-    name: 'Nguyễn Ngọc Thạch',
-    username: 'nnthach',
+    id: 100008,
+    name: 'Hoàng Thị Nhung',
+    username: 'nhung.hoang',
+    role: 'Consultant',
+  },
+  {
+    id: 100009,
+    name: 'Ngô Văn Nam',
+    username: 'nam.ngo',
     role: 'User',
   },
   {
-    id: 1234511,
-    name: 'Nguyễn Ngọc Thạch',
-    username: 'nnthach',
-    role: 'User',
+    id: 100010,
+    name: 'Bùi Hữu Dũng',
+    username: 'dung.bui',
+    role: 'Staff',
   },
   {
-    id: 1234512,
+    id: 100011,
     name: 'Nguyễn Ngọc Thạch',
-    username: 'nnthach',
-    role: 'User',
-  },
-  {
-    id: 1234514,
-    name: 'Nguyễn Ngọc Thạch',
-    username: 'nnthach',
-    role: 'User',
-  },
-  {
-    id: 1234515,
-    name: 'Nguyễn Ngọc Thạch',
-    username: 'nnthach',
-    role: 'User',
-  },
-  {
-    id: 1234561,
-    name: 'Nguyễn Ngọc Thạch',
-    username: 'nnthach',
-    role: 'User',
-  },
-  {
-    id: 1234521,
-    name: 'Nguyễn Ngọc Thạch 2',
     username: 'nnthach',
     role: 'User',
   },
@@ -176,7 +176,7 @@ export const fakeConsultants = [
     description: 'Chuyên gia tâm lý với nhiều năm kinh nghiệm trong việc tư vấn và điều trị các vấn đề tâm lý.',
     availableSlots: ['9:00', '10:00', '14:00', '15:00', '16:00'],
     price: 500000,
-    isAvailable: true
+    isAvailable: true,
   },
   {
     consultant_id: '2',
@@ -191,7 +191,7 @@ export const fakeConsultants = [
     description: 'Chuyên gia tư vấn gia đình, hỗ trợ giải quyết các vấn đề trong mối quan hệ và gia đình.',
     availableSlots: ['8:00', '9:00', '13:00', '14:00', '17:00'],
     price: 450000,
-    isAvailable: true
+    isAvailable: true,
   },
   {
     consultant_id: '3',
@@ -206,7 +206,7 @@ export const fakeConsultants = [
     description: 'Chuyên gia tâm lý trẻ em, có kinh nghiệm làm việc với trẻ em và thanh thiếu niên.',
     availableSlots: ['9:00', '10:00', '11:00', '14:00', '15:00'],
     price: 550000,
-    isAvailable: true
+    isAvailable: true,
   },
   {
     consultant_id: '4',
@@ -221,7 +221,7 @@ export const fakeConsultants = [
     description: 'Chuyên gia tư vấn nghề nghiệp, hỗ trợ định hướng và phát triển sự nghiệp.',
     availableSlots: ['8:00', '10:00', '13:00', '15:00', '16:00'],
     price: 400000,
-    isAvailable: true
+    isAvailable: true,
   },
   {
     consultant_id: '5',
@@ -236,7 +236,7 @@ export const fakeConsultants = [
     description: 'Chuyên gia tâm lý học hành vi, chuyên điều trị các rối loạn hành vi và cảm xúc.',
     availableSlots: ['9:00', '11:00', '14:00', '16:00', '17:00'],
     price: 480000,
-    isAvailable: false
+    isAvailable: false,
   },
   {
     consultant_id: '6',
@@ -251,8 +251,8 @@ export const fakeConsultants = [
     description: 'Chuyên gia tư vấn cặp đôi, hỗ trợ cải thiện mối quan hệ tình cảm và hôn nhân.',
     availableSlots: ['8:00', '9:00', '13:00', '15:00', '18:00'],
     price: 520000,
-    isAvailable: true
-  }
+    isAvailable: true,
+  },
 ];
 
 // Fake appointments data
@@ -270,7 +270,7 @@ export const fakeAppointments = [
     customerEmail: 'mai.nguyen@email.com',
     status: 'confirmed',
     notes: 'Tư vấn về vấn đề stress công việc',
-    createdAt: '2025-06-23T10:00:00Z'
+    createdAt: '2025-06-23T10:00:00Z',
   },
   {
     appointment_id: '2',
@@ -285,7 +285,7 @@ export const fakeAppointments = [
     customerEmail: 'hoang.le@email.com',
     status: 'pending',
     notes: 'Tư vấn vấn đề gia đình',
-    createdAt: '2025-06-23T14:30:00Z'
+    createdAt: '2025-06-23T14:30:00Z',
   },
   {
     appointment_id: '3',
@@ -300,7 +300,7 @@ export const fakeAppointments = [
     customerEmail: 'binh.tran@email.com',
     status: 'confirmed',
     notes: 'Tư vấn cho con trai 10 tuổi',
-    createdAt: '2025-06-22T16:45:00Z'
+    createdAt: '2025-06-22T16:45:00Z',
   },
   {
     appointment_id: '4',
@@ -315,7 +315,7 @@ export const fakeAppointments = [
     customerEmail: 'hoa.vo@email.com',
     status: 'completed',
     notes: 'Tư vấn định hướng nghề nghiệp',
-    createdAt: '2025-06-20T09:15:00Z'
+    createdAt: '2025-06-20T09:15:00Z',
   },
   {
     appointment_id: '5',
@@ -330,12 +330,20 @@ export const fakeAppointments = [
     customerEmail: 'quan.do@email.com',
     status: 'cancelled',
     notes: 'Tư vấn cặp đôi',
-    createdAt: '2025-06-21T11:20:00Z'
-  }
+    createdAt: '2025-06-21T11:20:00Z',
+  },
 ];
 
 // Available time slots for booking
 export const availableTimeSlots = [
-  '8:00', '9:00', '10:00', '11:00', 
-  '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'
+  '8:00',
+  '9:00',
+  '10:00',
+  '11:00',
+  '13:00',
+  '14:00',
+  '15:00',
+  '16:00',
+  '17:00',
+  '18:00',
 ];

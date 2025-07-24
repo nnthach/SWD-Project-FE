@@ -37,6 +37,7 @@
     padding: 20px;
     border-radius: 15px;
     gap: 15px;
+    width: 500px;
     h2 {
       color: $new-color;
     }
@@ -66,7 +67,7 @@
 
     .bottomContent {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(1, 1fr);
 
       .serviceBox {
         display: flex;
@@ -97,11 +98,6 @@
       button {
         @include btn(85px, none, 20px, red, white);
         padding: 5px 10px;
-
-        // &:last-child {
-        //   background-color: green;
-        //   margin-left: 5px;
-        // }
 
         &:hover {
           opacity: 0.6;

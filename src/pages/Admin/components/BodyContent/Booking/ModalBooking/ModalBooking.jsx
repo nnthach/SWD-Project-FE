@@ -8,7 +8,7 @@ import uploadFile from '~/utils/upload';
 import { FaPlus } from 'react-icons/fa';
 import { createTestResultAPI } from '~/services/testResultService';
 
-function ModalBooking({ bookingDetailData, setOpenPopup, setBookingDetailData }) {
+function ModalBooking({ isDetailLoading, bookingDetailData, setOpenPopup, setBookingDetailData }) {
   const [updateTestResultForm, setUpdateTestResultForm] = useState({
     testBookingServiceId: bookingDetailData?.testBookingServices?.$values[0]?.id,
     testName: bookingDetailData?.services?.$values[0].serviceName,
@@ -84,10 +84,11 @@ function ModalBooking({ bookingDetailData, setOpenPopup, setBookingDetailData })
         resultDetail: '',
       }));
 
-      // rerender detail
-      const resdetail = await api.get(`/Booking/my-bookings/${bookingDetailData?.bookingId}`);
-      console.log('get  booking detail res', resdetail);
-      setBookingDetailData(res.data);
+      // // rerender detail
+      // const resdetail = await api.get(`/Booking/my-bookings/${bookingDetailData?.bookingId}`);
+      // console.log('get  booking detail res', resdetail);
+      // setBookingDetailData(res.data);
+      setOpenPopup(false);
       setIsLoadingAddResult(false);
     } catch (error) {
       console.log('Create test result error', error);
@@ -110,7 +111,11 @@ function ModalBooking({ bookingDetailData, setOpenPopup, setBookingDetailData })
       {/*Content */}
       {isLoadingAddResult ? (
         <div>
-          <p>Loading</p>
+          <p style={{ color: 'white' }}>Loading</p>
+        </div>
+      ) : isDetailLoading ? (
+        <div>
+          <p style={{ color: 'white' }}>Loading</p>
         </div>
       ) : (
         <div className={styles.content}>
@@ -120,7 +125,7 @@ function ModalBooking({ bookingDetailData, setOpenPopup, setBookingDetailData })
               Booking Detail{' '}
               <span
                 className={`${styles['booking-status']} ${
-                  bookingDetailData.status === 'CANCEL'
+                  bookingDetailData.status === 'DELETED'
                     ? styles.cancel
                     : bookingDetailData.status === 'COMPLETE'
                     ? styles.complete
@@ -154,6 +159,17 @@ function ModalBooking({ bookingDetailData, setOpenPopup, setBookingDetailData })
               </p>
             </div>
           </div>
+          <div className={styles.bottomContent}>
+            <div className={styles.serviceBox}>
+              <h2>User</h2>
+              <div className={styles['booking-info']}>
+                <p>
+                  <strong>User ID:</strong> {bookingDetailData.userId}
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/*Bottom */}
           <div className={styles.bottomContent}>
             {bookingDetailData.services?.$values.map((service) => (
@@ -178,7 +194,7 @@ function ModalBooking({ bookingDetailData, setOpenPopup, setBookingDetailData })
           </div>
 
           {/*Test result */}
-          {bookingDetailData.status != 'PENDING' && (
+          {bookingDetailData.status != 'PENDING' && bookingDetailData.status != 'DELETED' && (
             <div className={styles['result-content']}>
               <h2>Test Result</h2>
 

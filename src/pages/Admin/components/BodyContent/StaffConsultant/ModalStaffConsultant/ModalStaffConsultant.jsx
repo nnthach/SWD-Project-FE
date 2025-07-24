@@ -47,7 +47,7 @@ function ModalStaffConsultant({
     }
     try {
       // eslint-disable-next-line no-unused-vars
-      const { userId, role, ...newDataUpdate } = formConsultantData;
+      const { userId, role, $id, ...newDataUpdate } = formConsultantData;
       console.log('forrm update consultant', newDataUpdate);
       const res = await updateStaffConsultantAPI(id, newDataUpdate, roleId);
       console.log('Update res', res);
@@ -115,6 +115,7 @@ function ModalStaffConsultant({
               value={formConsultantData.username}
               onChange={(e) => handleChange(e)}
               required
+              readOnly={formType !== 'create'}
             />
           </div>
           <div className={styles['form-input']}>
@@ -131,6 +132,7 @@ function ModalStaffConsultant({
               value={formConsultantData.email}
               onChange={(e) => handleChange(e)}
               required
+              readOnly={formType !== 'create'}
             />
           </div>
           <div className={styles['form-input']}>
@@ -164,7 +166,12 @@ function ModalStaffConsultant({
 
           <div className={styles['form-input']}>
             <label>Role</label>
-            <select name="roleId" value={formConsultantData.roleId} onChange={(e) => handleChange(e)}>
+            <select
+              name="roleId"
+              value={formConsultantData.roleId}
+              onChange={(e) => handleChange(e)}
+              disabled={formType !== 'create'}
+            >
               <option value="157f0b62-afbb-44ce-91ce-397239875df5">Consultant</option>
               <option value="d5cf10f1-1f31-4016-ac13-34667e9ca10d">Staff</option>
             </select>
