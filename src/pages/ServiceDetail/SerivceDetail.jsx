@@ -1,10 +1,9 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import styles from './ServiceDetail.module.scss';
 import { useEffect, useState } from 'react';
 import BookingPopup from '~/components/BookingPopup/BookingPopup';
 import { getServiceDetailAPI } from '~/services/serviceService';
 import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
 
 function ServiceDetail() {
   const { id } = useParams();
@@ -27,14 +26,14 @@ function ServiceDetail() {
         const res = await getServiceDetailAPI(id);
         setService(res.data);
       } catch (err) {
-        console.error('Không thể tải chi tiết dịch vụ', err);
+        console.error('Failed to load service details', err);
       }
     };
     fetchService();
   }, [id]);
 
   if (!service) {
-    return <p>Đang tải dữ liệu dịch vụ...</p>;
+    return <p>Loading service data...</p>;
   }
 
   return (
@@ -42,51 +41,52 @@ function ServiceDetail() {
       <div className={styles.header}>
         <div className={styles.info}>
           <p className={styles.breadcrumb}>
-            Trang chủ / Xét nghiệm / {service.category || 'Danh mục'} /{' '}
+            Home / Test / {service.category || 'Category'} /{' '}
             <strong>{service.serviceName}</strong>
           </p>
           <h1>{service.serviceName}</h1>
-          <p className={styles.price}>{service.price?.toLocaleString()}đ</p>
+          <p className={styles.price}>{service.price?.toLocaleString()}₫</p>
           <div className={styles.buttons}>
             <button onClick={handleBookingClick} className={styles.book}>
-              Đặt lịch hẹn
+              Book Appointment
             </button>
-            <button className={styles.location}>Tìm địa điểm</button>
           </div>
-          <span className={styles.category}>{service.category || 'Danh mục'}</span>
+          <span className={styles.category}>{service.category || 'Category'}</span>
         </div>
       </div>
 
       <div className={styles.description}>
-        <h2>Giới thiệu dịch vụ</h2>
+        <h2>Service Overview</h2>
         <p>{service.descriptionLong || service.description}</p>
       </div>
 
       <div className={styles.processBox}>
-        <h2>Quy trình xét nghiệm</h2>
+        <h2>Test Procedure</h2>
         <div className={styles.steps}>
-          {['Đăng ký xét nghiệm', 'Lấy mẫu xét nghiệm', 'Trả kết quả', 'Bác sĩ tư vấn miễn phí'].map((step, index) => (
+          {[
+            'Register for Testing',
+            'Sample Collection',
+            'Get Results',
+            'Free Doctor Consultation',
+          ].map((step, index) => (
             <div className={styles.step} key={index}>
               <div className={styles.stepNumber}>{index + 1}</div>
               <div>
                 <strong>{step}</strong>
-                <p>Mô tả quy trình {index + 1} sẽ được điền sau</p>
+                <p>Step {index + 1} description will be added later</p>
               </div>
             </div>
           ))}
         </div>
-        <button
-          onClick={() => setShowPopup(true)}
-          className={styles.bookBtn}
-        >
-          Đặt lịch hẹn
+        <button onClick={() => setShowPopup(true)} className={styles.bookBtn}>
+          Book Appointment
         </button>
       </div>
 
-      <BookingPopup 
-        isOpen={showPopup} 
-        onClose={() => setShowPopup(false)} 
-        selectedServiceIds={[service.serviceId]} 
+      <BookingPopup
+        isOpen={showPopup}
+        onClose={() => setShowPopup(false)}
+        selectedServiceIds={[service.serviceId]}
       />
     </div>
   );

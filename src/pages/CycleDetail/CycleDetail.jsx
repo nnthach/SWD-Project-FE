@@ -35,19 +35,35 @@ const CycleDetail = () => {
   const processCycle = (data) => {
     const result = [];
 
-    const start = parseISO(data.startDate); // yyyy-MM-dd
-    const end = parse(data.endDate, "dd-MM-yyyy", new Date());
-    const ovulation = parse(data.ovulationDate, "dd-MM-yyyy", new Date());
-    const pill = parse(data.pillReminder, "dd-MM-yyyy", new Date());
-    const fertileStart = parse(data.fertilityWindowStart, "dd-MM-yyyy", new Date());
-    const fertileEnd = parse(data.fertilityWindowEnd, "dd-MM-yyyy", new Date());
+    const start = parseISO(data.startDate);
+    const periodLength = data.periodLength || 5;
+
+    const end = data.endDate
+      ? parse(data.endDate, "dd-MM-yyyy", new Date())
+      : addDays(start, 32);
+
+    const ovulation = data.ovulationDate
+      ? parse(data.ovulationDate, "dd-MM-yyyy", new Date())
+      : addDays(start, 14);
+
+    const pill = data.pillReminder
+      ? parse(data.pillReminder, "dd-MM-yyyy", new Date())
+      : addDays(start, 21);
+
+    const fertileStart = data.fertilityWindowStart
+      ? parse(data.fertilityWindowStart, "dd-MM-yyyy", new Date())
+      : addDays(ovulation, -5);
+
+    const fertileEnd = data.fertilityWindowEnd
+      ? parse(data.fertilityWindowEnd, "dd-MM-yyyy", new Date())
+      : addDays(ovulation, -1);
 
     let current = new Date(start);
 
     while (current <= end) {
       let dayType = null;
 
-      if (current >= start && current < addDays(start, data.periodLength)) {
+      if (current >= start && current < addDays(start, periodLength)) {
         dayType = "menstruation";
       } else if (current.toDateString() === ovulation.toDateString()) {
         dayType = "ovulation";
