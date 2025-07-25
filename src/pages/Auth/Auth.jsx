@@ -61,7 +61,7 @@ function Auth() {
         toast.success('Login success');
         setTimeout(() => {
           navigate('/');
-        });
+        },1000);
       } catch (error) {
         console.log('llogin err', error);
         setAuthForm(initialForm);

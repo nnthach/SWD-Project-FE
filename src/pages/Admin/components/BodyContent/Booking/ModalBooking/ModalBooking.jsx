@@ -159,38 +159,40 @@ function ModalBooking({ isDetailLoading, bookingDetailData, setOpenPopup, setBoo
               </p>
             </div>
           </div>
-          <div className={styles.bottomContent}>
-            <div className={styles.serviceBox}>
-              <h2>User</h2>
-              <div className={styles['booking-info']}>
-                <p>
-                  <strong>User ID:</strong> {bookingDetailData.userId}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/*Bottom */}
-          <div className={styles.bottomContent}>
-            {bookingDetailData.services?.$values.map((service) => (
-              <div key={service.serviceId} className={styles.serviceBox}>
-                <h2>Service</h2>
+          <div className={styles.bottomContentWrap}>
+            <div className={styles.bottomContentRight}>
+              <div className={styles.serviceBox}>
+                <h2>User</h2>
                 <div className={styles['booking-info']}>
                   <p>
-                    <strong>ID:</strong> {service.serviceId}
-                  </p>
-                  <p>
-                    <strong>Service Name:</strong> {service.serviceName}
-                  </p>
-                  <p>
-                    <strong>Price:</strong> {service.price}
-                  </p>
-                  <p>
-                    <strong>Description:</strong> {service.description}
+                    <strong>User ID:</strong> {bookingDetailData.userId}
                   </p>
                 </div>
               </div>
-            ))}
+            </div>
+
+            {/*Bottom */}
+            <div className={styles.bottomContentLeft}>
+              {bookingDetailData.services?.$values.map((service) => (
+                <div key={service.serviceId} className={styles.serviceBox}>
+                  <h2>Service</h2>
+                  <div className={styles['booking-info']}>
+                    <p>
+                      <strong>ID:</strong> {service.serviceId}
+                    </p>
+                    <p>
+                      <strong>Service Name:</strong> {service.serviceName}
+                    </p>
+                    <p>
+                      <strong>Price:</strong> {service.price}
+                    </p>
+                    <p>
+                      <strong>Description:</strong> {service.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/*Test result */}

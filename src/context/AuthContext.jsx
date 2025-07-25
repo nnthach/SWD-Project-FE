@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
       Cookies.remove('username');
       setUserInfo(null);
 
-      window.location.reload();
+      // window.location.reload();
       navigate('/');
     } catch (error) {
       console.log('logout error', error);
